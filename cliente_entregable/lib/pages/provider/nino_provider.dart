@@ -3,8 +3,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class ProductosProvider {
-  final String apiURL = 'http://localhost:8000/api';
+class NinosProvider {
+  // final String apiURL = 'http://localhost:8000/api';
+  final String apiURL = 'http://192.168.100.72:8000/api';
 
   //Lista Todos
   Future<List<dynamic>> getAllNinos() async {
