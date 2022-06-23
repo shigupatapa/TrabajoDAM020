@@ -1,5 +1,6 @@
 import 'package:cliente_entregable/pages/perfil/page_nino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
+import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class PageListNinos extends StatefulWidget {
@@ -17,7 +18,9 @@ class _PageListNinosState extends State<PageListNinos> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Listado de Niños"),
+        leading: MenuWidget(),
+        title: Text("Niños"),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -61,7 +64,7 @@ class _PageListNinosState extends State<PageListNinos> {
       ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {},
-        tooltip: 'Increment',
+        tooltip: 'Agregar',
         child: Icon(Icons.add),
       ),
     );
@@ -78,28 +81,39 @@ class _PageListNinosState extends State<PageListNinos> {
           itemBuilder: (context, index) {
             var ninos = snap.data[index];
             return GridTile(
-              child: InkWell(
-                child: Image.network(
-                  'http://i.imgur.com/QSev0hg.jpg',
-                  fit: BoxFit.cover,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                  ),
                 ),
-                onTap: () {
-                  MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) {
-                    return PerfilNino();
-                  });
-                  Navigator.push(context, route);
-                },
+                child: InkWell(
+                  child: Image.network(
+                    'http://i.imgur.com/QSev0hg.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                  onTap: () {
+                    MaterialPageRoute route = MaterialPageRoute(
+                      builder: (context) {
+                        return PerfilNino();
+                      },
+                    );
+                    Navigator.push(context, route);
+                  },
+                ),
               ),
-              footer: DecoratedBox(
-                decoration: BoxDecoration(color: Colors.black),
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  alignment: Alignment.center,
-                  child: Text(
-                    ninos['nombreCompleto'],
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
+              footer: Card(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.black87),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    child: Text(
+                      ninos['nombreCompleto'],
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

@@ -3,9 +3,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class ProductosProvider {
-  //final String apiURL = 'http://10.0.2.2:8000/api';
+class ProfesoresProvider {
+  // final String apiURL = 'http://10.0.2.2:8000/api';
   final String apiURL = 'http://192.168.100.72:8000/api';
+
   //Lista Todos
   Future<List<dynamic>> getAllProfes() async {
     var uri = Uri.parse('$apiURL/profesores');
