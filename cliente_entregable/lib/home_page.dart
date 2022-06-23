@@ -5,9 +5,12 @@
 
 ////////////
 
+import 'package:cliente_entregable/pages/listar/page_listhistoriales.dart';
+import 'package:cliente_entregable/pages/listar/page_listninos.dart';
+import 'package:cliente_entregable/pages/listar/page_listniveles.dart';
+import 'package:cliente_entregable/pages/listar/page_listprofes.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -33,28 +36,40 @@ class _HomePageState extends State<HomePage> {
               leading: Icon(Icons.face),
               title: const Text('Niños'),
               onTap: () {
-                Navigator.pop(context);
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageListNinos();
+                });
+                Navigator.push(context, route);
               },
             ),
             ListTile(
               leading: Icon(Ionicons.school),
               title: const Text('Educadoras'),
               onTap: () {
-                Navigator.pop(context);
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageListProfes();
+                });
+                Navigator.push(context, route);
               },
             ),
             ListTile(
               leading: Icon(Ionicons.book),
               title: const Text('Historiales'),
               onTap: () {
-                Navigator.pop(context);
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PagelistHistoriales();
+                });
+                Navigator.push(context, route);
               },
             ),
             ListTile(
               leading: Icon(Ionicons.albums),
               title: const Text('Niveles'),
               onTap: () {
-                Navigator.pop(context);
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageListNiveles();
+                });
+                Navigator.push(context, route);
               },
             ),
           ],

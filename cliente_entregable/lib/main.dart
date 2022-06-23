@@ -1,6 +1,4 @@
-import 'package:cliente_entregable/pages/home_page.dart';
-import 'package:cliente_entregable/pages/listar/page_listninos.dart';
-import 'package:cliente_entregable/pages/listar/page_listniveles.dart';
+import 'package:cliente_entregable/home_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: PageListNinos(),
+      home: HomePage(),
     );
   }
 }

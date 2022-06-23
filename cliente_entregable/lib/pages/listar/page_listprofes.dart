@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../provider/profesor_provider.dart';
+import 'package:cliente_entregable/provider/profesor_provider.dart';
 
 class PageListProfes extends StatefulWidget {
   PageListProfes({Key? key}) : super(key: key);

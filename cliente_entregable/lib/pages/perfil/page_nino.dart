@@ -1,4 +1,4 @@
-import 'package:cliente_entregable/pages/provider/nino_provider.dart';
+import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:flutter/material.dart';
 
 class PerfilNino extends StatefulWidget {
