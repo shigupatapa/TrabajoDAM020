@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NinosProvider {
-  // final String apiURL = 'http://localhost:8000/api';
+  // final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
   final String apiURL = 'http://192.168.100.72:8000/api';
 
   //Lista Todos
   Future<List<dynamic>> getAllNinos() async {
-    var uri = Uri.parse('$apiURL/ninos');
+    var uri = Uri.parse('$apiURL/niños');
     var respuesta = await http.get(uri);
 
     if (respuesta.statusCode == 200) {
@@ -21,7 +21,7 @@ class NinosProvider {
 
   //1 Historial
   Future<LinkedHashMap<String, dynamic>> getNino(String rutNino) async {
-    var uri = Uri.parse('$apiURL/ninos/$rutNino');
+    var uri = Uri.parse('$apiURL/niños/$rutNino');
     var respuesta = await http.get(uri);
 
     if (respuesta.statusCode == 200) {
@@ -42,7 +42,7 @@ class NinosProvider {
     String telefono2,
     String alergias,
   ) async {
-    var uri = Uri.parse('$apiURL/ninos');
+    var uri = Uri.parse('$apiURL/niños');
     var respuesta = await http.post(uri,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -72,7 +72,7 @@ class NinosProvider {
     String telefono2,
     String alergias,
   ) async {
-    var uri = Uri.parse('$apiURL/ninos/$rutNino');
+    var uri = Uri.parse('$apiURL/niños/$rutNino');
     var respuesta = await http.put(uri,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -93,7 +93,7 @@ class NinosProvider {
 
   //Delete
   Future<bool> DeleteNino(String rutNino) async {
-    var uri = Uri.parse('$apiURL/ninos/$rutNino');
+    var uri = Uri.parse('$apiURL/niños/$rutNino');
     var respuesta = await http.delete(uri);
     return respuesta.statusCode == 200;
   }

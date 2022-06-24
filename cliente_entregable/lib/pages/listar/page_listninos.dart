@@ -1,5 +1,6 @@
 import 'package:cliente_entregable/pages/perfil/page_nino.dart';
-import 'package:cliente_entregable/pages/provider/nino_provider.dart';
+import 'package:cliente_entregable/provider/nino_provider.dart';
+import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class PageListNinos extends StatefulWidget {
@@ -15,8 +16,11 @@ class _PageListNinosState extends State<PageListNinos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Listado de Niños"),
+        leading: MenuWidget(),
+        title: Text("Niños"),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -29,28 +33,38 @@ class _PageListNinosState extends State<PageListNinos> {
             },
             icon: Icon(
               isGrid == true ? Icons.grid_off : Icons.grid_on,
-              color: Colors.black54,
+              color: Colors.white,
             ),
           ),
         ],
+        backgroundColor: Colors.black87,
       ),
-      body: FutureBuilder(
-        future: NinosProvider().getAllNinos(),
-        builder: (context, AsyncSnapshot snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              fit: BoxFit.cover),
+        ),
+        child: FutureBuilder(
+          future: NinosProvider().getAllNinos(),
+          builder: (context, AsyncSnapshot snap) {
+            if (!snap.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Padding(
+              padding: EdgeInsets.all(5),
+              child: buildList(snap),
             );
-          }
-          return Padding(
-            padding: EdgeInsets.all(5),
-            child: buildList(snap),
-          );
-        },
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {},
-        tooltip: 'Increment',
+        tooltip: 'Agregar',
         child: Icon(Icons.add),
       ),
     );
@@ -67,28 +81,39 @@ class _PageListNinosState extends State<PageListNinos> {
           itemBuilder: (context, index) {
             var ninos = snap.data[index];
             return GridTile(
-              child: InkWell(
-                child: Image.network(
-                  'http://i.imgur.com/QSev0hg.jpg',
-                  fit: BoxFit.cover,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                  ),
                 ),
-                onTap: () {
-                  MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) {
-                    return PerfilNino();
-                  });
-                  Navigator.push(context, route);
-                },
+                child: InkWell(
+                  child: Image.network(
+                    'http://i.imgur.com/QSev0hg.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                  onTap: () {
+                    MaterialPageRoute route = MaterialPageRoute(
+                      builder: (context) {
+                        return PerfilNino();
+                      },
+                    );
+                    Navigator.push(context, route);
+                  },
+                ),
               ),
-              footer: DecoratedBox(
-                decoration: BoxDecoration(color: Colors.black),
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  alignment: Alignment.center,
-                  child: Text(
-                    ninos['nombreCompleto'],
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
+              footer: Card(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: Colors.black87),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.center,
+                    child: Text(
+                      ninos['nombreCompleto'],
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
@@ -99,43 +124,57 @@ class _PageListNinosState extends State<PageListNinos> {
           itemCount: snap.data.length,
           itemBuilder: (context, index) {
             var ninos = snap.data[index];
-            return ListTile(
-              // leading: CircleAvatar(
-              //   radius: 28,
-              //   backgroundImage: NetworkImage(
-              //       'https://www.kindacode.com/wp-content/uploads/2021/12/sample-leaf.jpeg'),
-              // ),
-              leading: Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2,
-                  ),
+            return Card(
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color: Colors.black,
+                  width: 2,
                 ),
               ),
-              title: Text(
-                ninos['nombreCompleto'],
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
+              color: Colors.white60,
+              // decoration: BoxDecoration(
+              //   color: Colors.green.shade400,
+              //   borderRadius: BorderRadius.circular(30),
+              // ),
+              child: ListTile(
+                // leading: CircleAvatar(
+                //   radius: 28,
+                //   backgroundImage: NetworkImage(
+                //       'https://www.kindacode.com/wp-content/uploads/2021/12/sample-leaf.jpeg'),
+                // ),
+                leading: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  ninos['nombreCompleto'],
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: Text(
+                  ninos['nivel'].toString(),
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                onTap: () {
+                  MaterialPageRoute route =
+                      MaterialPageRoute(builder: (context) {
+                    return PerfilNino();
+                  });
+                  Navigator.push(context, route);
+                },
               ),
-              subtitle: Text(
-                ninos['nivel'].toString(),
-                style: TextStyle(fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-              onTap: () {
-                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                  return PerfilNino();
-                });
-                Navigator.push(context, route);
-              },
             );
           },
         );

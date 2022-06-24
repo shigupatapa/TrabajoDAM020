@@ -1,15 +1,33 @@
+import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 
-class PagelistHistoriales extends StatefulWidget {
-  PagelistHistoriales({Key? key}) : super(key: key);
+class PageListHistoriales extends StatefulWidget {
+  PageListHistoriales({Key? key}) : super(key: key);
 
   @override
-  State<PagelistHistoriales> createState() => _PagelistHistorialesState();
+  State<PageListHistoriales> createState() => _PageListHistorialesState();
 }
 
-class _PagelistHistorialesState extends State<PagelistHistoriales> {
+class _PageListHistorialesState extends State<PageListHistoriales> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        leading: MenuWidget(),
+        title: Text('Historiales'),
+        centerTitle: true,
+        backgroundColor: Colors.black87,
+      ),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(
+                  "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              fit: BoxFit.cover),
+        ),
+      ),
+    );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:cliente_entregable/pages/provider/nino_provider.dart';
+// import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:flutter/material.dart';
 
 class PerfilNino extends StatefulWidget {
@@ -67,8 +67,8 @@ class _PerfilNinoState extends State<PerfilNino> {
                 child: ElevatedButton(
                   child: Text('Agregar Producto'),
                   onPressed: () async {
-                    int stock = int.tryParse(stockCtrl.text) ?? 0;
-                    int precio = int.tryParse(precioCtrl.text) ?? 0;
+                    // int stock = int.tryParse(stockCtrl.text) ?? 0;
+                    // int precio = int.tryParse(precioCtrl.text) ?? 0;
 
                     // var respuesta = await NinosProvider().AddNino(
                     //   codigoCtrl.text.trim(),
