@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('niveles', function (Blueprint $table) {
             $table->id('nivel_id');
-            $table->string('nombreNivel');
+            $table->string('nombreNivel',30);
             $table->softDeletes();
         });
     }

@@ -28,7 +28,7 @@ class HistorialesController extends Controller
         $historial = new Historial();
         $historial->rutNino = $request->rutNino;
         $historial->titulo = $request->titulo;
-        $historial->fecha = $request->fecha;
+        //$historial->fecha = $request->fecha;
         $historial->contenido = $request->contenido;
         $historial->save();
         return $historial;
@@ -56,7 +56,7 @@ class HistorialesController extends Controller
     {
         //$historial->rutNino = $request->rutNino;
         $historial->titulo = $request->titulo;
-        $historial->fecha = $request->fecha;
+        //$historial->fecha = $request->fecha;
         $historial->contenido = $request->contenido;
         $historial->save();
         return $historial;

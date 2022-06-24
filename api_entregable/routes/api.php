@@ -27,9 +27,11 @@ Route::patch('/niveles/{nivel}',[NivelesController::class,'update']);
 //niños
 Route::get('/niños',[NinosController::class,'index']);
 Route::get('/niños/{nino}',[NinosController::class,'show']);
+Route::get('/niños/{nino}/imagen',[NinosController::class,'image']);
 Route::post('/niños',[NinosController::class,'store']);
 Route::delete('niños/{nino}',[NinosController::class,'destroy']);
 Route::patch('/niños/{nino}',[NinosController::class,'update']);
+
 //profesores
 Route::get('/profesores',[ProfesoresController::class,'index']);
 Route::get('/profesores/{profesor}',[ProfesoresController::class,'show']);

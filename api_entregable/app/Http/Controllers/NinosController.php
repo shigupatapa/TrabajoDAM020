@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Nino;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class NinosController extends Controller
 {
@@ -12,6 +14,10 @@ class NinosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function image(Nino $nino){
+        return response()->download(public_path(Storage::url($nino->imagen)),$nino->title);
+
+    }
     public function index()
     {
         return Nino::orderBy('nombreCompleto')->get();
@@ -29,11 +35,14 @@ class NinosController extends Controller
         $nino->rutNino = $request->rutNino;
         $nino->nombreCompleto = $request->nombreCompleto;
         $nino->nivel_id = $request->nivel_id;
+        $nino->sexo = $request->sexo;
         $nino->fechaNacimiento = $request->fechaNacimiento;
         $nino->nombreApoderado = $request->nombreApoderado;
         $nino->telefono1 = $request->telefono1;
         $nino->telefono2 = $request->telefono2;
         $nino->alergias = $request->alergias;
+        $path = $request->imagen->store('public/imagenes');
+        $nino->imagen = $path;
         $nino->save();
         return $nino;
     }
@@ -61,13 +70,17 @@ class NinosController extends Controller
         //$nino->rutNino = $request->rutNino;
         $nino->nombreCompleto = $request->nombreCompleto;
         $nino->nivel_id = $request->nivel_id;
+        $nino->sexo = $request->sexo;
         $nino->fechaNacimiento = $request->fechaNacimiento;
         $nino->nombreApoderado = $request->nombreApoderado;
         $nino->telefono1 = $request->telefono1;
         $nino->telefono2 = $request->telefono2;
         $nino->alergias = $request->alergias;
+        //$path = $request->imagen->store('articles');
+        //$nino->imagen = $path;
         $nino->save();
         return $nino;
+        
     }
 
     /**

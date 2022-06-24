@@ -14,19 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('ninos', function (Blueprint $table) {
-            $table->string('rutNino')->primary();
-            $table->string('nombreCompleto');
+            $table->string('rutNino',12)->primary();
+            $table->string('nombreCompleto',60);
+            $table->string('sexo',1);
             $table->unsignedBigInteger('nivel_id');
             $table->date('fechaNacimiento');
-            $table->string('nombreApoderado');
-            $table->string('telefono1');
-            $table->string('telefono2');
-            $table->string('alergias')->nullable;
-            //$table->mediumblob('imagen');
+            $table->string('nombreApoderado',60);
+            $table->string('telefono1',12)->nullable();
+            $table->string('telefono2',12)->nullable();
+            $table->string('alergias')->nullable();
+            $table->string('imagen')->nullable();
             $table->softDeletes();
             $table->foreign('nivel_id')->references('nivel_id')->on('niveles');
-            //$table->unsignedBigInteger('categoria_id');
-            //$table->foreign('categoria_id')->references('id')->on('categorias');
         });
     }
 

@@ -18,5 +18,4 @@ class Nino extends Model
     public function nivel(){
         return $this->belongsTo(Nivel::class);
     }
-
 }

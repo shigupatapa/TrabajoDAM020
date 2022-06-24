@@ -12,6 +12,5 @@ class Historial extends Model
 
     protected $table = 'historial';
     Protected $primaryKey = 'nHistorial';
-    public $timestamps = false;
 
 }
