@@ -35,6 +35,7 @@ class NinosProvider {
   Future<LinkedHashMap<String, dynamic>> AddNino(
     String rutNino,
     String nombreCompleto,
+    String sexo,
     DateTime fechaNacimiento,
     String nombreApoderado,
     int nivel,
@@ -43,21 +44,26 @@ class NinosProvider {
     String alergias,
   ) async {
     var uri = Uri.parse('$apiURL/niños');
-    var respuesta = await http.post(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutNino': rutNino,
+          'sexo': sexo,
           'nombreCompleto': nombreCompleto,
           'nombreApoderado': nombreApoderado,
-          'fechaNacimiento': fechaNacimiento,
-          'nivel': nivel,
+          'fechaNacimiento': fechaNacimiento.toString(),
+          'nivel_id': nivel,
           'telefono1': telefono1,
           'telefono2': telefono2,
           'alergias': alergias,
-        }));
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
@@ -73,12 +79,14 @@ class NinosProvider {
     String alergias,
   ) async {
     var uri = Uri.parse('$apiURL/niños/$rutNino');
-    var respuesta = await http.put(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutNino': rutNino,
           'nombreCompleto': nombreCompleto,
           'nombreApoderado': nombreApoderado,
@@ -87,7 +95,9 @@ class NinosProvider {
           'telefono1': telefono1,
           'telefono2': telefono2,
           'alergias': alergias,
-        }));
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 

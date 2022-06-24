@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: double.infinity,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(

@@ -1,7 +1,9 @@
+import 'package:cliente_entregable/pages/agregar/page_addnino.dart';
 import 'package:cliente_entregable/pages/perfil/page_nino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class PageListNinos extends StatefulWidget {
   PageListNinos({Key? key}) : super(key: key);
@@ -40,6 +42,7 @@ class _PageListNinosState extends State<PageListNinos> {
         backgroundColor: Colors.black87,
       ),
       body: Container(
+        height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -62,10 +65,26 @@ class _PageListNinosState extends State<PageListNinos> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.small(
-        onPressed: () {},
-        tooltip: 'Agregar',
-        child: Icon(Icons.add),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        buttonSize: Size(50, 50),
+        childrenButtonSize: Size(50, 50),
+        backgroundColor: Colors.black87,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.4,
+        children: [
+          SpeedDialChild(
+            child: Icon(Icons.add),
+            backgroundColor: Colors.green,
+            label: 'Agregar',
+            onTap: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageAddNino();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+          ),
+        ],
       ),
     );
   }
@@ -132,16 +151,7 @@ class _PageListNinosState extends State<PageListNinos> {
                 ),
               ),
               color: Colors.white60,
-              // decoration: BoxDecoration(
-              //   color: Colors.green.shade400,
-              //   borderRadius: BorderRadius.circular(30),
-              // ),
               child: ListTile(
-                // leading: CircleAvatar(
-                //   radius: 28,
-                //   backgroundImage: NetworkImage(
-                //       'https://www.kindacode.com/wp-content/uploads/2021/12/sample-leaf.jpeg'),
-                // ),
                 leading: Container(
                   width: 50,
                   height: 50,
@@ -163,7 +173,7 @@ class _PageListNinosState extends State<PageListNinos> {
                   textAlign: TextAlign.center,
                 ),
                 subtitle: Text(
-                  ninos['nivel'].toString(),
+                  ninos['nivel_id'].toString(),
                   style: TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
@@ -179,18 +189,3 @@ class _PageListNinosState extends State<PageListNinos> {
           },
         );
 }
-
-            // return ListView.separated(
-            //   separatorBuilder: (_, __) => Divider(),
-            //   itemCount: snap.data.length,
-            //   itemBuilder: (context, index) {
-            //     var prod = snap.data[index];
-            //     // return ListTile(
-            //     //   // leading: Icon(MdiIcons.cube),
-            //     //   title: Text(prod['nombreCompleto']),
-            //     // );
-            //     return Card(
-            //       color: Colors.red,
-            //       child: Text(prod['nombreCompleto']),
-            //     );
-            //   },

@@ -41,8 +41,8 @@ class NinosController extends Controller
         $nino->telefono1 = $request->telefono1;
         $nino->telefono2 = $request->telefono2;
         $nino->alergias = $request->alergias;
-        $path = $request->imagen->store('public/imagenes');
-        $nino->imagen = $path;
+        // $path = $request->imagen->store('public/imagenes');
+        // $nino->imagen = $path;
         $nino->save();
         return $nino;
     }

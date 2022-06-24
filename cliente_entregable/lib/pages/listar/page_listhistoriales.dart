@@ -20,6 +20,7 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
         backgroundColor: Colors.black87,
       ),
       body: Container(
+        height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(

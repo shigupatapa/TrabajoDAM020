@@ -1,0 +1,20 @@
+-- NIVELES
+INSERT INTO `niveles` (`nivel_id`, `nombreNivel`, `deleted_at`) VALUES
+(1, 'Sala Cuna Menor', NULL),
+(2, 'Sala Cuna Mayor', NULL),
+(3, 'Nivel Medio Menor', NULL),
+(4, 'Nivel Medio Mayor', NULL),
+(5, 'Primer Nivel Transición', NULL),
+(6, 'Segundo Nivel de Transición', NULL);
+
+-- NINOS
+INSERT INTO `ninos` (`rutNino`, `nombreCompleto`, `sexo`, `nivel_id`, `fechaNacimiento`, `nombreApoderado`, `telefono1`, `telefono2`, `alergias`, `imagen`, `deleted_at`) VALUES
+('18979377-4', 'Enzo Esteban Portales Valdivia', 'M', 2, '2021-04-24', 'Paola Marlen Valdivia Bustamante', '991986612', '999070531', 'Azitromicina', 'juan.png', NULL),
+('20123456-K', 'Jorge Alonso Washington Peréz', 'M', 1, '2022-01-05', 'Karla Josefina Peréz Osorio', '912345678', '', '', '', NULL);
+
+-- PROFES
+INSERT INTO `profesores` (`rutProfesor`, `nombreCompleto`, `fechaNacimiento`, `nivel_id`, `deleted_at`) VALUES
+('18979377-4', 'Enzo Esteban Portales Valdivia', '1992-04-08', 1, NULL);
+
+
+
