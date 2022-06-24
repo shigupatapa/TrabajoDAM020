@@ -81,7 +81,7 @@ class _PageListNivelesState extends State<PageListNiveles> {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                 return PageAddNivel();
               });
-              Navigator.push(context, route);
+              Navigator.push(context, route).then((value) => setState(() {}));
             },
           ),
         ],

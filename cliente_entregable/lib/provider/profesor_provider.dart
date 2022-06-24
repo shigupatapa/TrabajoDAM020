@@ -7,7 +7,7 @@ class ProfesoresProvider {
   // final String apiURL = 'http://10.0.2.2:8000/api';
   final String apiURL = 'http://192.168.100.72:8000/api';
 
-  //Lista Todos
+  // LISTAR PROFES
   Future<List<dynamic>> getAllProfes() async {
     var uri = Uri.parse('$apiURL/profesores');
     var respuesta = await http.get(uri);
@@ -19,7 +19,7 @@ class ProfesoresProvider {
     }
   }
 
-  //1 Historial
+  // INFO DE UN PROFE
   Future<LinkedHashMap<String, dynamic>> getProfe(String rutProfesor) async {
     var uri = Uri.parse('$apiURL/profesores/$rutProfesor');
     var respuesta = await http.get(uri);
@@ -31,7 +31,7 @@ class ProfesoresProvider {
     }
   }
 
-  //ADD Hist
+  // AGREGAR PROFE
   Future<LinkedHashMap<String, dynamic>> AddProfe(
     String rutProfesor,
     String nombreCompleto,
@@ -39,17 +39,21 @@ class ProfesoresProvider {
     int nivel,
   ) async {
     var uri = Uri.parse('$apiURL/profesores');
-    var respuesta = await http.post(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutProfesor': rutProfesor,
           'nombreCompleto': nombreCompleto,
-          'fechaNacimiento': fechaNacimiento,
-          'nivel': nivel
-        }));
+          'fechaNacimiento': fechaNacimiento.toString(),
+          'nivel_id': nivel,
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
@@ -57,21 +61,25 @@ class ProfesoresProvider {
   Future<LinkedHashMap<String, dynamic>> UpdateProfe(String rutProfesor,
       String nombreCompleto, DateTime fechaNacimiento, int nivel) async {
     var uri = Uri.parse('$apiURL/profesores/$rutProfesor');
-    var respuesta = await http.put(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutProfesor': rutProfesor,
           'nombreCompleto': nombreCompleto,
           'fechaNacimiento': fechaNacimiento,
-          'nivel': nivel
-        }));
+          'nivel_id': nivel,
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
-  //Delete
+  // ELIMINAR PROFE
   Future<bool> DeleteProfe(String rutProfesor) async {
     var uri = Uri.parse('$apiURL/profesores/$rutProfesor');
     var respuesta = await http.delete(uri);

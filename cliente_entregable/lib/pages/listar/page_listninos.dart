@@ -1,4 +1,5 @@
 import 'package:cliente_entregable/pages/agregar/page_addnino.dart';
+import 'package:cliente_entregable/pages/perfil/cocaine_cowboy.dart';
 import 'package:cliente_entregable/pages/perfil/page_nino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
@@ -115,7 +116,7 @@ class _PageListNinosState extends State<PageListNinos> {
                   onTap: () {
                     MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) {
-                        return PerfilNino();
+                        return PageCC();
                       },
                     );
                     Navigator.push(context, route);

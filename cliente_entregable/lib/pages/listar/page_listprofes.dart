@@ -21,7 +21,7 @@ class _PageListProfesState extends State<PageListProfes> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: MenuWidget(),
-        title: Text("Profesores"),
+        title: Text("Educadoras"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -81,7 +81,7 @@ class _PageListProfesState extends State<PageListProfes> {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                 return PageAddProfe();
               });
-              Navigator.push(context, route);
+              Navigator.push(context, route).then((value) => setState(() {}));
             },
           ),
         ],

@@ -95,7 +95,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        child: Text(isLastStep ? 'CONFIRM' : 'NEXT'),
+                        child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
                         onPressed: controls.onStepContinue,
                       ),
                     ),
@@ -103,7 +103,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                     if (currentStep != 0)
                       Expanded(
                         child: ElevatedButton(
-                          child: Text('BACK'),
+                          child: Text('REGRESAR'),
                           onPressed: controls.onStepCancel,
                         ),
                       ),
@@ -329,6 +329,7 @@ class _PageAddNinoState extends State<PageAddNino> {
               ),
               Divider(),
               TextFormField(
+                maxLines: 5,
                 controller: alergiasCtrl,
                 decoration: InputDecoration(
                   hintText: 'Alergias',
@@ -348,7 +349,7 @@ class _PageAddNinoState extends State<PageAddNino> {
         ),
         Step(
           isActive: currentStep >= 2,
-          title: Text('data3'),
+          title: Text('Información'),
           content: Container(),
         )
       ];

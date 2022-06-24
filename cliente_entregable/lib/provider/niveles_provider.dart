@@ -7,7 +7,7 @@ class NivelesProvider {
   // final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
   final String apiURL = 'http://192.168.100.72:8000/api';
 
-  //Lista Todos
+  // LISTAR TODOS LOS NIVELES
   Future<List<dynamic>> getAllNiveles() async {
     var uri = Uri.parse('$apiURL/niveles');
     var respuesta = await http.get(uri);
@@ -19,7 +19,7 @@ class NivelesProvider {
     }
   }
 
-  //1 nivel
+  // INFO DE UN NIVEL
   Future<LinkedHashMap<String, dynamic>> getNivel(int nivel) async {
     var uri = Uri.parse('$apiURL/niveles/$nivel');
     var respuesta = await http.get(uri);
@@ -31,36 +31,48 @@ class NivelesProvider {
     }
   }
 
-  //ADD nivel
+  // AGREGAR NIVEL
   Future<LinkedHashMap<String, dynamic>> AddNivel(
     String nombreNivel,
-    int nivel,
   ) async {
     var uri = Uri.parse('$apiURL/niveles');
-    var respuesta = await http.post(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
+    var respuesta = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'nombreNivel': nombreNivel,
         },
-        body: jsonEncode(
-            <String, dynamic>{'nombreNivel': nombreNivel, 'nivel': nivel}));
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
-  //Edicion nivel
+  // EDITAR NIVEL
   Future<LinkedHashMap<String, dynamic>> UpdateNivel(
-      String nombreNivel, int nivel) async {
+    int nivel,
+    String nombreNivel,
+  ) async {
     var uri = Uri.parse('$apiURL/niveles/$nivel');
-    var respuesta = await http.put(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
+    var respuesta = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'nombreNivel': nombreNivel,
         },
-        body: jsonEncode(<String, dynamic>{'nombreNivel': nombreNivel}));
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
-  //Delete nivel
+  // ELIMINAR NIVEL
   Future<bool> DeleteNivel(int nivel) async {
     var uri = Uri.parse('$apiURL/niveles/$nivel');
     var respuesta = await http.delete(uri);

@@ -150,9 +150,9 @@ class _PageCCState extends State<PageCC> {
                           width: 200,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage('assets/image/user.jpg'),
-                            ),
+                            // image: DecorationImage(
+                            //   image: AssetImage('assets/image/user.jpg'),
+                            // ),
                             border: Border.all(
                               color: Colors.blueGrey,
                               width: 2.0,
@@ -165,7 +165,7 @@ class _PageCCState extends State<PageCC> {
                         'Hubert Blaine Wolfeschlegelsteinhausenbergerdorff Sr.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30),
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ],
                   ),
@@ -332,7 +332,7 @@ class _PageCCState extends State<PageCC> {
                                         child: Text(
                                           'Telefono N°1 \n +56 9 5696 9999',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -344,7 +344,7 @@ class _PageCCState extends State<PageCC> {
                                         child: Text(
                                           'Telefono N°2 \n +56 9 5696 9999',
                                           style: TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),

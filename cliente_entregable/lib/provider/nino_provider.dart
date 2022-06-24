@@ -7,7 +7,7 @@ class NinosProvider {
   // final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
   final String apiURL = 'http://192.168.100.72:8000/api';
 
-  //Lista Todos
+  // LISTAR TODOS LOS NIÑOS
   Future<List<dynamic>> getAllNinos() async {
     var uri = Uri.parse('$apiURL/niños');
     var respuesta = await http.get(uri);
@@ -19,7 +19,7 @@ class NinosProvider {
     }
   }
 
-  //1 Historial
+  // INFO DE UN NIÑO
   Future<LinkedHashMap<String, dynamic>> getNino(String rutNino) async {
     var uri = Uri.parse('$apiURL/niños/$rutNino');
     var respuesta = await http.get(uri);
@@ -31,7 +31,7 @@ class NinosProvider {
     }
   }
 
-  //ADD Hist
+  // AGREGAR NIÑO
   Future<LinkedHashMap<String, dynamic>> AddNino(
     String rutNino,
     String nombreCompleto,
@@ -67,7 +67,7 @@ class NinosProvider {
     return json.decode(respuesta.body);
   }
 
-  //Edicion Hist
+  // EDITAR NIÑO
   Future<LinkedHashMap<String, dynamic>> UpdateNino(
     String rutNino,
     String nombreCompleto,
@@ -101,7 +101,7 @@ class NinosProvider {
     return json.decode(respuesta.body);
   }
 
-  //Delete
+  // BORRAR NIÑO
   Future<bool> DeleteNino(String rutNino) async {
     var uri = Uri.parse('$apiURL/niños/$rutNino');
     var respuesta = await http.delete(uri);
