@@ -14,7 +14,7 @@ class ProfesoresController extends Controller
      */
     public function index()
     {
-        return Profesor::all();
+        return Profesor::orderBy('nombreCompleto')->get();
     }
 
     /**

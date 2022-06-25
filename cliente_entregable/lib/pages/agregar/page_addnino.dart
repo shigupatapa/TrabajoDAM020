@@ -37,9 +37,10 @@ class _PageAddNinoState extends State<PageAddNino> {
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
-              fit: BoxFit.cover),
+            image: NetworkImage(
+                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Theme(
           data: Theme.of(context).copyWith(

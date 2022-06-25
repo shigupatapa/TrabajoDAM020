@@ -46,9 +46,10 @@ class _PageListProfesState extends State<PageListProfes> {
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
-              fit: BoxFit.cover),
+            image: NetworkImage(
+                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: FutureBuilder(
           future: ProfesoresProvider().getAllProfes(),
@@ -99,43 +100,53 @@ class _PageListProfesState extends State<PageListProfes> {
           itemCount: snap.data.length,
           itemBuilder: (context, index) {
             var profes = snap.data[index];
-            return GridTile(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.black,
-                    width: 2,
-                  ),
-                ),
-                child: InkWell(
-                  child: Image.network(
-                    'http://i.imgur.com/QSev0hg.jpg',
-                    fit: BoxFit.cover,
-                  ),
-                  onTap: () {
-                    MaterialPageRoute route = MaterialPageRoute(
-                      builder: (context) {
-                        return PerfilNino();
+            return Column(
+              children: [
+                GridTile(
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                    child: InkWell(
+                      child: Container(
+                        height: 100,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/profe.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        MaterialPageRoute route = MaterialPageRoute(
+                          builder: (context) {
+                            return PerfilNino();
+                          },
+                        );
+                        Navigator.push(context, route);
                       },
-                    );
-                    Navigator.push(context, route);
-                  },
-                ),
-              ),
-              footer: Card(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.black87),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    child: Text(
-                      profes['nombreCompleto'],
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black87),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      alignment: Alignment.center,
+                      child: Text(
+                        profes['nombreCompleto'],
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             );
           },
         )
@@ -157,7 +168,7 @@ class _PageListProfesState extends State<PageListProfes> {
                   height: 50,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage('http://i.imgur.com/QSev0hg.jpg'),
+                      image: AssetImage('assets/images/profes.png'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -178,10 +189,11 @@ class _PageListProfesState extends State<PageListProfes> {
                   textAlign: TextAlign.center,
                 ),
                 onTap: () {
-                  MaterialPageRoute route =
-                      MaterialPageRoute(builder: (context) {
-                    return PerfilNino();
-                  });
+                  MaterialPageRoute route = MaterialPageRoute(
+                    builder: (context) {
+                      return PerfilNino();
+                    },
+                  );
                   Navigator.push(context, route);
                 },
               ),

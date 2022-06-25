@@ -9,12 +9,14 @@ INSERT INTO `niveles` (`nivel_id`, `nombreNivel`, `deleted_at`) VALUES
 
 -- NINOS
 INSERT INTO `ninos` (`rutNino`, `nombreCompleto`, `sexo`, `nivel_id`, `fechaNacimiento`, `nombreApoderado`, `telefono1`, `telefono2`, `alergias`, `imagen`, `deleted_at`) VALUES
-('18979377-4', 'Enzo Esteban Portales Valdivia', 'M', 2, '2021-04-24', 'Paola Marlen Valdivia Bustamante', '991986612', '999070531', 'Azitromicina', 'juan.png', NULL),
-('20123456-K', 'Jorge Alonso Washington Peréz', 'M', 1, '2022-01-05', 'Karla Josefina Peréz Osorio', '912345678', '', '', '', NULL);
+('11007007-K', 'Anya Yolanda Forger Briar', 'F', 5, '2021-05-05', 'Loid Forger', '911223344', NULL, 'Mani', 'public/imagenes/Anya.png', NULL),
+('18979377-4', 'Enzo Esteban Portales Valdivia', 'M', 2, '2021-04-24', 'Paola Marlen Valdivia Bustamante', '991986612', '999070531', 'Azitromicina', 'public/imagenes/Enzo.png', NULL),
+('20123456-K', 'Jorge Alonso Washington Peréz', 'M', 1, '2022-01-05', 'Karla Josefina Peréz Osorio', '912345678', NULL, NULL, NULL, NULL);
 
 -- PROFES
 INSERT INTO `profesores` (`rutProfesor`, `nombreCompleto`, `fechaNacimiento`, `nivel_id`, `deleted_at`) VALUES
-('18979377-4', 'Enzo Esteban Portales Valdivia', '1992-04-08', 1, NULL);
+('10011001-K', 'Paola Badilla Ballesteros', '1992-04-08', 2, NULL),
+('11277772-5', 'Paola Marlen Valdivia Bustamante', '1992-04-08', 1, NULL);
 
 
 
