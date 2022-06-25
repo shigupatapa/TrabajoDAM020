@@ -15,7 +15,13 @@ class NinosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function image(Nino $nino){
-        return response()->download(public_path(Storage::url($nino->imagen)),$nino->title);
+        if ($nino->imagen==null){
+
+        }else {
+            return response()->download(public_path(Storage::url($nino->imagen)),$nino->title);
+        }
+
+        
 
     }
     public function index()
@@ -41,6 +47,13 @@ class NinosController extends Controller
         $nino->telefono1 = $request->telefono1;
         $nino->telefono2 = $request->telefono2;
         $nino->alergias = $request->alergias;
+        //verifica si subimos una imagen al server
+        if (file_exists($request->imagen)){
+            $path = $request->imagen->store('public/imagenes');
+        }else{
+            $path = null;
+        }
+        $nino->imagen = $path;
         // $path = $request->imagen->store('public/imagenes');
         // $nino->imagen = $path;
         $nino->save();
