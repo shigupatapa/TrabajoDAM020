@@ -121,8 +121,8 @@ class _PageListNinosState extends State<PageListNinos> {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage(
-                                // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                                'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}',
+                                'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
+                                //'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}',
                               ),
                               fit: BoxFit.cover,
                             ),
@@ -232,8 +232,9 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                          // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                            'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}'),
+                          'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
+                          //'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}
+                        ),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(50)),

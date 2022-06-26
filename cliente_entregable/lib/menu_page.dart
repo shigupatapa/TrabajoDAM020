@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MenuItems {
-  static const ninos = MenuItem('Niños', Icons.face);
-  static const profes = MenuItem('Educadoras', Ionicons.school);
-  static const niveles = MenuItem('Niveles', Ionicons.albums);
-  static const historiales = MenuItem('Historiales', Ionicons.book);
-
-  static const all = <MenuItem>[
+  static const ninos = MyMenuItem('Niños', Icons.face);
+  static const profes = MyMenuItem('Educadoras', Ionicons.school);
+  static const niveles = MyMenuItem('Niveles', Ionicons.albums);
+  static const historiales = MyMenuItem('Historiales', Ionicons.book);
+  static const all = <MyMenuItem>[
     ninos,
     profes,
     niveles,
@@ -17,8 +16,8 @@ class MenuItems {
 }
 
 class MenuPage extends StatelessWidget {
-  final MenuItem currentItem;
-  final ValueChanged<MenuItem> onSelectedItem;
+  final MyMenuItem currentItem;
+  final ValueChanged<MyMenuItem> onSelectedItem;
 
   const MenuPage({
     Key? key,
@@ -54,7 +53,7 @@ class MenuPage extends StatelessWidget {
     );
   }
 
-  Widget buildMenuItem(MenuItem item) => Card(
+  Widget buildMenuItem(MyMenuItem item) => Card(
         shape: RoundedRectangleBorder(),
         color: Colors.white60,
         child: ListTile(
