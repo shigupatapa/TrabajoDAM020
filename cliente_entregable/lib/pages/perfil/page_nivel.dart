@@ -1,5 +1,7 @@
+import 'package:cliente_entregable/pages/editar/page_editnivel.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 // ignore: must_be_immutable
 class PerfilNivel extends StatefulWidget {
@@ -13,11 +15,6 @@ class PerfilNivel extends StatefulWidget {
 class _PerfilNivelState extends State<PerfilNivel> {
   final double coverHeight = 200;
   final double profileHeight = 120;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +62,44 @@ class _PerfilNivelState extends State<PerfilNivel> {
             );
           },
         ),
+      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        buttonSize: Size(50, 50),
+        childrenButtonSize: Size(50, 50),
+        backgroundColor: Colors.black87,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.4,
+        children: [
+          SpeedDialChild(
+            child: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.blue,
+            label: 'Editar',
+            onTap: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageNivelEdit();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+          ),
+          SpeedDialChild(
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            backgroundColor: Colors.red,
+            label: 'Borrar',
+            onTap: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageNivelEdit();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+          ),
+        ],
       ),
     );
   }

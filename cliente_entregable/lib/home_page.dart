@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MenuItem currentItem = MenuItems.ninos;
+  MyMenuItem currentItem = MenuItems.ninos;
 
   @override
   Widget build(BuildContext context) {

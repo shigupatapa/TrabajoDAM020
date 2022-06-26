@@ -2,7 +2,8 @@ import 'package:cliente_entregable/pages/agregar/page_addprofe.dart';
 import 'package:cliente_entregable/pages/perfil/page_profesor.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
-import 'package:cliente_entregable/widgets/menu_widget.dart';
+import 'package:cliente_entregable/widgets/drawer.dart';
+// import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -19,9 +20,10 @@ class _PageListProfesState extends State<PageListProfes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerPage(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: MenuWidget(),
+        // leading: MenuWidget(),
         title: Text("Educadoras"),
         centerTitle: true,
         actions: [

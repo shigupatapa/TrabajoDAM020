@@ -9,14 +9,28 @@ INSERT INTO `niveles` (`nivel_id`, `nombreNivel`, `deleted_at`) VALUES
 
 -- NINOS
 INSERT INTO `ninos` (`rutNino`, `nombreCompleto`, `sexo`, `nivel_id`, `fechaNacimiento`, `nombreApoderado`, `telefono1`, `telefono2`, `alergias`, `imagen`, `deleted_at`) VALUES
-('11007007-K', 'Anya Yolanda Forger Briar', 'F', 5, '2021-05-05', 'Loid Forger', '911223344', NULL, 'Mani', 'public/imagenes/Anya.png', NULL),
-('18979377-4', 'Enzo Esteban Portales Valdivia', 'M', 2, '2021-04-24', 'Paola Marlen Valdivia Bustamante', '991986612', '999070531', 'Azitromicina', 'public/imagenes/Enzo.png', NULL),
-('20123456-K', 'Jorge Alonso Washington Peréz', 'M', 1, '2022-01-05', 'Karla Josefina Peréz Osorio', '912345678', NULL, NULL, NULL, NULL);
+('20000000-0', 'Nezuko Yajaira Kamado Pozo', 'F', 6, '2020-04-08', 'Tanjiro Kamado', '910203040', NULL, NULL, 'Nezuko.jpg', NULL),
+('20007007-K', 'Anya Yolanda Forger Briar', 'F', 5, '2021-05-05', 'Loid Forger', '911223344', NULL, 'Mani', 'Anya.png', NULL),
+('20123456-K', 'Jorge Alonso Washington Peréz', 'M', 1, '2022-01-05', 'Karla Josefina Peréz Osorio', '912345678', NULL, NULL, NULL, NULL),
+('20456372', 'Conan Edogawa Kudo', 'M', 5, '2018-03-04', 'Shinichi Kudo', '918452745', NULL, 'Penicilina', 'Conan.png', NULL),
+('21390450-2', 'Usagi Yajaira Tsukino Chibiusa', 'F', 2, '2022-05-31', 'Usagi Tsukino', '999999999', NULL, NULL, 'Chibiusa.jpg', NULL),
+('22979377-4', 'Enzo Esteban Portales Valdivia', 'M', 2, '2021-04-24', 'Paola Marlen Valdivia Bustamante', '991986612', '999070531', 'Azitromicina', 'Enzo.png', NULL),
+('22999111-0', 'Kataro Josefino Sato Huerta', 'M', 4, '2020-01-08', 'Shin Karino Tamaru', '988112277', NULL, NULL, 'Kataro.jpg', NULL),
+('24500003', 'Hitori Yenifer Bocchi Komi', 'F', 2, '2028-10-05', 'Shouko Komi Tadano', '938475619', NULL, 'Yodo', 'Bocchi.jpg', NULL),
+('25777000-7', 'Shouta Brayatan Magatsuchi Nuñez', 'M', 3, '2020-10-08', 'Lucoa Magatsuchi Kobayashi', '988776655', NULL, 'Lactosa', 'Shouta.jpg', NULL),
+('27722772-7', 'Lilian Hoshikawa Futanari', 'M', 4, '2020-07-15', 'Takeo Go Franchouchou', '955555555', NULL, NULL, 'Lily.png', NULL);
 
 -- PROFES
 INSERT INTO `profesores` (`rutProfesor`, `nombreCompleto`, `fechaNacimiento`, `nivel_id`, `deleted_at`) VALUES
 ('10011001-K', 'Paola Badilla Ballesteros', '1992-04-08', 2, NULL),
-('11277772-5', 'Paola Marlen Valdivia Bustamante', '1992-04-08', 1, NULL);
-
+('11011001-K', 'Mireya Maldonado Pavéz', '1970-04-08', 5, NULL),
+('11223344-0', 'Karla Donoso Contreras', '1993-06-01', 3, NULL),
+('11277772-5', 'Paola Marlen Valdivia Bustamante', '1992-04-08', 1, NULL),
+('12121212-4', 'Maria Jesús Castro Soto', '1988-02-10', 6, NULL),
+('13001300-9', 'Tamara Georgia Bonvallet Nievas', '2020-05-31', 1, NULL),
+('13131313-5', 'Ana Gabriel Perales Laferte', '1975-10-10', 5, NULL),
+('15221522-8', 'Monserrat Araya Peréz', '1995-03-04', 1, NULL),
+('17171717-K', 'Angela Belén Nuñez Martinez', '1996-03-15', 3, NULL),
+('18999000-1', 'Danitza Aros Contreras', '1990-01-05', 4, NULL);
 
 
