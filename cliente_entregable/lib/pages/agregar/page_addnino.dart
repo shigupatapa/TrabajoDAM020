@@ -38,7 +38,8 @@ class _PageAddNinoState extends State<PageAddNino> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -199,159 +200,161 @@ class _PageAddNinoState extends State<PageAddNino> {
     // );
   }
 
-  List<Step> getSteps() => [
-        Step(
-          state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 0,
-          title: Text('data'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: rutNinoCtrl,
-                decoration: InputDecoration(
-                  hintText: 'RUT del Niño',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+  List<Step> getSteps() {
+    return [
+      Step(
+        state: currentStep > 0 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 0,
+        title: Text('data'),
+        content: Column(
+          children: [
+            TextFormField(
+              controller: rutNinoCtrl,
+              decoration: InputDecoration(
+                hintText: 'RUT del Niño',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-              Divider(),
-              TextFormField(
-                controller: nombreCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nombre Completo',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+            Divider(),
+            TextFormField(
+              controller: nombreCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nombre Completo',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-              Divider(),
-              TextFormField(
-                controller: sexoCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Sexo',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+            Divider(),
+            TextFormField(
+              controller: sexoCtrl,
+              decoration: InputDecoration(
+                hintText: 'Sexo',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-              Divider(),
-              TextFormField(
-                controller: apoderadoCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nombre del Apoderado',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+            Divider(),
+            TextFormField(
+              controller: apoderadoCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nombre del Apoderado',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-            ],
-          ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+          ],
         ),
-        Step(
-          state: currentStep > 1 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 1,
-          title: Text('data2'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: nivelCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nivel',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+      ),
+      Step(
+        state: currentStep > 1 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 1,
+        title: Text('data2'),
+        content: Column(
+          children: [
+            TextFormField(
+              controller: nivelCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nivel',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
-                keyboardType: TextInputType.number,
               ),
-              Divider(),
-              TextFormField(
-                controller: telefono1Ctrl,
-                decoration: InputDecoration(
-                  hintText: 'Telefono Nº 1',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+              keyboardType: TextInputType.number,
+            ),
+            Divider(),
+            TextFormField(
+              controller: telefono1Ctrl,
+              decoration: InputDecoration(
+                hintText: 'Telefono Nº 1',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
-                keyboardType: TextInputType.number,
               ),
-              Divider(),
-              TextFormField(
-                controller: telefono2Ctrl,
-                decoration: InputDecoration(
-                  hintText: 'Telefono Nº 2',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+              keyboardType: TextInputType.number,
+            ),
+            Divider(),
+            TextFormField(
+              controller: telefono2Ctrl,
+              decoration: InputDecoration(
+                hintText: 'Telefono Nº 2',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
-                keyboardType: TextInputType.number,
               ),
-              Divider(),
-              TextFormField(
-                maxLines: 5,
-                controller: alergiasCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Alergias',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+              keyboardType: TextInputType.number,
+            ),
+            Divider(),
+            TextFormField(
+              maxLines: 5,
+              controller: alergiasCtrl,
+              decoration: InputDecoration(
+                hintText: 'Alergias',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-            ],
-          ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+          ],
         ),
-        Step(
-          isActive: currentStep >= 2,
-          title: Text('Información'),
-          content: Container(),
-        )
-      ];
+      ),
+      Step(
+        isActive: currentStep >= 2,
+        title: Text('Información'),
+        content: Container(),
+      )
+    ];
+  }
 }

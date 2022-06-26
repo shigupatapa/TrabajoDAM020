@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nivel;
+use App\Models\Nino;
+use App\Models\Profesor;
 use Illuminate\Http\Request;
 
 class NivelesController extends Controller
@@ -15,6 +17,16 @@ class NivelesController extends Controller
     public function index()
     {
         return Nivel::all();
+    }
+
+    public function filterNinos(Nivel $nivel)
+    {
+        return Nino::where('nivel_id', $nivel->nivel_id)->get();
+    }
+
+    public function filterProfes(Nivel $nivel)
+    {
+        return Profesor::where('nivel_id', $nivel->nivel_id)->get();
     }
 
     /**

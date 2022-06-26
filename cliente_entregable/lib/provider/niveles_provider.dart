@@ -31,6 +31,30 @@ class NivelesProvider {
     }
   }
 
+  // NIÑOS POR NIVEL
+  Future<List<dynamic>> getNinosbyNivel(int nivel) async {
+    var uri = Uri.parse('$apiURL/niveles/$nivel/niños');
+    var respuesta = await http.get(uri);
+
+    if (respuesta.statusCode == 200) {
+      return json.decode(respuesta.body);
+    } else {
+      return [];
+    }
+  }
+
+  // PROFES POR NIVEL
+  Future<List<dynamic>> getProfesbyNivel(int nivel) async {
+    var uri = Uri.parse('$apiURL/niveles/$nivel/profes');
+    var respuesta = await http.get(uri);
+
+    if (respuesta.statusCode == 200) {
+      return json.decode(respuesta.body);
+    } else {
+      return [];
+    }
+  }
+
   // AGREGAR NIVEL
   Future<LinkedHashMap<String, dynamic>> AddNivel(
     String nombreNivel,

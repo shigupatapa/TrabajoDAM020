@@ -18,13 +18,17 @@ use App\Http\Controllers\{NivelesController,NinosController,ProfesoresController
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//niveles
+
+// NIVELES
 Route::get('/niveles',[NivelesController::class,'index']);
 Route::get('/niveles/{nivel}',[NivelesController::class,'show']);
+Route::get('/niveles/{nivel}/niños',[NivelesController::class,'filterNinos']);
+Route::get('/niveles/{nivel}/profes',[NivelesController::class,'filterProfes']);
 Route::post('/niveles',[NivelesController::class,'store']);
 Route::delete('niveles/{nivel}',[NivelesController::class,'destroy']);
 Route::patch('/niveles/{nivel}',[NivelesController::class,'update']);
-//niños
+
+// NIÑOS
 Route::get('/niños',[NinosController::class,'index']);
 Route::get('/niños/{nino}',[NinosController::class,'show']);
 Route::get('/niños/imagen/{nino}',[NinosController::class,'image']);
@@ -32,13 +36,14 @@ Route::post('/niños',[NinosController::class,'store']);
 Route::delete('niños/{nino}',[NinosController::class,'destroy']);
 Route::patch('/niños/{nino}',[NinosController::class,'update']);
 
-//profesores
+// PROFESORES
 Route::get('/profesores',[ProfesoresController::class,'index']);
 Route::get('/profesores/{profesor}',[ProfesoresController::class,'show']);
 Route::post('/profesores',[ProfesoresController::class,'store']);
 Route::delete('profesores/{profesor}',[ProfesoresController::class,'destroy']);
 Route::patch('/profesores/{profesor}',[ProfesoresController::class,'update']);
-//historial
+
+// HISTORIAL
 Route::get('/historiales',[HistorialesController::class,'index']);
 Route::get('/historiales/{historial}',[HistorialesController::class,'show']);
 Route::post('/historiales',[HistorialesController::class,'store']);

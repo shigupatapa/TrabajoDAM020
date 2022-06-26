@@ -1,5 +1,6 @@
 import 'package:cliente_entregable/pages/agregar/page_addprofe.dart';
-import 'package:cliente_entregable/pages/perfil/page_nino.dart';
+import 'package:cliente_entregable/pages/perfil/page_profesor.dart';
+import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,8 @@ class _PageListProfesState extends State<PageListProfes> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -90,85 +92,101 @@ class _PageListProfesState extends State<PageListProfes> {
     );
   }
 
-  Widget buildList(snap) => isGrid
-      ? GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-          ),
-          itemCount: snap.data.length,
-          itemBuilder: (context, index) {
-            var profes = snap.data[index];
-            return Column(
-              children: [
-                GridTile(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: Colors.black,
-                        width: 2,
+  Widget buildList(snap) {
+    return isGrid ? buildGridView(snap) : buildListView(snap);
+  }
+
+  Widget buildGridView(snap) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+      ),
+      itemCount: snap.data.length,
+      itemBuilder: (context, index) {
+        var profe = snap.data[index];
+        return Column(
+          children: [
+            GridTile(
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                  ),
+                ),
+                child: InkWell(
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/profe.png'),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    child: InkWell(
-                      child: Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/profe.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        MaterialPageRoute route = MaterialPageRoute(
-                          builder: (context) {
-                            return PerfilNino();
-                          },
-                        );
-                        Navigator.push(context, route);
+                  ),
+                  onTap: () {
+                    MaterialPageRoute route = MaterialPageRoute(
+                      builder: (context) {
+                        return PerfilProfe();
                       },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.black87),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      alignment: Alignment.center,
-                      child: Text(
-                        profes['nombreCompleto'],
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        )
-      : ListView.builder(
-          itemCount: snap.data.length,
-          itemBuilder: (context, index) {
-            var profes = snap.data[index];
-            return Card(
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: Colors.black,
-                  width: 2,
+                    );
+                    Navigator.push(context, route);
+                  },
                 ),
               ),
-              color: Colors.white60,
-              child: ListTile(
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: Colors.black87),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  alignment: Alignment.center,
+                  child: Text(
+                    profe['nombreCompleto'],
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildListView(snap) {
+    return ListView.builder(
+      itemCount: snap.data.length,
+      itemBuilder: (context, index) {
+        var profe = snap.data[index];
+        return Card(
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: Colors.black,
+              width: 2,
+            ),
+          ),
+          color: Colors.white.withOpacity(0.85),
+          child: FutureBuilder(
+            future: NivelesProvider().getNivel(profe["nivel_id"]),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var nivel = snapshot.data;
+              return ListTile(
                 leading: Container(
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/profes.png'),
+                      image: AssetImage('assets/images/profe.png'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -179,25 +197,29 @@ class _PageListProfesState extends State<PageListProfes> {
                   ),
                 ),
                 title: Text(
-                  profes['nombreCompleto'],
+                  profe['nombreCompleto'],
                   style: TextStyle(color: Colors.black, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
                 subtitle: Text(
-                  profes['nivel_id'].toString(),
+                  // profe['nivel_id'].toString(),
+                  nivel["nombreNivel"],
                   style: TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
                     builder: (context) {
-                      return PerfilNino();
+                      return PerfilProfe();
                     },
                   );
                   Navigator.push(context, route);
                 },
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
+      },
+    );
+  }
 }

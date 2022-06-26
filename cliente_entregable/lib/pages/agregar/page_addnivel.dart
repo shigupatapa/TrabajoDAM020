@@ -31,7 +31,8 @@ class _PageAddNivelState extends State<PageAddNivel> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -90,35 +91,37 @@ class _PageAddNivelState extends State<PageAddNivel> {
     );
   }
 
-  List<Step> getSteps() => [
-        Step(
-          state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 0,
-          title: Text('Nombre'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: nombreNivelCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nombre del Nivel',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+  List<Step> getSteps() {
+    return [
+      Step(
+        state: currentStep > 0 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 0,
+        title: Text('Nombre'),
+        content: Column(
+          children: [
+            TextFormField(
+              controller: nombreNivelCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nombre del Nivel',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-            ],
-          ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+          ],
         ),
-        Step(
-          isActive: currentStep >= 1,
-          title: Text('Información'),
-          content: Container(),
-        )
-      ];
+      ),
+      Step(
+        isActive: currentStep >= 1,
+        title: Text('Información'),
+        content: Container(),
+      )
+    ];
+  }
 }

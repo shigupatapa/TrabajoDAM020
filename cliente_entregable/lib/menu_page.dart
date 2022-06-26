@@ -34,9 +34,11 @@ class MenuPage extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
-              fit: BoxFit.cover),
+            image: NetworkImage(
+              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+            ),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -54,17 +56,24 @@ class MenuPage extends StatelessWidget {
     );
   }
 
-  Widget buildMenuItem(MenuItem item) => Card(
-        shape: RoundedRectangleBorder(),
-        color: Colors.white60,
-        child: ListTile(
-          selectedTileColor: Colors.green.shade400,
-          selectedColor: Colors.black87,
-          selected: currentItem == item,
-          minLeadingWidth: 20,
-          leading: Icon(item.icon),
-          title: Text(item.title),
-          onTap: () => onSelectedItem(item),
+  Widget buildMenuItem(MenuItem item) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Colors.black,
+          width: 0.5,
         ),
-      );
+      ),
+      color: Colors.white.withOpacity(0.85),
+      child: ListTile(
+        selectedTileColor: Colors.green.shade400,
+        selectedColor: Colors.black87,
+        selected: currentItem == item,
+        minLeadingWidth: 20,
+        leading: Icon(item.icon),
+        title: Text(item.title),
+        onTap: () => onSelectedItem(item),
+      ),
+    );
+  }
 }

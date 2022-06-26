@@ -33,7 +33,8 @@ class _PageAddProfeState extends State<PageAddProfe> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
+              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+            ),
             fit: BoxFit.cover,
           ),
         ),
@@ -96,76 +97,78 @@ class _PageAddProfeState extends State<PageAddProfe> {
     );
   }
 
-  List<Step> getSteps() => [
-        Step(
-          state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 0,
-          title: Text('Personal'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: rutProfeCtrl,
-                decoration: InputDecoration(
-                  hintText: 'RUT del Docente',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+  List<Step> getSteps() {
+    return [
+      Step(
+        state: currentStep > 0 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 0,
+        title: Text('Personal'),
+        content: Column(
+          children: [
+            TextFormField(
+              controller: rutProfeCtrl,
+              decoration: InputDecoration(
+                hintText: 'RUT del Docente',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-              Divider(),
-              TextFormField(
-                controller: nombreCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nombre Completo',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+            Divider(),
+            TextFormField(
+              controller: nombreCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nombre Completo',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
               ),
-            ],
-          ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+          ],
         ),
-        Step(
-          state: currentStep > 1 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 1,
-          title: Text('Nivel'),
-          content: Column(
-            children: [
-              TextFormField(
-                controller: nivelCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Nivel',
-                  fillColor: Colors.white70,
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+      ),
+      Step(
+        state: currentStep > 1 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 1,
+        title: Text('Nivel'),
+        content: Column(
+          children: [
+            TextFormField(
+              controller: nivelCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nivel',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                },
-                keyboardType: TextInputType.number,
               ),
-            ],
-          ),
+              onChanged: (value) {
+                // do something
+              },
+              keyboardType: TextInputType.number,
+            ),
+          ],
         ),
-        Step(
-          isActive: currentStep >= 2,
-          title: Text('Información'),
-          content: Container(),
-        )
-      ];
+      ),
+      Step(
+        isActive: currentStep >= 2,
+        title: Text('Información'),
+        content: Container(),
+      )
+    ];
+  }
 }

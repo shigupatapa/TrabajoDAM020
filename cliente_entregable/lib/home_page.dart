@@ -32,9 +32,11 @@ class _HomePageState extends State<HomePage> {
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: NetworkImage(
-                "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg"),
-            fit: BoxFit.cover),
+          image: NetworkImage(
+            "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
       child: ZoomDrawer(
         style: DrawerStyle.defaultStyle,
@@ -42,8 +44,8 @@ class _HomePageState extends State<HomePage> {
         // angle: -15,
         slideWidth: MediaQuery.of(context).size.width * 0.75,
         showShadow: true,
-        shadowLayer1Color: Colors.blue.shade100,
-        shadowLayer2Color: Colors.red.shade300,
+        shadowLayer1Color: Colors.blue.shade100.withOpacity(0.5),
+        shadowLayer2Color: Colors.red.shade300.withOpacity(0.75),
         mainScreen: getScreen(),
         menuScreenWidth: double.infinity,
         menuScreen: Builder(
