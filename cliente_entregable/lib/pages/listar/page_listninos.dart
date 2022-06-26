@@ -2,6 +2,7 @@ import 'package:cliente_entregable/pages/agregar/page_addnino.dart';
 import 'package:cliente_entregable/pages/perfil/page_nino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
+// import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,6 +20,7 @@ class _PageListNinosState extends State<PageListNinos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // drawer: DrawerPage(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: MenuWidget(),
@@ -105,9 +107,9 @@ class _PageListNinosState extends State<PageListNinos> {
       ),
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
-        var ninos = snap.data[index];
+        var nino = snap.data[index];
         bool imgExiste = true;
-        if (ninos['imagen'] == null) {
+        if (nino['imagen'] == null) {
           imgExiste = false;
         }
         if (imgExiste) {
@@ -127,8 +129,8 @@ class _PageListNinosState extends State<PageListNinos> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                            // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                            'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}',
+                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
+                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -153,7 +155,7 @@ class _PageListNinosState extends State<PageListNinos> {
                     padding: EdgeInsets.all(5),
                     alignment: Alignment.center,
                     child: Text(
-                      ninos['nombreCompleto'],
+                      nino['nombreCompleto'],
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -202,7 +204,7 @@ class _PageListNinosState extends State<PageListNinos> {
                     padding: EdgeInsets.all(5),
                     alignment: Alignment.center,
                     child: Text(
-                      ninos['nombreCompleto'],
+                      nino['nombreCompleto'],
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -250,8 +252,8 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                            // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                            'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}'),
+                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}'),
+                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}'),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(50)),

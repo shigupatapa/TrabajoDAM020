@@ -1,8 +1,8 @@
 import 'package:cliente_entregable/pages/agregar/page_addnivel.dart';
 import 'package:cliente_entregable/pages/perfil/page_nivel.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
-import 'package:cliente_entregable/widgets/drawer.dart';
-// import 'package:cliente_entregable/widgets/menu_widget.dart';
+// import 'package:cliente_entregable/widgets/drawer.dart';
+import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -19,10 +19,10 @@ class _PageListNivelesState extends State<PageListNiveles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerPage(),
+      // drawer: DrawerPage(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // leading: MenuWidget(),
+        leading: MenuWidget(),
         title: Text("Niveles"),
         centerTitle: true,
         actions: [

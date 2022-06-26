@@ -1,5 +1,5 @@
-// import 'package:cliente_entregable/widgets/menu_widget.dart';
-import 'package:cliente_entregable/widgets/drawer.dart';
+import 'package:cliente_entregable/widgets/menu_widget.dart';
+// import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 class PageListHistoriales extends StatefulWidget {
@@ -13,10 +13,10 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerPage(),
+      // drawer: DrawerPage(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // leading: MenuWidget(),
+        leading: MenuWidget(),
         title: Text('Historiales'),
         centerTitle: true,
         backgroundColor: Colors.black87,
