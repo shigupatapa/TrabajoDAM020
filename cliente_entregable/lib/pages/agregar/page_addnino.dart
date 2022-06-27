@@ -1,5 +1,9 @@
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../provider/niveles_provider.dart';
 
 class PageAddNino extends StatefulWidget {
   PageAddNino({Key? key}) : super(key: key);
@@ -13,13 +17,13 @@ class _PageAddNinoState extends State<PageAddNino> {
   // final formKey = GlobalKey<FormState>();
   TextEditingController rutNinoCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
-  TextEditingController sexoCtrl = TextEditingController();
   TextEditingController apoderadoCtrl = TextEditingController();
-  TextEditingController nivelCtrl = TextEditingController();
   TextEditingController telefono1Ctrl = TextEditingController();
   TextEditingController telefono2Ctrl = TextEditingController();
   TextEditingController alergiasCtrl = TextEditingController();
-
+  String nivelSel = '', sexo = '';
+  var ffecha = DateFormat('yyyy-MM-dd');
+  DateTime hoy = DateTime.now();
   // String errCodigo = '';
   // String errNombre = '';
 
@@ -55,12 +59,12 @@ class _PageAddNinoState extends State<PageAddNino> {
               final isLastStep = currentStep == getSteps().length - 1;
               if (isLastStep) {
                 // send data to server
-                int nivel = int.tryParse(nivelCtrl.text) ?? 0;
+                int nivel = int.tryParse(nivelSel) ?? 0;
                 var respuesta = await NinosProvider().AddNino(
                   rutNinoCtrl.text.trim(),
                   nombreCtrl.text.trim(),
-                  sexoCtrl.text.trim(),
-                  DateTime.now(),
+                  sexo,
+                  hoy,
                   apoderadoCtrl.text.trim(),
                   nivel,
                   telefono1Ctrl.text.trim(),
@@ -72,18 +76,6 @@ class _PageAddNinoState extends State<PageAddNino> {
               } else {
                 setState(() => currentStep += 1);
               }
-              // int stock = int.tryParse(stockCtrl.text) ?? 0;
-              // int precio = int.tryParse(precioCtrl.text) ?? 0;
-
-              // await NinosProvider().AddNino(
-              //   codigoCtrl.text.trim(),
-              //   nombreCtrl.text.trim(),
-              //   stock,
-              //   precio,
-              // );
-
-              //
-              //
             },
             onStepTapped: (step) => setState(() => currentStep = step),
             onStepCancel: currentStep == 0
@@ -222,6 +214,7 @@ class _PageAddNinoState extends State<PageAddNino> {
               onChanged: (value) {
                 // do something
               },
+              keyboardType: TextInputType.number,
             ),
             Divider(),
             TextFormField(
@@ -240,21 +233,32 @@ class _PageAddNinoState extends State<PageAddNino> {
               },
             ),
             Divider(),
-            TextFormField(
-              controller: sexoCtrl,
-              decoration: InputDecoration(
-                hintText: 'Sexo',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            //wea de sexo
+            Column(
+              children: [
+                RadioListTile<String>(
+                  groupValue: sexo,
+                  title: Text('niño'),
+                  value: 'M',
+                  onChanged: (genero) {
+                    setState(() {
+                      sexo = genero!;
+                    });
+                  },
                 ),
-              ),
-              onChanged: (value) {
-                // do something
-              },
+                RadioListTile<String>(
+                  groupValue: sexo,
+                  title: Text('nina'),
+                  value: 'F',
+                  onChanged: (genero) {
+                    setState(() {
+                      sexo = genero!;
+                    });
+                  },
+                ),
+              ],
             ),
+
             Divider(),
             TextFormField(
               controller: apoderadoCtrl,
@@ -271,6 +275,31 @@ class _PageAddNinoState extends State<PageAddNino> {
                 // do something
               },
             ),
+            Row(
+              children: [
+                Text('Fecha de nacimiento:', style: TextStyle(fontSize: 16)),
+                Text(ffecha.format(hoy),
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Spacer(),
+                TextButton(
+                  child: Icon(MdiIcons.calendar),
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1920),
+                      lastDate: DateTime.now(),
+                      locale: Locale('es', 'ES'),
+                    ).then((fecha) {
+                      setState(() {
+                        hoy = fecha ?? hoy;
+                      });
+                    });
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -280,21 +309,46 @@ class _PageAddNinoState extends State<PageAddNino> {
         title: Text('data2'),
         content: Column(
           children: [
-            TextFormField(
-              controller: nivelCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nivel',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
+            Container(
+              width: double.infinity,
+              child: FutureBuilder(
+                future: NivelesProvider().getAllNiveles(),
+                builder: (context, AsyncSnapshot snap) {
+                  if (!snap.hasData) {
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando niveles...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
+                  }
+                  var niveles = snap.data;
+                  return DropdownButtonFormField<String>(
+                    //hint: Text('Nivel'),
+                    decoration: InputDecoration(
+                      hintText: 'Nivel',
+                      fillColor: Colors.white70,
+                      filled: true,
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+
+                    items: niveles.map<DropdownMenuItem<String>>((nivel) {
+                      return DropdownMenuItem<String>(
+                        child: Text(nivel['nombreNivel']),
+                        value: nivel['nivel_id'].toString(),
+                      );
+                    }).toList(),
+                    value: nivelSel.isEmpty ? null : nivelSel,
+                    onChanged: (nuevoNivel) {
+                      setState(() {
+                        nivelSel = nuevoNivel.toString();
+                      });
+                    },
+                  );
+                },
               ),
-              onChanged: (value) {
-                // do something
-              },
-              keyboardType: TextInputType.number,
             ),
             Divider(),
             TextFormField(

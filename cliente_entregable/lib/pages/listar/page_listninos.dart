@@ -108,112 +108,58 @@ class _PageListNinosState extends State<PageListNinos> {
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
         var nino = snap.data[index];
-        bool imgExiste = true;
-        if (nino['imagen'] == null) {
-          imgExiste = false;
-        }
-        if (imgExiste) {
-          return Column(
-            children: [
-              GridTile(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
+
+        return Column(
+          children: [
+            GridTile(
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: Colors.black,
+                    width: 2,
                   ),
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
-                          ),
-                          fit: BoxFit.cover,
+                ),
+                child: InkWell(
+                  child: Container(
+                    height: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
+                          // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
                         ),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    onTap: () {
-                      MaterialPageRoute route = MaterialPageRoute(
-                        builder: (context) {
-                          return PerfilNino();
-                        },
-                      );
-                      Navigator.push(context, route);
-                    },
+                  ),
+                  onTap: () {
+                    MaterialPageRoute route = MaterialPageRoute(
+                      builder: (context) {
+                        return PerfilNino();
+                      },
+                    );
+                    Navigator.push(context, route);
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: Colors.black87),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  alignment: Alignment.center,
+                  child: Text(
+                    nino['nombreCompleto'],
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.black87),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    child: Text(
-                      nino['nombreCompleto'],
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        } else {
-          return Column(
-            children: [
-              GridTile(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                  ),
-                  child: InkWell(
-                    child: Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/user.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      MaterialPageRoute route = MaterialPageRoute(
-                        builder: (context) {
-                          return PerfilNino();
-                        },
-                      );
-                      Navigator.push(context, route);
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: Colors.black87),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    alignment: Alignment.center,
-                    child: Text(
-                      nino['nombreCompleto'],
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
+            ),
+          ],
+        );
       },
     );
   }
@@ -252,8 +198,10 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}'),
-                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}'),
+                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}'
+                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}'
+
+                            ),
                         fit: BoxFit.cover,
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(50)),
