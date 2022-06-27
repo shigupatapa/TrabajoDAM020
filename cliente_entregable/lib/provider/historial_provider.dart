@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HistorialesProvider {
+  //final String apiURL = 'http://192.168.138.130:8000/api';
   final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
   //final String apiURL = 'http://192.168.100.72:8000/api';
 
@@ -43,7 +44,7 @@ class HistorialesProvider {
         body: jsonEncode(<String, dynamic>{
           'rutNino': rutNino,
           'titulo': titulo,
-          'fecha': fecha,
+          //'fecha': fecha,
           'contenido': contenido
         }));
     return json.decode(respuesta.body);
@@ -61,7 +62,7 @@ class HistorialesProvider {
         body: jsonEncode(<String, dynamic>{
           'rutNino': rutNino,
           'titulo': titulo,
-          'fecha': fecha,
+          //'fecha': fecha,
           'contenido': contenido
         }));
     return json.decode(respuesta.body);
