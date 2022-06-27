@@ -14,6 +14,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
   int currentStep = 0;
   // final formKey = GlobalKey<FormState>();
   TextEditingController nombreNivelCtrl = TextEditingController();
+  TextEditingController detallesCtrl = TextEditingController();
 
   // String errCodigo = '';
   // String errNombre = '';
@@ -53,8 +54,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
                 if (isLastStep) {
                   // send data to server
                   var respuesta = await NivelesProvider().AddNivel(
-                    nombreNivelCtrl.text.trim(),
-                  );
+                      nombreNivelCtrl.text.trim(), detallesCtrl.text.trim());
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -108,6 +108,21 @@ class _PageAddNivelState extends State<PageAddNivel> {
               controller: nombreNivelCtrl,
               decoration: InputDecoration(
                 hintText: 'Nombre del Nivel',
+                fillColor: Colors.white70,
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+            TextFormField(
+              controller: detallesCtrl,
+              decoration: InputDecoration(
+                hintText: 'Detalles',
                 fillColor: Colors.white70,
                 filled: true,
                 contentPadding: EdgeInsets.all(15),

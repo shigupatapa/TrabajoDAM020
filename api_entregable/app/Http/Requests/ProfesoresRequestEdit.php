@@ -27,6 +27,7 @@ class ProfesoresRequestEdit extends FormRequest
         return [
             'rutProfesor'=>'required|unique:profesores,rutProfesor|max:12',
             'nombreCompleto' =>'required|max:60|min:3',
+            'sexo' => 'required|max:1',
             'fechaNacimiento' =>'date|required',
             'nivel_id' =>'required|numeric|exists:niveles,nivel_id'
         ];
@@ -41,6 +42,8 @@ class ProfesoresRequestEdit extends FormRequest
             'nombreCompleto.required' => 'El nombre completo es obligatorio.',
             'nombreCompleto.max' => 'El nombre completo no debe tener más de 60 caracteres.',
             'nombreCompleto.min' => 'El nombre completo debe tener al menos 3 caracteres.',
+            'sexo.required' => 'El sexo es obligatorio', //no sean mal pensados XD
+            'sexo.max' => 'El sexo no debe tener más de 1 carácter.',
             'fechaNacimiento.date'=>'La fecha de nacimiento no es una fecha válida.',
             'fechaNacimiento.required'=>'La fecha de nacimiento es obligatoria.',
             'nivel_id.numeric' => 'El id debe ser un número.',

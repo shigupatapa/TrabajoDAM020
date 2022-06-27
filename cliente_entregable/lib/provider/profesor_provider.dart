@@ -36,6 +36,7 @@ class ProfesoresProvider {
   Future<LinkedHashMap<String, dynamic>> AddProfe(
     String rutProfesor,
     String nombreCompleto,
+    String sexo,
     DateTime fechaNacimiento,
     int nivel,
   ) async {
@@ -50,6 +51,7 @@ class ProfesoresProvider {
         <String, dynamic>{
           'rutProfesor': rutProfesor,
           'nombreCompleto': nombreCompleto,
+          'sexo': sexo,
           'fechaNacimiento': fechaNacimiento.toString(),
           'nivel_id': nivel,
         },
@@ -63,6 +65,7 @@ class ProfesoresProvider {
       String rut,
       String rutProfesor,
       String nombreCompleto,
+      String sexo,
       DateTime fechaNacimiento,
       int nivel) async {
     var uri = Uri.parse('$apiURL/profesores/$rut');
@@ -77,6 +80,7 @@ class ProfesoresProvider {
           'rutProfesor': rutProfesor,
           'nombreCompleto': nombreCompleto,
           'fechaNacimiento': fechaNacimiento,
+          'sexo': sexo,
           'nivel_id': nivel,
         },
       ),

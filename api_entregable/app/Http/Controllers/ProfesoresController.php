@@ -29,6 +29,7 @@ class ProfesoresController extends Controller
         $profesor = new Profesor();
         $profesor->rutProfesor = $request->rutProfesor;
         $profesor->nombreCompleto = $request->nombreCompleto;
+        $profesor->sexo = $request->sexo;
         $profesor->fechaNacimiento = $request->fechaNacimiento;
         $profesor->nivel_id = $request->nivel_id;
         $profesor->save();
@@ -58,6 +59,7 @@ class ProfesoresController extends Controller
         $profesor->rutProfesor = $request->rutProfesor;
         $profesor->nombreCompleto = $request->nombreCompleto;
         $profesor->fechaNacimiento = $request->fechaNacimiento;
+        $profesor->sexo = $request->sexo;
         $profesor->nivel_id = $request->nivel_id;
         $profesor->save();
         return $profesor;

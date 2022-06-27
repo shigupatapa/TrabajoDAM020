@@ -24,14 +24,17 @@ class NivelRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombreNivel' => 'required|max:30'
+            'nombreNivel' => 'required|max:30',
+            'detalles' => 'required|max:255'
         ];
     }
     public function messages()
     {
         return [
             'nombreNivel.required' => 'El nombre del nivel es obligatorio.',
-            'nombreNivel.max' => 'El nombre del nivel no debe tener más de 30 caracteres.'
+            'nombreNivel.max' => 'El nombre del nivel no debe tener más de 30 caracteres.',
+            'detalles.required' => 'Los detalles son obligatorios.',
+            'detalles.max'=> 'Los detalles no debe tener más de 255 caracteres.'
             
         ];
     }

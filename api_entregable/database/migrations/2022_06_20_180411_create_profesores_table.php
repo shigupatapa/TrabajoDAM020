@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('profesores', function (Blueprint $table) {
             $table->string('rutProfesor',12)->primary();
             $table->string('nombreCompleto',60);
+            $table->string('sexo',1);
             $table->date('fechaNacimiento');
             $table->unsignedBigInteger('nivel_id');
             $table->softDeletes();

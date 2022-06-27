@@ -19,7 +19,7 @@ class _PageEditProfeState extends State<PageEditProfe> {
   TextEditingController rutProfeCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
   TextEditingController nivelCtrl = TextEditingController();
-  String nivelSel = '';
+  String nivelSel = '', sexo = '';
 
   // String errCodigo = '';
   // String errNombre = '';
@@ -63,6 +63,7 @@ class _PageEditProfeState extends State<PageEditProfe> {
                     widget.rut,
                     rutProfeCtrl.text.trim(),
                     nombreCtrl.text.trim(),
+                    sexo,
                     DateTime.now(),
                     nivel,
                   );
@@ -146,6 +147,35 @@ class _PageEditProfeState extends State<PageEditProfe> {
                 // do something
               },
             ),
+            Container(
+                padding: EdgeInsets.zero,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                ),
+                child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Sexo:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  RadioListTile<String>(
+                    groupValue: sexo,
+                    title: Text('Masculino'),
+                    value: 'M',
+                    onChanged: (genero) {
+                      setState(() {
+                        sexo = genero!;
+                      });
+                    },
+                  ),
+                ]))
           ],
         ),
       ),

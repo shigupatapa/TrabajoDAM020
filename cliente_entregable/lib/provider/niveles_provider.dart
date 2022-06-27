@@ -59,6 +59,7 @@ class NivelesProvider {
   // AGREGAR NIVEL
   Future<LinkedHashMap<String, dynamic>> AddNivel(
     String nombreNivel,
+    String detalles,
   ) async {
     var uri = Uri.parse('$apiURL/niveles');
     var respuesta = await http.post(
@@ -70,6 +71,7 @@ class NivelesProvider {
       body: jsonEncode(
         <String, dynamic>{
           'nombreNivel': nombreNivel,
+          'detalles': detalles,
         },
       ),
     );
@@ -80,6 +82,7 @@ class NivelesProvider {
   Future<LinkedHashMap<String, dynamic>> UpdateNivel(
     int nivel,
     String nombreNivel,
+    String detalles,
   ) async {
     var uri = Uri.parse('$apiURL/niveles/$nivel');
     var respuesta = await http.put(
@@ -91,6 +94,7 @@ class NivelesProvider {
       body: jsonEncode(
         <String, dynamic>{
           'nombreNivel': nombreNivel,
+          'detalles': detalles,
         },
       ),
     );
