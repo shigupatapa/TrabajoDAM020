@@ -15,8 +15,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Jardin Carrusel',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-      supportedLocales: [const Locale('es')],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('es'), // Spanish, no country code
+      ],
       theme: ThemeData(
           // This is the theme of your application.
           //

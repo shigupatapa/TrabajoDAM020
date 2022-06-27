@@ -181,8 +181,15 @@ class _PageListNinosState extends State<PageListNinos> {
             future: NivelesProvider().getNivel(nino["nivel_id"]),
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  width: 50,
+                  height: 50,
+                  child: Center(
+                    child: SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator()),
+                  ),
                 );
               }
               var nivel = snapshot.data;

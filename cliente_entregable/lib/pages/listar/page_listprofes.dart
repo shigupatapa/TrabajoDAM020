@@ -177,8 +177,16 @@ class _PageListProfesState extends State<PageListProfes> {
             future: NivelesProvider().getNivel(profe["nivel_id"]),
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Container(
+                  width: 50,
+                  height: 50,
+                  child: Center(
+                    child: SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 );
               }
               var nivel = snapshot.data;

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +25,7 @@ class _PageAddNinoState extends State<PageAddNino> {
   TextEditingController alergiasCtrl = TextEditingController();
   TextEditingController imagenCtrl = TextEditingController();
   String nivelSel = '', sexo = '', imagenPath = '';
-  var ffecha = DateFormat('yyyy-MM-dd');
+  var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
   // String errCodigo = '';
   // String errNombre = '';
@@ -48,64 +50,67 @@ class _PageAddNinoState extends State<PageAddNino> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(primary: Colors.black87),
-          ),
-          child: Stepper(
-            type: StepperType.vertical,
-            steps: getSteps(),
-            currentStep: currentStep,
-            onStepContinue: () async {
-              final isLastStep = currentStep == getSteps().length - 1;
-              if (isLastStep) {
-                // send data to server
-                int nivel = int.tryParse(nivelSel) ?? 0;
-                var respuesta = await NinosProvider().AddNino(
-                  rutNinoCtrl.text.trim(),
-                  nombreCtrl.text.trim(),
-                  sexo,
-                  hoy,
-                  apoderadoCtrl.text.trim(),
-                  nivel,
-                  telefono1Ctrl.text.trim(),
-                  telefono2Ctrl.text.trim(),
-                  alergiasCtrl.text.trim(),
-                );
-                print(respuesta);
-                Navigator.pop(context);
-              } else {
-                setState(() => currentStep += 1);
-              }
-            },
-            onStepTapped: (step) => setState(() => currentStep = step),
-            onStepCancel: currentStep == 0
-                ? null
-                : () => setState(() => currentStep -= 1),
-            controlsBuilder: (context, controls) {
-              final isLastStep = currentStep == getSteps().length - 1;
-              return Container(
-                margin: EdgeInsets.only(top: 50),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
-                        onPressed: controls.onStepContinue,
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    if (currentStep != 0)
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(primary: Colors.black87),
+            ),
+            child: Stepper(
+              type: StepperType.vertical,
+              steps: getSteps(),
+              currentStep: currentStep,
+              onStepContinue: () async {
+                final isLastStep = currentStep == getSteps().length - 1;
+                if (isLastStep) {
+                  // send data to server
+                  int nivel = int.tryParse(nivelSel) ?? 0;
+                  var respuesta = await NinosProvider().AddNino(
+                    rutNinoCtrl.text.trim(),
+                    nombreCtrl.text.trim(),
+                    sexo,
+                    hoy,
+                    apoderadoCtrl.text.trim(),
+                    nivel,
+                    telefono1Ctrl.text.trim(),
+                    telefono2Ctrl.text.trim(),
+                    alergiasCtrl.text.trim(),
+                  );
+                  print(respuesta);
+                  Navigator.pop(context);
+                } else {
+                  setState(() => currentStep += 1);
+                }
+              },
+              onStepTapped: (step) => setState(() => currentStep = step),
+              onStepCancel: currentStep == 0
+                  ? null
+                  : () => setState(() => currentStep -= 1),
+              controlsBuilder: (context, controls) {
+                final isLastStep = currentStep == getSteps().length - 1;
+                return Container(
+                  margin: EdgeInsets.only(top: 50),
+                  child: Row(
+                    children: [
                       Expanded(
                         child: ElevatedButton(
-                          child: Text('REGRESAR'),
-                          onPressed: controls.onStepCancel,
+                          child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
+                          onPressed: controls.onStepContinue,
                         ),
                       ),
-                  ],
-                ),
-              );
-            },
+                      SizedBox(width: 12),
+                      if (currentStep != 0)
+                        Expanded(
+                          child: ElevatedButton(
+                            child: Text('REGRESAR'),
+                            onPressed: controls.onStepCancel,
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -201,11 +206,12 @@ class _PageAddNinoState extends State<PageAddNino> {
         title: Text('data'),
         content: Column(
           children: [
+            // RUT NIÑO
             TextFormField(
               controller: rutNinoCtrl,
               decoration: InputDecoration(
                 hintText: 'RUT del Niño',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(
@@ -218,11 +224,12 @@ class _PageAddNinoState extends State<PageAddNino> {
               keyboardType: TextInputType.number,
             ),
             Divider(),
+            // NOMBRE NIÑO
             TextFormField(
               controller: nombreCtrl,
               decoration: InputDecoration(
                 hintText: 'Nombre Completo',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(
@@ -234,38 +241,56 @@ class _PageAddNinoState extends State<PageAddNino> {
               },
             ),
             Divider(),
-            //wea de sexo
-            Column(
-              children: [
-                RadioListTile<String>(
-                  groupValue: sexo,
-                  title: Text('niño'),
-                  value: 'M',
-                  onChanged: (genero) {
-                    setState(() {
-                      sexo = genero!;
-                    });
-                  },
+            // SEXO NIÑO
+            Container(
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
                 ),
-                RadioListTile<String>(
-                  groupValue: sexo,
-                  title: Text('nina'),
-                  value: 'F',
-                  onChanged: (genero) {
-                    setState(() {
-                      sexo = genero!;
-                    });
-                  },
-                ),
-              ],
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Sexo:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  RadioListTile<String>(
+                    groupValue: sexo,
+                    title: Text('Masculino'),
+                    value: 'M',
+                    onChanged: (genero) {
+                      setState(() {
+                        sexo = genero!;
+                      });
+                    },
+                  ),
+                  RadioListTile<String>(
+                    groupValue: sexo,
+                    title: Text('Femenino'),
+                    value: 'F',
+                    onChanged: (genero) {
+                      setState(() {
+                        sexo = genero!;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
-
             Divider(),
+            // TUTOR NIÑO
             TextFormField(
               controller: apoderadoCtrl,
               decoration: InputDecoration(
                 hintText: 'Nombre del Apoderado',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(
@@ -276,30 +301,57 @@ class _PageAddNinoState extends State<PageAddNino> {
                 // do something
               },
             ),
-            Row(
-              children: [
-                Text('Fecha de nacimiento:', style: TextStyle(fontSize: 16)),
-                Text(ffecha.format(hoy),
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Spacer(),
-                TextButton(
-                  child: Icon(MdiIcons.calendar),
-                  onPressed: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1920),
-                      lastDate: DateTime.now(),
-                      locale: Locale('es', 'ES'),
-                    ).then((fecha) {
-                      setState(() {
-                        hoy = fecha ?? hoy;
-                      });
-                    });
-                  },
+            Divider(),
+            // FECHA DE NACIMIENTO NIÑO
+            Container(
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
                 ),
-              ],
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Fecha de Nacimiento:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        ffecha.format(hoy),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        child: Icon(MdiIcons.calendar),
+                        onPressed: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1920),
+                            lastDate: DateTime.now(),
+                            locale: Locale('es', 'ES'),
+                          ).then((fecha) {
+                            setState(() {
+                              hoy = fecha ?? hoy;
+                            });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -310,6 +362,7 @@ class _PageAddNinoState extends State<PageAddNino> {
         title: Text('data2'),
         content: Column(
           children: [
+            // NIVEL NIÑO
             Container(
               width: double.infinity,
               child: FutureBuilder(
@@ -327,7 +380,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                     //hint: Text('Nivel'),
                     decoration: InputDecoration(
                       hintText: 'Nivel',
-                      fillColor: Colors.white70,
+                      fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
                       contentPadding: EdgeInsets.all(15),
                       border: OutlineInputBorder(
@@ -352,11 +405,12 @@ class _PageAddNinoState extends State<PageAddNino> {
               ),
             ),
             Divider(),
+            // TELEFONO Nº1 NIÑO
             TextFormField(
               controller: telefono1Ctrl,
               decoration: InputDecoration(
                 hintText: 'Telefono Nº 1',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(
@@ -369,11 +423,12 @@ class _PageAddNinoState extends State<PageAddNino> {
               keyboardType: TextInputType.number,
             ),
             Divider(),
+            // TELEFONO Nº2 NIÑO
             TextFormField(
               controller: telefono2Ctrl,
               decoration: InputDecoration(
                 hintText: 'Telefono Nº 2',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(
@@ -386,12 +441,13 @@ class _PageAddNinoState extends State<PageAddNino> {
               keyboardType: TextInputType.number,
             ),
             Divider(),
+            // ALERGIAS NIÑO
             TextFormField(
               maxLines: 5,
               controller: alergiasCtrl,
               decoration: InputDecoration(
                 hintText: 'Alergias',
-                fillColor: Colors.white70,
+                fillColor: Colors.white.withOpacity(0.9),
                 filled: true,
                 contentPadding: EdgeInsets.all(15),
                 border: OutlineInputBorder(

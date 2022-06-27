@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -36,55 +38,58 @@ class _PageAddNivelState extends State<PageAddNivel> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(primary: Colors.black87),
-          ),
-          child: Stepper(
-            type: StepperType.vertical,
-            steps: getSteps(),
-            currentStep: currentStep,
-            onStepContinue: () async {
-              final isLastStep = currentStep == getSteps().length - 1;
-              if (isLastStep) {
-                // send data to server
-                var respuesta = await NivelesProvider().AddNivel(
-                  nombreNivelCtrl.text.trim(),
-                );
-                print(respuesta);
-                Navigator.pop(context);
-              } else {
-                setState(() => currentStep += 1);
-              }
-            },
-            onStepTapped: (step) => setState(() => currentStep = step),
-            onStepCancel: currentStep == 0
-                ? null
-                : () => setState(() => currentStep -= 1),
-            controlsBuilder: (context, controls) {
-              final isLastStep = currentStep == getSteps().length - 1;
-              return Container(
-                margin: EdgeInsets.only(top: 50),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
-                        onPressed: controls.onStepContinue,
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    if (currentStep != 0)
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(primary: Colors.black87),
+            ),
+            child: Stepper(
+              type: StepperType.vertical,
+              steps: getSteps(),
+              currentStep: currentStep,
+              onStepContinue: () async {
+                final isLastStep = currentStep == getSteps().length - 1;
+                if (isLastStep) {
+                  // send data to server
+                  var respuesta = await NivelesProvider().AddNivel(
+                    nombreNivelCtrl.text.trim(),
+                  );
+                  print(respuesta);
+                  Navigator.pop(context);
+                } else {
+                  setState(() => currentStep += 1);
+                }
+              },
+              onStepTapped: (step) => setState(() => currentStep = step),
+              onStepCancel: currentStep == 0
+                  ? null
+                  : () => setState(() => currentStep -= 1),
+              controlsBuilder: (context, controls) {
+                final isLastStep = currentStep == getSteps().length - 1;
+                return Container(
+                  margin: EdgeInsets.only(top: 50),
+                  child: Row(
+                    children: [
                       Expanded(
                         child: ElevatedButton(
-                          child: Text('REGRESAR'),
-                          onPressed: controls.onStepCancel,
+                          child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
+                          onPressed: controls.onStepContinue,
                         ),
                       ),
-                  ],
-                ),
-              );
-            },
+                      SizedBox(width: 12),
+                      if (currentStep != 0)
+                        Expanded(
+                          child: ElevatedButton(
+                            child: Text('REGRESAR'),
+                            onPressed: controls.onStepCancel,
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
