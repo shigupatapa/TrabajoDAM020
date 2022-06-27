@@ -108,9 +108,9 @@ class _PerfilNinoState extends State<PerfilNino> {
         // shape: BoxShape.circle,
         image: DecorationImage(
           image: NetworkImage(
-            // 'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+            'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
             // 'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-            'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
+            //'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
           ),
         ),
         borderRadius: BorderRadius.all(
@@ -475,10 +475,11 @@ class _PerfilNinoState extends State<PerfilNino> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //if (nino['telefono1'] != null)
                   Container(
                     padding: EdgeInsets.all(2.5),
                     child: Text(
-                      nino['telefono1'],
+                      'Telefono: ${nino['telefono1']}',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -543,10 +544,11 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
               onPressed: () {
-                // MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                //   return PageAddHistorial(nino['rutNino']);
-                // });
-                // Navigator.push(context, route);
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageAddHistorial(
+                      nino['rutNino'], nino['nombreCompleto']);
+                });
+                Navigator.push(context, route);
               },
             ),
             ElevatedButton(

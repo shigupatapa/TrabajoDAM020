@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NinosProvider {
-  //final String apiURL = 'http://192.168.138.130:8000/api';
+  final String apiURL = 'http://192.168.138.130:8000/api';
   //final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
-  final String apiURL = 'http://192.168.100.72:8000/api';
+  //final String apiURL = 'http://192.168.100.72:8000/api';
 
   // LISTAR TODOS LOS NIÑOS
   Future<List<dynamic>> getAllNinos() async {
@@ -70,8 +70,10 @@ class NinosProvider {
 
   // EDITAR NIÑO
   Future<LinkedHashMap<String, dynamic>> UpdateNino(
+    String url,
     String rutNino,
     String nombreCompleto,
+    String sexo,
     DateTime fechaNacimiento,
     String nombreApoderado,
     int nivel,
@@ -79,7 +81,7 @@ class NinosProvider {
     String telefono2,
     String alergias,
   ) async {
-    var uri = Uri.parse('$apiURL/niños/$rutNino');
+    var uri = Uri.parse('$apiURL/niños/$url');
     var respuesta = await http.put(
       uri,
       headers: <String, String>{

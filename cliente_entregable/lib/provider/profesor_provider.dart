@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ProfesoresProvider {
-  //final String apiURL = 'http://192.168.138.130:8000/api';
+  final String apiURL = 'http://192.168.138.130:8000/api';
   // final String apiURL = 'http://10.0.2.2:8000/api';
-  final String apiURL = 'http://192.168.100.72:8000/api';
+  //final String apiURL = 'http://192.168.100.72:8000/api';
 
   // LISTAR PROFES
   Future<List<dynamic>> getAllProfes() async {
@@ -59,9 +59,13 @@ class ProfesoresProvider {
   }
 
   //Edicion Hist
-  Future<LinkedHashMap<String, dynamic>> UpdateProfe(String rutProfesor,
-      String nombreCompleto, DateTime fechaNacimiento, int nivel) async {
-    var uri = Uri.parse('$apiURL/profesores/$rutProfesor');
+  Future<LinkedHashMap<String, dynamic>> UpdateProfe(
+      String rut,
+      String rutProfesor,
+      String nombreCompleto,
+      DateTime fechaNacimiento,
+      int nivel) async {
+    var uri = Uri.parse('$apiURL/profesores/$rut');
     var respuesta = await http.put(
       uri,
       headers: <String, String>{

@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HistorialesProvider {
-  //final String apiURL = 'http://192.168.138.130:8000/api';
-  final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
+  final String apiURL = 'http://192.168.138.130:8000/api';
+  //final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
   //final String apiURL = 'http://192.168.100.72:8000/api';
 
   //Lista Todos
@@ -34,7 +34,7 @@ class HistorialesProvider {
 
   //ADD Hist
   Future<LinkedHashMap<String, dynamic>> AddHistorial(
-      String rutNino, String titulo, DateTime fecha, String contenido) async {
+      String rutNino, String titulo, String contenido) async {
     var uri = Uri.parse('$apiURL/historiales');
     var respuesta = await http.post(uri,
         headers: <String, String>{

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class PageAddHistorial extends StatefulWidget {
   String rut;
-  PageAddHistorial(this.rut, {Key? key}) : super(key: key);
+  String nombre;
+  PageAddHistorial(this.rut, this.nombre, {Key? key}) : super(key: key);
 
   @override
   State<PageAddHistorial> createState() => _PageAddHistorialState();
@@ -20,7 +21,7 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agregar Historial'),
+        title: Text('Historial de ${widget.nombre}'),
         centerTitle: true,
       ),
       body: Container(
@@ -52,7 +53,7 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
                   var titulo = tituloCtrl.text.trim();
                   var contenido = contenidoCtrl.text.trim();
                   var respuesta = await HistorialesProvider()
-                      .AddHistorial(rutNino, titulo, date, contenido);
+                      .AddHistorial(rutNino, titulo, contenido);
 
                   print(respuesta);
                   Navigator.pop(context);

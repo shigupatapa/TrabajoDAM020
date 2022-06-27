@@ -30,7 +30,7 @@ class NinosRequest extends FormRequest
             'sexo' => 'required|max:1',
             'fechaNacimiento'=> 'date|required',
             'nombreApoderado'=>'required|max:60|min:3',
-            'telefono1'=>'max:12',
+            'telefono1'=>'required|max:12',
             'telefono2'=>'max:12',
             'alergias' => 'max:255',
             'imagen' => 'image'
@@ -56,6 +56,7 @@ class NinosRequest extends FormRequest
         'nombreApoderado.required' => 'El nombre de apoderado es obligatorio.',
         'nombreApoderado.max' => 'El nombre de apoderado no debe tener más de 60 caracteres.',
         'nombreApoderado.min' => 'El nombre de apoderado debe tener al menos 3 caracteres.',
+        'telefono1.required' => 'El telefono 1 es obligatorio.',
         'telefono1.max' => 'El telefono no debe tener más de 12 caracteres.',
         'telefono2.max' => 'El telefono no debe tener más de 12 caracteres.',
         'alergias.max' => 'Las alegias no debe tener más de 255 caracteres.',

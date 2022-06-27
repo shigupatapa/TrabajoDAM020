@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('nivel_id');
             $table->date('fechaNacimiento');
             $table->string('nombreApoderado',60);
-            $table->string('telefono1',12)->nullable();
+            $table->string('telefono1',12);
             $table->string('telefono2',12)->nullable();
             $table->string('alergias')->nullable();
             $table->string('imagen')->nullable();
