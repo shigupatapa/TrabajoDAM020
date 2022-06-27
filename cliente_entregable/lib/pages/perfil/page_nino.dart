@@ -1,3 +1,4 @@
+import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                 SizedBox(height: 10),
                 buildInfo(nino),
                 buildContacto(nino),
-                buildButtons(),
+                buildButtons(nino),
               ],
             );
           },
@@ -501,7 +502,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildButtons() {
+  Widget buildButtons(nino) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: Container(
@@ -541,7 +542,10 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
               onPressed: () {
-                print("You pressed Icon Elevated Button");
+                // MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                //   return PageAddHistorial(nino['rutNino']);
+                // });
+                // Navigator.push(context, route);
               },
             ),
             ElevatedButton(
