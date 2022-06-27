@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profesor;
 use Illuminate\Http\Request;
+use App\Http\Requests\{ProfesoresRequestEdit,ProfesoresRequest};
 
 class ProfesoresController extends Controller
 {
@@ -23,7 +24,7 @@ class ProfesoresController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfesoresRequest $request)
     {
         $profesor = new Profesor();
         $profesor->rutProfesor = $request->rutProfesor;
@@ -52,9 +53,9 @@ class ProfesoresController extends Controller
      * @param  \App\Models\Profesor  $profesor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profesor $profesor)
+    public function update(ProfesoresRequestEdit $request, Profesor $profesor)
     {
-        //$profesor->rutProfesor = $request->rutProfesor;
+        $profesor->rutProfesor = $request->rutProfesor;
         $profesor->nombreCompleto = $request->nombreCompleto;
         $profesor->fechaNacimiento = $request->fechaNacimiento;
         $profesor->nivel_id = $request->nivel_id;

@@ -24,8 +24,8 @@ class ProfesoresRequest extends FormRequest
     public function rules()
     {
         return [
-            'rutProfesor '=>'required|unique:profesores,rutProfesor|max:12',
-            'nombreCompleto ' =>'required|max:60|min:3',
+            'rutProfesor'=>'required|unique:profesores,rutProfesor|max:12',
+            'nombreCompleto' =>'required|max:60|min:3',
             'fechaNacimiento' =>'date|required',
             'nivel_id' =>'required|numeric|exists:niveles,nivel_id'
         ];

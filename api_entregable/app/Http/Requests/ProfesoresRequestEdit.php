@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProfesoresRequestEdit extends FormRequest
 {
@@ -13,7 +14,7 @@ class ProfesoresRequestEdit extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,8 +25,8 @@ class ProfesoresRequestEdit extends FormRequest
     public function rules()
     {
         return [
-            'rutProfesor '=>'required|unique:profesores,rutProfesor|max:12',
-            'nombreCompleto ' =>'required|max:60|min:3',
+            'rutProfesor'=>'required|unique:profesores,rutProfesor|max:12',
+            'nombreCompleto' =>'required|max:60|min:3',
             'fechaNacimiento' =>'date|required',
             'nivel_id' =>'required|numeric|exists:niveles,nivel_id'
         ];
