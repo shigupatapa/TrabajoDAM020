@@ -21,7 +21,8 @@ class _PageAddNinoState extends State<PageAddNino> {
   TextEditingController telefono1Ctrl = TextEditingController();
   TextEditingController telefono2Ctrl = TextEditingController();
   TextEditingController alergiasCtrl = TextEditingController();
-  String nivelSel = '', sexo = '';
+  TextEditingController imagenCtrl = TextEditingController();
+  String nivelSel = '', sexo = '', imagenPath = '';
   var ffecha = DateFormat('yyyy-MM-dd');
   DateTime hoy = DateTime.now();
   // String errCodigo = '';
@@ -407,7 +408,35 @@ class _PageAddNinoState extends State<PageAddNino> {
       Step(
         isActive: currentStep >= 2,
         title: Text('Información'),
-        content: Container(),
+        content: Container(
+          child: Column(
+            children: [
+              ElevatedButton.icon(
+                  icon: Icon(MdiIcons.camera),
+                  label: Text('subir imagen'),
+                  onPressed: () {})
+//               ESTA COSA NO FUNCIONA!!!!!
+//               (path == null ) ? Container() : Image.file(File(path),width: 200,),
+//               RaisedButton(
+//               child: Text("CARGAR IMAGEN"),
+//                 onPressed: () async {
+//                 final ImagePicker _picker = ImagePicker();
+//                 PickedFile _archivo = await _picker.getImage(source: ImageSource.gallery);
+// ....
+
+//                 setState(() {
+//                   _ruta =_archivo.path;
+//                 });
+//             }),
+//             /// enviar al servidor web
+//             RaisedButton(
+//               child: Text("ENVIAR AL SERVIDOR"),
+//                 onPressed: (){
+//               _enviarform();
+//             })
+            ],
+          ),
+        ),
       )
     ];
   }

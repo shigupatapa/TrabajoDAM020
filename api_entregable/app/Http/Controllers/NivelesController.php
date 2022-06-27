@@ -6,6 +6,7 @@ use App\Models\Nivel;
 use App\Models\Nino;
 use App\Models\Profesor;
 use Illuminate\Http\Request;
+use App\Http\Requests\NivelRequest;
 
 class NivelesController extends Controller
 {
@@ -35,7 +36,7 @@ class NivelesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NivelRequest $request)
     {
         $nivel = new Nivel();
         //$nivel->nivel_id = $request->nivel_id;
@@ -62,7 +63,7 @@ class NivelesController extends Controller
      * @param  \App\Models\Nivel  $nivel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Nivel $nivel)
+    public function update(NivelRequest $request, Nivel $nivel)
     {
         $nivel->nombreNivel = $request->nombreNivel;
         $nivel->save();

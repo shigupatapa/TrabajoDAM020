@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Historial;
 use Illuminate\Http\Request;
+use App\Http\Requests\HistorialRequest;
 
 class HistorialesController extends Controller
 {
@@ -23,12 +24,11 @@ class HistorialesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HistorialRequest $request)
     {
         $historial = new Historial();
         $historial->rutNino = $request->rutNino;
         $historial->titulo = $request->titulo;
-        //$historial->fecha = $request->fecha;
         $historial->contenido = $request->contenido;
         $historial->save();
         return $historial;
@@ -52,11 +52,10 @@ class HistorialesController extends Controller
      * @param  \App\Models\Historial  $historial
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Historial $historial)
+    public function update(HistorialRequest $request, Historial $historial)
     {
-        //$historial->rutNino = $request->rutNino;
+        $historial->rutNino = $request->rutNino;
         $historial->titulo = $request->titulo;
-        //$historial->fecha = $request->fecha;
         $historial->contenido = $request->contenido;
         $historial->save();
         return $historial;

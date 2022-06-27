@@ -1,6 +1,8 @@
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 import 'package:flutter/material.dart';
 
+import '../../provider/niveles_provider.dart';
+
 class PageAddProfe extends StatefulWidget {
   PageAddProfe({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
   TextEditingController rutProfeCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
   TextEditingController nivelCtrl = TextEditingController();
+  String nivelSel = '';
 
   // String errCodigo = '';
   // String errNombre = '';
@@ -145,21 +148,46 @@ class _PageAddProfeState extends State<PageAddProfe> {
         title: Text('Nivel'),
         content: Column(
           children: [
-            TextFormField(
-              controller: nivelCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nivel',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
+            Container(
+              width: double.infinity,
+              child: FutureBuilder(
+                future: NivelesProvider().getAllNiveles(),
+                builder: (context, AsyncSnapshot snap) {
+                  if (!snap.hasData) {
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando niveles...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
+                  }
+                  var niveles = snap.data;
+                  return DropdownButtonFormField<String>(
+                    //hint: Text('Nivel'),
+                    decoration: InputDecoration(
+                      hintText: 'Nivel',
+                      fillColor: Colors.white70,
+                      filled: true,
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+
+                    items: niveles.map<DropdownMenuItem<String>>((nivel) {
+                      return DropdownMenuItem<String>(
+                        child: Text(nivel['nombreNivel']),
+                        value: nivel['nivel_id'].toString(),
+                      );
+                    }).toList(),
+                    value: nivelSel.isEmpty ? null : nivelSel,
+                    onChanged: (nuevoNivel) {
+                      setState(() {
+                        nivelSel = nuevoNivel.toString();
+                      });
+                    },
+                  );
+                },
               ),
-              onChanged: (value) {
-                // do something
-              },
-              keyboardType: TextInputType.number,
             ),
           ],
         ),

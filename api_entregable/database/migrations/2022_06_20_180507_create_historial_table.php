@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('historial', function (Blueprint $table) {
             $table->increments("nHistorial");
             $table->string('rutNino',12);
-            $table->string("titulo");
-            //$table->date("fecha");
+            $table->string("titulo",60);
             $table->string("contenido");
             $table->timestamps();
             $table->softDeletes();
