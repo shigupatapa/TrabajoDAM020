@@ -13,8 +13,8 @@ class PerfilNivel extends StatefulWidget {
 }
 
 class _PerfilNivelState extends State<PerfilNivel> {
-  final double coverHeight = 200;
-  final double profileHeight = 120;
+  final double coverHeight = 300;
+  final double profileHeight = 150;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              "https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg",
+              "https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000",
             ),
             fit: BoxFit.cover,
           ),
@@ -45,10 +45,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
             return ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                buildTop(),
-                SizedBox(height: 5),
-                buildName(nivel),
-                SizedBox(height: 10),
+                buildTop(nivel),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -104,21 +101,21 @@ class _PerfilNivelState extends State<PerfilNivel> {
     );
   }
 
-  Widget buildTop() {
-    final top = coverHeight - profileHeight / 2;
-    final bottom = profileHeight / 2;
-
+  Widget buildTop(nivel) {
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
-        Container(
-          margin: EdgeInsets.only(bottom: bottom),
-          child: buildCoverImage(),
-        ),
+        buildCoverImage(),
         Positioned(
-          top: top,
-          child: buildProfileImage(),
+          top: profileHeight / 2,
+          child: Column(
+            children: [
+              buildProfileImage(),
+              SizedBox(height: 10),
+              buildName(nivel),
+            ],
+          ),
         ),
       ],
     );
@@ -126,40 +123,39 @@ class _PerfilNivelState extends State<PerfilNivel> {
 
   Widget buildCoverImage() {
     return Container(
-      // color: Colors.grey,
+      height: coverHeight,
+      color: Color.fromARGB(255, 185, 55, 55).withOpacity(0.85),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
-            width: 1.5,
+          border: Border.symmetric(
+            horizontal: BorderSide(
+              color: Colors.black,
+              width: 1.5,
+            ),
           ),
         ),
-        child: Image.network(
-          'https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000',
-          width: double.infinity,
-          height: coverHeight,
-          fit: BoxFit.cover,
-        ),
+        //   // child: Image.network(
+        //   //   'https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000',
+        //   //   width: double.infinity,
+        //   //   height: coverHeight,
+        //   //   fit: BoxFit.cover,
+        //   // ),
+        // ),
       ),
     );
   }
 
   Widget buildProfileImage() {
-    // return CircleAvatar(
-    //   // backgroundColor: Colors.grey.shade800,
-    //   radius: profileHeight / 2,
-    //   backgroundImage: AssetImage('assets/images/user.png'),
-    // );
-
     return Container(
-      width: 120,
-      height: 120,
+      width: profileHeight,
+      height: profileHeight,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/nivel.png'),
-          fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.all(Radius.circular(profileHeight / 2)),
+        borderRadius: BorderRadius.all(
+          Radius.circular(100),
+        ),
         border: Border.all(
           color: Colors.black,
           width: 1.5,
@@ -191,33 +187,9 @@ class _PerfilNivelState extends State<PerfilNivel> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              // Text(
-              //   "Nombre",
-              //   style: TextStyle(
-              //     color: Colors.grey,
-              //   ),
-              // ),
             ],
           ),
         ),
-        // SizedBox(height: 5),
-        // Container(
-        //   padding: EdgeInsets.all(5),
-        //   decoration: BoxDecoration(
-        //     color: Colors.white.withOpacity(0.85),
-        //     borderRadius: BorderRadius.all(Radius.circular(50)),
-        //     border: Border.all(
-        //       color: Colors.black,
-        //       width: 1,
-        //     ),
-        //   ),
-        //   child: Text(
-        //     "Nombre",
-        //     style: TextStyle(
-        //       color: Colors.grey,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }
@@ -225,20 +197,20 @@ class _PerfilNivelState extends State<PerfilNivel> {
   Widget buildNinos() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: EdgeInsets.all(20),
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Colors.black,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(50)),
+          borderRadius: BorderRadius.circular(20),
         ),
         color: Colors.transparent,
         child: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.85),
-            borderRadius: BorderRadius.all(Radius.circular(50)),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: Colors.black,
             ),
@@ -297,9 +269,8 @@ class _PerfilNivelState extends State<PerfilNivel> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                    //'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}'
-                  ),
+                      // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
+                      'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}'),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -344,20 +315,20 @@ class _PerfilNivelState extends State<PerfilNivel> {
   Widget buildProfes() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      padding: EdgeInsets.all(20),
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: Colors.black,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(50)),
+          borderRadius: BorderRadius.circular(20),
         ),
         color: Colors.transparent,
         child: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.85),
-            borderRadius: BorderRadius.all(Radius.circular(50)),
+            borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: Colors.black,
             ),
@@ -428,50 +399,4 @@ class _PerfilNivelState extends State<PerfilNivel> {
       },
     );
   }
-
-  // Widget buildAbout() {
-  //   return Container(
-  //     width: MediaQuery.of(context).size.width,
-  //     padding: EdgeInsets.symmetric(horizontal: 20),
-  //     child: Card(
-  //       shape: RoundedRectangleBorder(
-  //         side: BorderSide(
-  //           color: Colors.black,
-  //           width: 1,
-  //         ),
-  //         borderRadius: BorderRadius.all(Radius.circular(50)),
-  //       ),
-  //       color: Colors.transparent,
-  //       child: Container(
-  //         padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
-  //         decoration: BoxDecoration(
-  //           color: Colors.white.withOpacity(0.85),
-  //           borderRadius: BorderRadius.all(Radius.circular(50)),
-  //           border: Border.all(
-  //             color: Colors.black,
-  //             width: 1,
-  //           ),
-  //         ),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: [
-  //             Text(
-  //               "Acerca de",
-  //               style: TextStyle(
-  //                 fontWeight: FontWeight.bold,
-  //                 fontSize: 20,
-  //               ),
-  //               textAlign: TextAlign.center,
-  //             ),
-  //             SizedBox(height: 10),
-  //             Text(
-  //               "Pellentesque nisl est, pulvinar et purus in, feugiat consectetur velit. Mauris vitae lobortis purus. Praesent ut commodo leo. Donec vitae facilisis odio. Maecenas bibendum ligula at eros facilisis, ut interdum augue lacinia. Proin egestas bibendum ante, id vestibulum urna varius quis. Nullam aliquam suscipit semper. Cras nec porta felis. Cras porttitor ornare mauris, eget ultrices nunc sollicitudin ut. Aenean sed egestas mauris. Morbi pharetra nibh congue quam fermentum sodales. Maecenas lacus velit, faucibus ac lorem a, tristique aliquam tellus. Sed viverra nunc eget interdum varius. Vestibulum sit amet fringilla tortor. Curabitur vitae est id diam tincidunt dapibus ac at risus. Ut vel nisl metus.Pellentesque nisl est, pulvinar et purus in, feugiat consectetur velit. Mauris vitae lobortis purus. Praesent ut commodo leo. Donec vitae facilisis odio. Maecenas bibendum ligula at eros facilisis, ut interdum augue lacinia. Proin egestas bibendum ante, id vestibulum urna varius quis. Nullam aliquam suscipit semper. Cras nec porta felis. Cras porttitor ornare mauris, eget ultrices nunc sollicitudin ut. Aenean sed egestas mauris. Morbi pharetra nibh congue quam fermentum sodales. Maecenas lacus velit, faucibus ac lorem a, tristique aliquam tellus. Sed viverra nunc eget interdum varius. Vestibulum sit amet fringilla tortor. Curabitur vitae est id diam tincidunt dapibus ac at risus. Ut vel nisl metus.",
-  //               textAlign: TextAlign.center,
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

@@ -108,7 +108,6 @@ class _PageListNinosState extends State<PageListNinos> {
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
         var nino = snap.data[index];
-
         return Column(
           children: [
             GridTile(
@@ -125,8 +124,8 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                          'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-                          // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
+                          //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
+                          'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -135,7 +134,7 @@ class _PageListNinosState extends State<PageListNinos> {
                   onTap: () {
                     MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) {
-                        return PerfilNino();
+                        return PerfilNino(nino['rutNino']);
                       },
                     );
                     Navigator.push(context, route);
@@ -169,127 +168,65 @@ class _PageListNinosState extends State<PageListNinos> {
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
         var nino = snap.data[index];
-        bool imgExiste = true;
-        if (nino['imagen'] == null) {
-          imgExiste = false;
-        }
-        if (imgExiste) {
-          return Card(
-            shape: StadiumBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 2,
-              ),
-            ),
-            color: Colors.white.withOpacity(0.85),
-            child: FutureBuilder(
-              future: NivelesProvider().getNivel(nino["nivel_id"]),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                var nivel = snapshot.data;
-                return ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}'
-                            // 'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}'
 
-                            ),
-                        fit: BoxFit.cover,
+        return Card(
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: Colors.black,
+              width: 2,
+            ),
+          ),
+          color: Colors.white.withOpacity(0.85),
+          child: FutureBuilder(
+            future: NivelesProvider().getNivel(nino["nivel_id"]),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var nivel = snapshot.data;
+              return ListTile(
+                leading: Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        // 'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
+                        'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2,
                     ),
                   ),
-                  title: Text(
-                    nino['nombreCompleto'],
-                    style: TextStyle(color: Colors.black, fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                  subtitle: Text(
-                    // nino['nivel_id'].toString(),
-                    nivel["nombreNivel"],
-                    style: TextStyle(color: Colors.black, fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                  onTap: () {
-                    MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) {
-                      return PerfilNino();
-                    });
-                    Navigator.push(context, route);
-                  },
-                );
-              },
-            ),
-          );
-        } else {
-          return Card(
-            shape: StadiumBorder(
-              side: BorderSide(
-                color: Colors.black,
-                width: 2,
-              ),
-            ),
-            color: Colors.white.withOpacity(0.85),
-            child: FutureBuilder(
-              future: NivelesProvider().getNivel(nino["nivel_id"]),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                var nivel = snapshot.data;
-                return ListTile(
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/user.png'),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    nino['nombreCompleto'],
-                    style: TextStyle(color: Colors.black, fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                  subtitle: Text(
-                    // nino['nivel_id'].toString(),
-                    nivel["nombreNivel"],
-                    style: TextStyle(color: Colors.black, fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                  onTap: () {
-                    MaterialPageRoute route =
-                        MaterialPageRoute(builder: (context) {
-                      return PerfilNino();
-                    });
-                    Navigator.push(context, route);
-                  },
-                );
-              },
-            ),
-          );
-        }
+                ),
+                title: Text(
+                  nino['nombreCompleto'],
+                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: Text(
+                  // nino['nivel_id'].toString(),
+                  nivel["nombreNivel"],
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                onTap: () {
+                  MaterialPageRoute route =
+                      MaterialPageRoute(builder: (context) {
+                    return PerfilNino(nino['rutNino']);
+                  });
+                  Navigator.push(context, route);
+                },
+              );
+            },
+          ),
+        );
       },
     );
   }
