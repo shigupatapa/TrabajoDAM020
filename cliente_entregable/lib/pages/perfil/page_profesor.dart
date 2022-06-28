@@ -1,6 +1,10 @@
 import 'package:cliente_entregable/pages/editar/page_editprofe.dart';
+import 'package:cliente_entregable/pages/listar/page_listprofes.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -350,6 +354,7 @@ class _PerfilProfeState extends State<PerfilProfe> {
   }
 
   Widget buildButtons(profe) {
+    String nombre = profe['nombreCompleto'].toString().split(' ').first;
     return Container(
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: Container(
@@ -392,10 +397,10 @@ class _PerfilProfeState extends State<PerfilProfe> {
                 MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                   return PageEditProfe(
                     profe['rutProfesor'],
-                    profe['nombreCompleto'].toString().split(' ').first,
+                    nombre,
                   );
                 });
-                Navigator.push(context, route);
+                Navigator.push(context, route).then((value) => setState(() {}));
               },
             ),
             ElevatedButton(
@@ -421,12 +426,73 @@ class _PerfilProfeState extends State<PerfilProfe> {
                 ),
               ),
               onPressed: () {
-                print("You pressed Icon Elevated Button");
+                confirmDialog(context, nombre).then((confirm) {
+                  if (confirm) {
+                    ProfesoresProvider().DeleteProfe(profe['rutProfesor']).then(
+                      (borradoOk) {
+                        if (borradoOk) {
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.info(
+                              message: '$nombre fue eliminado del sistema.',
+                              backgroundColor: Colors.cyan,
+                              icon: Icon(
+                                Icons.sentiment_very_dissatisfied,
+                                color: Colors.black26,
+                                size: 120,
+                              ),
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                          MaterialPageRoute route =
+                              MaterialPageRoute(builder: (context) {
+                            return PageListProfes();
+                          });
+                          Navigator.pushReplacement(context, route);
+                        } else {
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.error(
+                              message: '$nombre no pudo ser eliminado.',
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }
+                });
               },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  confirmDialog(BuildContext context, String nombre) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      title: 'Confirmar Borrado',
+      text: '¿Borrar a $nombre?',
+      confirmBtnText: 'Aceptar',
+      confirmBtnColor: Colors.green,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      ),
+      onConfirmBtnTap: () => Navigator.pop(context, true),
+      cancelBtnText: 'Cancelar',
+      showCancelBtn: true,
+      cancelBtnTextStyle: TextStyle(
+        fontSize: 15,
+      ),
+      onCancelBtnTap: () => Navigator.pop(context, false),
     );
   }
 }

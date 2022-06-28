@@ -121,7 +121,7 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                 return PageEditHistorial();
               });
-              Navigator.push(context, route);
+              Navigator.push(context, route).then((value) => setState(() {}));
             },
           ),
         );

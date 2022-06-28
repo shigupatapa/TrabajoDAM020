@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class PageNivelEdit extends StatefulWidget {
   int nivel_id;
-  PageNivelEdit(this.nivel_id, {Key? key}) : super(key: key);
+  String nombre;
+  PageNivelEdit(this.nivel_id, this.nombre, {Key? key}) : super(key: key);
 
   @override
   State<PageNivelEdit> createState() => _PageNivelEditState();
@@ -34,7 +35,7 @@ class _PageNivelEditState extends State<PageNivelEdit> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Editar Nivel"),
+        title: Text("Editar Perfil de ${widget.nombre}"),
         centerTitle: true,
         backgroundColor: Colors.black87,
       ),
@@ -168,11 +169,11 @@ class _PageNivelEditState extends State<PageNivelEdit> {
           ],
         ),
       ),
-      Step(
-        isActive: currentStep >= 1,
-        title: Text('Información'),
-        content: Container(),
-      )
+      // Step(
+      //   isActive: currentStep >= 1,
+      //   title: Text('Información'),
+      //   content: Container(),
+      // )
     ];
   }
 }

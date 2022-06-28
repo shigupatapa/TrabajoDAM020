@@ -121,7 +121,7 @@ class _PageListProfesState extends State<PageListProfes> {
                         return PerfilProfe(profe["rutProfesor"]);
                       },
                     );
-                    Navigator.push(context, route);
+                    Navigator.push(context, route).then((value) => setState(() {}));
                   },
                 ),
               ),
@@ -210,7 +210,7 @@ class _PageListProfesState extends State<PageListProfes> {
                       return PerfilProfe(profe["rutProfesor"]);
                     },
                   );
-                  Navigator.push(context, route);
+                  Navigator.push(context, route).then((value) => setState(() {}));
                 },
               );
             },

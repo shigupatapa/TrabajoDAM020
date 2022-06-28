@@ -1,7 +1,11 @@
 import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
 import 'package:cliente_entregable/pages/editar/page_editnino.dart';
+import 'package:cliente_entregable/pages/listar/page_listninos.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -514,6 +518,7 @@ class _PerfilNinoState extends State<PerfilNino> {
   }
 
   Widget buildButtonNino(nino) {
+    String nombre = nino['nombreCompleto'].toString().split(' ').first;
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -557,7 +562,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                 MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                   return PageEditNino(
                     nino['rutNino'],
-                    nino['nombreCompleto'].toString().split(' ').first,
+                    nombre,
                   );
                 });
                 Navigator.push(context, route);
@@ -586,7 +591,46 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
               onPressed: () {
-                print("You pressed Icon Elevated Button");
+                confirmDialog(context, nombre).then((confirm) {
+                  if (confirm) {
+                    NinosProvider().DeleteNino(nino['rutNino']).then(
+                      (borradoOk) {
+                        if (borradoOk) {
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.info(
+                              message: '$nombre fue eliminado del sistema.',
+                              backgroundColor: Colors.cyan,
+                              icon: Icon(
+                                Icons.sentiment_very_dissatisfied,
+                                color: Colors.black26,
+                                size: 120,
+                              ),
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                          MaterialPageRoute route =
+                              MaterialPageRoute(builder: (context) {
+                            return PageListNinos();
+                          });
+                          Navigator.pushReplacement(context, route);
+                        } else {
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.error(
+                              message: '$nombre no pudo ser eliminado.',
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  }
+                });
               },
             ),
           ],
@@ -596,6 +640,7 @@ class _PerfilNinoState extends State<PerfilNino> {
   }
 
   Widget buildButtonHistorial(nino) {
+    String nombre = nino['nombreCompleto'].toString().split(' ').first;
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -639,10 +684,10 @@ class _PerfilNinoState extends State<PerfilNino> {
                 MaterialPageRoute route = MaterialPageRoute(builder: (context) {
                   return PageAddHistorial(
                     nino['rutNino'],
-                    nino['nombreCompleto'].toString().split(' ').first,
+                    nombre,
                   );
                 });
-                Navigator.push(context, route);
+                Navigator.push(context, route).then((value) => setState(() {}));
               },
             ),
             ElevatedButton(
@@ -676,371 +721,26 @@ class _PerfilNinoState extends State<PerfilNino> {
       ),
     );
   }
+
+  confirmDialog(BuildContext context, String nombre) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      title: 'Confirmar Borrado',
+      text: '¿Borrar a $nombre?',
+      confirmBtnText: 'Aceptar',
+      confirmBtnColor: Colors.green,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      ),
+      onConfirmBtnTap: () => Navigator.pop(context, true),
+      cancelBtnText: 'Cancelar',
+      showCancelBtn: true,
+      cancelBtnTextStyle: TextStyle(
+        fontSize: 15,
+      ),
+      onCancelBtnTap: () => Navigator.pop(context, false),
+    );
+  }
 }
-//   return Scaffold(
-//       // appBar: AppBar(
-//       //   title: Text('Perfil del niño'),
-//       // ),
-//       body: Container(
-//           width: double.infinity,
-//           decoration: BoxDecoration(
-//             image: DecorationImage(
-//                 image: NetworkImage(
-//                   'https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000',
-//                 ),
-//                 fit: BoxFit.cover),
-//           ),
-//           child: Padding(
-//               padding: EdgeInsets.all(10),
-//               child: FutureBuilder(
-//                 future: NinosProvider().getNino(widget.rut),
-//                 builder: ((context, AsyncSnapshot snap) {
-//                   if (!snap.hasData) {
-//                     return Center(child: CircularProgressIndicator());
-//                   }
-//                   var data = snap.data;
-//                   return CustomScrollView(slivers: <Widget>[
-//                     SliverAppBar(
-//                       pinned: true,
-//                       expandedHeight: 300,
-//                       backgroundColor: Color.fromARGB(255, 185, 58, 58),
-//                       flexibleSpace: FlexibleSpaceBar(
-//                         background: SafeArea(
-//                           child: Column(
-//                             children: [
-//                               //Foto de la persona
-//                               Padding(
-//                                 padding: EdgeInsets.all(8.0),
-//                                 child: Container(
-//                                   height: 200,
-//                                   width: 200,
-//                                   decoration: BoxDecoration(
-//                                     shape: BoxShape.circle,
-//                                     image: DecorationImage(
-//                                       image: NetworkImage(
-//                                         // 'http://10.0.2.2:8000/api/niños/imagen/${data['rutNino']}',
-//                                         'http://192.168.100.72:8000/api/niños/imagen/${data['rutNino']}',
-//                                       ),
-//                                     ),
-//                                     border: Border.all(
-//                                       color: Colors.blueGrey,
-//                                       width: 2.0,
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ),
-//                               //Nombre de la persona y su rut
-//                               Text(
-//                                 data['nombreCompleto'],
-//                                 textAlign: TextAlign.center,
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.bold,
-//                                     fontSize: 30),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                     SliverAppBar(
-//                       pinned: false,
-//                       expandedHeight: 5,
-//                       backgroundColor: Color.fromARGB(226, 188, 82, 82),
-//                       flexibleSpace: FlexibleSpaceBar(
-//                         background: SafeArea(
-//                           child: Container(
-//                             child: Column(
-//                               children: [
-//                                 Text(
-//                                   'Rut: ${data['rutNino']}',
-//                                   textAlign: TextAlign.center,
-//                                   style: TextStyle(fontSize: 20),
-//                                 ),
-//                                 Text(
-//                                   'Sexo: ${data['sexo']}',
-//                                   textAlign: TextAlign.center,
-//                                   style: TextStyle(fontSize: 20),
-//                                 ),
-//                               ],
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                     SliverFixedExtentList(
-//                       itemExtent: 500,
-//                       delegate: SliverChildListDelegate(
-//                         [
-//                           //TODA LA CAJA
-//                           Padding(
-//                             padding: EdgeInsets.all(10.0),
-//                             child: Expanded(
-//                               child: Column(
-//                                 children: [
-//                                   Container(
-//                                     alignment: Alignment.centerLeft,
-//                                     decoration: BoxDecoration(
-//                                       color: Color.fromARGB(121, 187, 57, 57),
-//                                       borderRadius: BorderRadius.circular(5),
-//                                       border: Border.all(
-//                                         width: 5,
-//                                         color: Color(0xE1BB3939),
-//                                       ),
-//                                     ),
-//                                     //Datos niño
-//                                     child: Column(
-//                                       crossAxisAlignment:
-//                                           CrossAxisAlignment.start,
-//                                       children: [
-//                                         //Nombre
-//                                         Padding(
-//                                           padding: EdgeInsets.all(8.0),
-//                                           child: Container(
-//                                             decoration: BoxDecoration(
-//                                               color: Color(0xB6BB3939),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 width: 5,
-//                                                 color: Color(0xB6BB3939),
-//                                               ),
-//                                             ),
-//                                             child: Text(
-//                                               'Nivel: ${data['nivel_id']} ',
-//                                               style: TextStyle(
-//                                                   fontSize: 20,
-//                                                   fontWeight:
-//                                                       FontWeight.bold),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                         //Fecha de Nacimiento
-//                                         Padding(
-//                                           padding: EdgeInsets.all(8.0),
-//                                           child: Container(
-//                                             decoration: BoxDecoration(
-//                                               color: Color(0xB6BB3939),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 width: 5,
-//                                                 color: Color(0xB6BB3939),
-//                                               ),
-//                                             ),
-//                                             child: Text(
-//                                               'Fecha de Cumpleaños: ${data['fechaNacimiento']} ',
-//                                               style: TextStyle(
-//                                                   fontSize: 20,
-//                                                   fontWeight:
-//                                                       FontWeight.bold),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                         Padding(
-//                                           padding: EdgeInsets.all(8.0),
-//                                           child: Container(
-//                                             decoration: BoxDecoration(
-//                                               color: Color(0xB6BB3939),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 width: 5,
-//                                                 color: Color(0xB6BB3939),
-//                                               ),
-//                                             ),
-//                                             child: Text(
-//                                               'Nombre Tutor: ${data['nombreApoderado']} ',
-//                                               style: TextStyle(
-//                                                   fontSize: 20,
-//                                                   fontWeight:
-//                                                       FontWeight.bold),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                         Padding(
-//                                           padding: EdgeInsets.all(8.0),
-//                                           child: Container(
-//                                             decoration: BoxDecoration(
-//                                               color: Color(0xB6BB3939),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(5),
-//                                               border: Border.all(
-//                                                 width: 5,
-//                                                 color: Color(0xB6BB3939),
-//                                               ),
-//                                             ),
-//                                             child: Text(
-//                                               'Alergias: ${data['alergias']} ',
-//                                               style: TextStyle(
-//                                                   fontSize: 20,
-//                                                   fontWeight:
-//                                                       FontWeight.bold),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       ],
-//                                     ),
-//                                   ),
-//                                   Padding(
-//                                     padding: const EdgeInsets.all(10.0),
-//                                     child: Container(
-//                                       padding: EdgeInsets.all(8.0),
-//                                       child: Column(
-//                                         children: [
-//                                           Icon(Icons.phone_android_sharp),
-//                                           Text(
-//                                             'Telefono ',
-//                                             style: TextStyle(
-//                                                 fontSize: 20,
-//                                                 fontWeight: FontWeight.bold),
-//                                           ),
-//                                           Divider(
-//                                             color: Colors.black,
-//                                             height: 5,
-//                                           ),
-//                                           Row(
-//                                             mainAxisSize: MainAxisSize.max,
-//                                             mainAxisAlignment:
-//                                                 MainAxisAlignment
-//                                                     .spaceBetween,
-//                                             children: [
-//                                               Container(
-//                                                 alignment:
-//                                                     Alignment.centerLeft,
-//                                                 decoration: BoxDecoration(
-//                                                     //border: Border.all(width: 1),
-//                                                     ),
-//                                                 child: Text(
-//                                                   'Telefono N°1 \n ${data['telefono1']}',
-//                                                   style: TextStyle(
-//                                                       fontSize: 20,
-//                                                       fontWeight:
-//                                                           FontWeight.bold),
-//                                                 ),
-//                                               ),
-//                                               Container(
-//                                                 alignment:
-//                                                     Alignment.centerRight,
-//                                                 decoration: BoxDecoration(
-//                                                     //border: Border.all(width: 1),
-//                                                     ),
-//                                                 child: Text(
-//                                                   'Telefono N°2 \n ${data['telefono2']}',
-//                                                   style: TextStyle(
-//                                                       fontSize: 20,
-//                                                       fontWeight:
-//                                                           FontWeight.bold),
-//                                                 ),
-//                                               ),
-//                                             ],
-//                                           ),
-//                                         ],
-//                                       ),
-//                                       decoration: BoxDecoration(
-//                                         color:
-//                                             Color.fromARGB(255, 68, 137, 255),
-//                                         borderRadius:
-//                                             BorderRadius.circular(5),
-//                                         border: Border.all(
-//                                           width: 5,
-//                                           color: Color(0xB6BB3939),
-//                                         ),
-//                                       ),
-//                                     ),
-//                                   ),
-//                                 ],
-//                               ),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     SliverAppBar(
-//                         pinned: true,
-//                         expandedHeight: 300,
-//                         backgroundColor: Color.fromARGB(0, 185, 58, 58),
-//                         flexibleSpace: FlexibleSpaceBar(
-//                             background: SafeArea(
-//                                 child: Row(
-//                                     mainAxisAlignment:
-//                                         MainAxisAlignment.center,
-//                                     children: <Widget>[
-//                               Flexible(
-//                                   child: Padding(
-//                                 padding: const EdgeInsets.all(8.0),
-//                                 child: Card(
-//                                   color: Color.fromARGB(189, 244, 67, 54),
-//                                   child: Column(
-//                                     crossAxisAlignment:
-//                                         CrossAxisAlignment.start,
-//                                     children: <Widget>[
-//                                       Container(
-//                                         height: 275,
-//                                         alignment: Alignment.centerLeft,
-//                                         padding: EdgeInsets.all(20),
-//                                         child: Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.spaceAround,
-//                                           children: [
-//                                             ElevatedButton(
-//                                               onPressed: () {
-//                                                 print(
-//                                                     "You pressed Icon Elevated Button");
-//                                               },
-//                                               style: ElevatedButton.styleFrom(
-//                                                   primary: Colors.cyan),
-//                                               child: Column(
-//                                                 mainAxisSize:
-//                                                     MainAxisSize.min,
-//                                                 children: [
-//                                                   Icon(Icons.add),
-//                                                   Text('Agregar Historial'),
-//                                                 ],
-//                                               ),
-//                                             ),
-//                                             ElevatedButton(
-//                                               onPressed: () {
-//                                                 print(
-//                                                     "You pressed Icon Elevated Button");
-//                                               },
-//                                               style: ElevatedButton.styleFrom(
-//                                                   primary: Colors.green),
-//                                               child: Column(
-//                                                 mainAxisSize:
-//                                                     MainAxisSize.min,
-//                                                 children: [
-//                                                   Icon(Icons.list_alt),
-//                                                   Text('Ver Historial'),
-//                                                 ],
-//                                               ),
-//                                             ),
-//                                             ElevatedButton(
-//                                               onPressed: () {
-//                                                 print(
-//                                                     "You pressed Icon Elevated Button");
-//                                               },
-//                                               style: ElevatedButton.styleFrom(
-//                                                   primary: Color.fromARGB(
-//                                                       255, 116, 55, 51)),
-//                                               child: Column(
-//                                                 mainAxisSize:
-//                                                     MainAxisSize.min,
-//                                                 children: [
-//                                                   Icon(Icons.auto_delete),
-//                                                   Text('Borrar Niño'),
-//                                                 ],
-//                                               ),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                     ],
-//                                   ),
-//                                 ),
-//                               ))
-//                             ]))))
-//                   ]);
-//                 }),
-//               ))));
-// }
-// }

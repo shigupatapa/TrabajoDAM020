@@ -120,7 +120,8 @@ class _PageListNivelesState extends State<PageListNiveles> {
                         return PerfilNivel(nivel['nivel_id']);
                       },
                     );
-                    Navigator.push(context, route);
+                    Navigator.push(context, route)
+                        .then((value) => setState(() {}));
                   },
                 ),
               ),
@@ -191,7 +192,7 @@ class _PageListNivelesState extends State<PageListNiveles> {
                   return PerfilNivel(nivel['nivel_id']);
                 },
               );
-              Navigator.push(context, route);
+              Navigator.push(context, route).then((value) => setState(() {}));
             },
           ),
         );

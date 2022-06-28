@@ -125,7 +125,7 @@ class _PageListNinosState extends State<PageListNinos> {
                         return PerfilNino(nino['rutNino']);
                       },
                     );
-                    Navigator.push(context, route);
+                    Navigator.push(context, route).then((value) => setState(() {}));
                   },
                 ),
               ),
@@ -216,7 +216,7 @@ class _PageListNinosState extends State<PageListNinos> {
                       MaterialPageRoute(builder: (context) {
                     return PerfilNino(nino['rutNino']);
                   });
-                  Navigator.push(context, route);
+                  Navigator.push(context, route).then((value) => setState(() {}));
                 },
               );
             },
