@@ -1,9 +1,12 @@
 import 'dart:ui';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:flutter/material.dart';
-
-import '../../provider/niveles_provider.dart';
+import 'package:intl/intl.dart';
 
 class PageAddProfe extends StatefulWidget {
   PageAddProfe({Key? key}) : super(key: key);
@@ -19,6 +22,8 @@ class _PageAddProfeState extends State<PageAddProfe> {
   TextEditingController nombreCtrl = TextEditingController();
   TextEditingController nivelCtrl = TextEditingController();
   String nivelSel = '', sexo = '';
+  var ffecha = DateFormat('dd-MM-yyyy');
+  DateTime hoy = DateTime.now();
 
   // String errCodigo = '';
   // String errNombre = '';
@@ -78,7 +83,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
               controlsBuilder: (context, controls) {
                 final isLastStep = currentStep == getSteps().length - 1;
                 return Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -125,9 +130,10 @@ class _PageAddProfeState extends State<PageAddProfe> {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              onChanged: (value) {
-                // do something
+              onChanged: (String text) {
+                RUTValidator.formatFromTextController(rutProfeCtrl);
               },
+              keyboardType: TextInputType.number,
             ),
             Divider(),
             TextFormField(
@@ -145,17 +151,19 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 // do something
               },
             ),
+            Divider(),
             Container(
-                padding: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2,
-                  ),
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
                 ),
-                child: Column(children: [
+              ),
+              child: Column(
+                children: [
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
@@ -173,7 +181,71 @@ class _PageAddProfeState extends State<PageAddProfe> {
                       });
                     },
                   ),
-                ]))
+                  RadioListTile<String>(
+                    groupValue: sexo,
+                    title: Text('Femenino'),
+                    value: 'F',
+                    onChanged: (genero) {
+                      setState(() {
+                        sexo = genero!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Divider(),
+            // FECHA DE NACIMIENTO NIÑO
+            Container(
+              padding: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 2,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Text(
+                      'Fecha de Nacimiento:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        ffecha.format(hoy),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        child: Icon(MdiIcons.calendar),
+                        onPressed: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1920),
+                            lastDate: DateTime.now(),
+                            locale: Locale('es', 'ES'),
+                          ).then((fecha) {
+                            setState(() {
+                              hoy = fecha ?? hoy;
+                            });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

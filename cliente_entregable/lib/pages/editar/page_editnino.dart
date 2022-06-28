@@ -1,16 +1,19 @@
 import 'dart:ui';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../provider/niveles_provider.dart';
-
+// ignore: must_be_immutable
 class PageEditNino extends StatefulWidget {
   String rut;
-  PageEditNino(this.rut, {Key? key}) : super(key: key);
+  String nombre;
+  PageEditNino(this.rut, this.nombre, {Key? key}) : super(key: key);
 
   @override
   State<PageEditNino> createState() => _PageEditNinoState();
@@ -37,7 +40,7 @@ class _PageEditNinoState extends State<PageEditNino> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("Editar Niño"),
+        title: Text("Editar Perfil de ${widget.nombre}"),
         centerTitle: true,
         backgroundColor: Colors.black87,
       ),
@@ -92,7 +95,7 @@ class _PageEditNinoState extends State<PageEditNino> {
               controlsBuilder: (context, controls) {
                 final isLastStep = currentStep == getSteps().length - 1;
                 return Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -118,87 +121,6 @@ class _PageEditNinoState extends State<PageEditNino> {
         ),
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('Productos'),
-    //   ),
-    //   body: Form(
-    //     key: formKey,
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: ListView(
-    //         children: [
-    //           TextFormField(
-    //             controller: codigoCtrl,
-    //             decoration: InputDecoration(labelText: 'Código'),
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: Text(
-    //               errCodigo,
-    //               style: TextStyle(color: Colors.red),
-    //             ),
-    //           ),
-    //           TextFormField(
-    //             controller: nombreCtrl,
-    //             decoration: InputDecoration(labelText: 'Nombre'),
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: Text(
-    //               errNombre,
-    //               style: TextStyle(color: Colors.red),
-    //             ),
-    //           ),
-    //           TextFormField(
-    //             controller: stockCtrl,
-    //             decoration: InputDecoration(labelText: 'Stock'),
-    //             keyboardType: TextInputType.number,
-    //           ),
-    //           TextFormField(
-    //             controller: precioCtrl,
-    //             decoration: InputDecoration(labelText: 'Precio'),
-    //             keyboardType: TextInputType.number,
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: ElevatedButton(
-    //               child: Text('Agregar Producto'),
-    //               onPressed: () async {
-    //                 // int stock = int.tryParse(stockCtrl.text) ?? 0;
-    //                 // int precio = int.tryParse(precioCtrl.text) ?? 0;
-
-    //                 // var respuesta = await NinosProvider().AddNino(
-    //                 //   codigoCtrl.text.trim(),
-    //                 //   nombreCtrl.text.trim(),
-    //                 //   stock,
-    //                 //   precio,
-    //                 // );
-
-    //                 // if (respuesta['message'] != null) {
-    //                 //   //cod_producto
-    //                 //   if (respuesta['errors']['cod_producto'] != null) {
-    //                 //     errCodigo = respuesta['errors']['cod_producto'][0];
-    //                 //   }
-
-    //                 //   //nombre
-    //                 //   if (respuesta['errors']['nombre'] != null) {
-    //                 //     errNombre = respuesta['errors']['nombre'][0];
-    //                 //   }
-
-    //                 //   setState(() {});
-    //                 //   return;
-    //                 // }
-
-    //                 Navigator.pop(context);
-    //               },
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   List<Step> getSteps() {
@@ -225,8 +147,8 @@ class _PageEditNinoState extends State<PageEditNino> {
               inputFormatters: [
                 LengthLimitingTextInputFormatter(12),
               ],
-              onChanged: (value) {
-                // do something
+              onChanged: (String text) {
+                RUTValidator.formatFromTextController(rutNinoCtrl);
               },
               keyboardType: TextInputType.number,
             ),

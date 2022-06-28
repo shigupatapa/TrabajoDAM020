@@ -1,12 +1,13 @@
 import 'dart:ui';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
-import '../../provider/niveles_provider.dart';
 
 class PageAddNino extends StatefulWidget {
   PageAddNino({Key? key}) : super(key: key);
@@ -90,7 +91,7 @@ class _PageAddNinoState extends State<PageAddNino> {
               controlsBuilder: (context, controls) {
                 final isLastStep = currentStep == getSteps().length - 1;
                 return Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -204,7 +205,7 @@ class _PageAddNinoState extends State<PageAddNino> {
       Step(
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 0,
-        title: Text('data'),
+        title: Text('Datos Básicos'),
         content: Column(
           children: [
             // RUT NIÑO
@@ -223,8 +224,8 @@ class _PageAddNinoState extends State<PageAddNino> {
               inputFormatters: [
                 LengthLimitingTextInputFormatter(12),
               ],
-              onChanged: (value) {
-                // do something
+              onChanged: (String text) {
+                RUTValidator.formatFromTextController(rutNinoCtrl);
               },
               keyboardType: TextInputType.number,
             ),
@@ -290,21 +291,47 @@ class _PageAddNinoState extends State<PageAddNino> {
               ),
             ),
             Divider(),
-            // TUTOR NIÑO
-            TextFormField(
-              controller: apoderadoCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nombre del Apoderado',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
+            // NIVEL NIÑO
+            Container(
+              width: double.infinity,
+              child: FutureBuilder(
+                future: NivelesProvider().getAllNiveles(),
+                builder: (context, AsyncSnapshot snap) {
+                  if (!snap.hasData) {
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando niveles...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
+                  }
+                  var niveles = snap.data;
+                  return DropdownButtonFormField<String>(
+                    //hint: Text('Nivel'),
+                    decoration: InputDecoration(
+                      hintText: 'Nivel',
+                      fillColor: Colors.white.withOpacity(0.9),
+                      filled: true,
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+
+                    items: niveles.map<DropdownMenuItem<String>>((nivel) {
+                      return DropdownMenuItem<String>(
+                        child: Text(nivel['nombreNivel']),
+                        value: nivel['nivel_id'].toString(),
+                      );
+                    }).toList(),
+                    value: nivelSel.isEmpty ? null : nivelSel,
+                    onChanged: (nuevoNivel) {
+                      setState(() {
+                        nivelSel = nuevoNivel.toString();
+                      });
+                    },
+                  );
+                },
               ),
-              onChanged: (value) {
-                // do something
-              },
             ),
             Divider(),
             // FECHA DE NACIMIENTO NIÑO
@@ -364,50 +391,24 @@ class _PageAddNinoState extends State<PageAddNino> {
       Step(
         state: currentStep > 1 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 1,
-        title: Text('data2'),
+        title: Text('Datos Adicionales'),
         content: Column(
           children: [
-            // NIVEL NIÑO
-            Container(
-              width: double.infinity,
-              child: FutureBuilder(
-                future: NivelesProvider().getAllNiveles(),
-                builder: (context, AsyncSnapshot snap) {
-                  if (!snap.hasData) {
-                    return DropdownButtonFormField<String>(
-                      hint: Text('Cargando niveles...'),
-                      items: [],
-                      onChanged: (valor) {},
-                    );
-                  }
-                  var niveles = snap.data;
-                  return DropdownButtonFormField<String>(
-                    //hint: Text('Nivel'),
-                    decoration: InputDecoration(
-                      hintText: 'Nivel',
-                      fillColor: Colors.white.withOpacity(0.9),
-                      filled: true,
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-
-                    items: niveles.map<DropdownMenuItem<String>>((nivel) {
-                      return DropdownMenuItem<String>(
-                        child: Text(nivel['nombreNivel']),
-                        value: nivel['nivel_id'].toString(),
-                      );
-                    }).toList(),
-                    value: nivelSel.isEmpty ? null : nivelSel,
-                    onChanged: (nuevoNivel) {
-                      setState(() {
-                        nivelSel = nuevoNivel.toString();
-                      });
-                    },
-                  );
-                },
+            // TUTOR NIÑO
+            TextFormField(
+              controller: apoderadoCtrl,
+              decoration: InputDecoration(
+                hintText: 'Nombre del Apoderado',
+                fillColor: Colors.white.withOpacity(0.9),
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
+              onChanged: (value) {
+                // do something
+              },
             ),
             Divider(),
             // TELEFONO Nº1 NIÑO

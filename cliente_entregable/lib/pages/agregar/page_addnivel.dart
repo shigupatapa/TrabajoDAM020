@@ -54,7 +54,9 @@ class _PageAddNivelState extends State<PageAddNivel> {
                 if (isLastStep) {
                   // send data to server
                   var respuesta = await NivelesProvider().AddNivel(
-                      nombreNivelCtrl.text.trim(), detallesCtrl.text.trim());
+                    nombreNivelCtrl.text.trim(),
+                    detallesCtrl.text.trim(),
+                  );
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -68,7 +70,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
               controlsBuilder: (context, controls) {
                 final isLastStep = currentStep == getSteps().length - 1;
                 return Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -119,6 +121,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
                 // do something
               },
             ),
+            Divider(),
             TextFormField(
               controller: detallesCtrl,
               decoration: InputDecoration(

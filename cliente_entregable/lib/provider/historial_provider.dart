@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HistorialesProvider {
-  final String apiURL = 'http://192.168.138.130:8000/api';
-  //final String apiURL = 'http://10.0.2.2:8000/api'; //emulador
-  //final String apiURL = 'http://192.168.100.72:8000/api';
+  //final String apiURL = 'http://192.168.138.130:8000/api';
+  //final String apiURL = 'http://10.0.2.2:8000/api'; // EMULADOR
+  final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
 
-  //Lista Todos
-  Future<List<dynamic>> getAllHistotiales() async {
+  // LISTAR HISTORIALES
+  Future<List<dynamic>> getAllHistoriales() async {
     var uri = Uri.parse('$apiURL/historiales');
     var respuesta = await http.get(uri);
 
@@ -20,7 +20,7 @@ class HistorialesProvider {
     }
   }
 
-  //1 Historial
+  // INFO DE UN HISTORIAL
   Future<LinkedHashMap<String, dynamic>> getHistorial(String nHistorial) async {
     var uri = Uri.parse('$apiURL/historiales/$nHistorial');
     var respuesta = await http.get(uri);
@@ -32,43 +32,59 @@ class HistorialesProvider {
     }
   }
 
-  //ADD Hist
+  // AGREGAR HISTORIAL
   Future<LinkedHashMap<String, dynamic>> AddHistorial(
-      String rutNino, String titulo, String contenido) async {
+    String rutNino,
+    String titulo,
+    String contenido,
+  ) async {
     var uri = Uri.parse('$apiURL/historiales');
-    var respuesta = await http.post(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.post(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutNino': rutNino,
           'titulo': titulo,
           //'fecha': fecha,
           'contenido': contenido
-        }));
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
-  //Edicion Hist
-  Future<LinkedHashMap<String, dynamic>> UpdateHistorial(int nHistorial,
-      String rutNino, String titulo, DateTime fecha, String contenido) async {
+  // EDITAR HISTORIAL
+  Future<LinkedHashMap<String, dynamic>> UpdateHistorial(
+    int nHistorial,
+    String rutNino,
+    String titulo,
+    DateTime fecha,
+    String contenido,
+  ) async {
     var uri = Uri.parse('$apiURL/historiales/$nHistorial');
-    var respuesta = await http.put(uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: jsonEncode(<String, dynamic>{
+    var respuesta = await http.put(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: jsonEncode(
+        <String, dynamic>{
           'rutNino': rutNino,
           'titulo': titulo,
           //'fecha': fecha,
           'contenido': contenido
-        }));
+        },
+      ),
+    );
     return json.decode(respuesta.body);
   }
 
-  //Delete
+  // BORRAR HISTORIAL
   Future<bool> DeleteHistorial(int nHistorial) async {
     var uri = Uri.parse('$apiURL/historiales/$nHistorial');
     var respuesta = await http.delete(uri);

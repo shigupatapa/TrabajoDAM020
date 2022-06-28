@@ -4,7 +4,6 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 // import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class PageListNiveles extends StatefulWidget {
   PageListNiveles({Key? key}) : super(key: key);
@@ -25,6 +24,7 @@ class _PageListNivelesState extends State<PageListNiveles> {
         leading: MenuWidget(),
         title: Text("Niveles"),
         centerTitle: true,
+        backgroundColor: Colors.black87,
         actions: [
           IconButton(
             onPressed: () {
@@ -40,8 +40,16 @@ class _PageListNivelesState extends State<PageListNiveles> {
               color: Colors.white,
             ),
           ),
+          IconButton(
+            onPressed: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageAddNivel();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+            icon: Icon(Icons.add),
+          ),
         ],
-        backgroundColor: Colors.black87,
       ),
       body: Container(
         height: double.infinity,
@@ -68,27 +76,6 @@ class _PageListNivelesState extends State<PageListNiveles> {
             );
           },
         ),
-      ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        buttonSize: Size(50, 50),
-        childrenButtonSize: Size(50, 50),
-        backgroundColor: Colors.black87,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.4,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.add),
-            backgroundColor: Colors.green,
-            label: 'Agregar',
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageAddNivel();
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
-        ],
       ),
     );
   }
@@ -173,7 +160,6 @@ class _PageListNivelesState extends State<PageListNiveles> {
           ),
           color: Colors.white.withOpacity(0.85),
           child: ListTile(
-            contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 5),
             leading: Container(
               width: 50,
               height: 50,
@@ -194,11 +180,11 @@ class _PageListNivelesState extends State<PageListNiveles> {
               style: TextStyle(color: Colors.black, fontSize: 14),
               textAlign: TextAlign.center,
             ),
-            // subtitle: Text(
-            //   ninos['nivel_id'].toString(),
-            //   style: TextStyle(color: Colors.black, fontSize: 12),
-            //   textAlign: TextAlign.center,
-            // ),
+            subtitle: Text(
+              nivel['detalles'].toString(),
+              style: TextStyle(color: Colors.black, fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
             onTap: () {
               MaterialPageRoute route = MaterialPageRoute(
                 builder: (context) {

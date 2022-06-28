@@ -5,7 +5,6 @@ import 'package:cliente_entregable/provider/profesor_provider.dart';
 // import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class PageListProfes extends StatefulWidget {
   PageListProfes({Key? key}) : super(key: key);
@@ -26,6 +25,7 @@ class _PageListProfesState extends State<PageListProfes> {
         leading: MenuWidget(),
         title: Text("Educadoras"),
         centerTitle: true,
+        backgroundColor: Colors.black87,
         actions: [
           IconButton(
             onPressed: () {
@@ -41,8 +41,16 @@ class _PageListProfesState extends State<PageListProfes> {
               color: Colors.white,
             ),
           ),
+          IconButton(
+            onPressed: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageAddProfe();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+            icon: Icon(Icons.add),
+          ),
         ],
-        backgroundColor: Colors.black87,
       ),
       body: Container(
         height: double.infinity,
@@ -69,27 +77,6 @@ class _PageListProfesState extends State<PageListProfes> {
             );
           },
         ),
-      ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        buttonSize: Size(50, 50),
-        childrenButtonSize: Size(50, 50),
-        backgroundColor: Colors.black87,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.4,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.add),
-            backgroundColor: Colors.green,
-            label: 'Agregar',
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageAddProfe();
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
-        ],
       ),
     );
   }
@@ -131,7 +118,7 @@ class _PageListProfesState extends State<PageListProfes> {
                   onTap: () {
                     MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) {
-                        return PerfilProfe();
+                        return PerfilProfe(profe["rutProfesor"]);
                       },
                     );
                     Navigator.push(context, route);
@@ -220,7 +207,7 @@ class _PageListProfesState extends State<PageListProfes> {
                 onTap: () {
                   MaterialPageRoute route = MaterialPageRoute(
                     builder: (context) {
-                      return PerfilProfe();
+                      return PerfilProfe(profe["rutProfesor"]);
                     },
                   );
                   Navigator.push(context, route);

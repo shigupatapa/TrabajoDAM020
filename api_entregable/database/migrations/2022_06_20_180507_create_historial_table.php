@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('rutNino',12);
             $table->string("titulo",60);
             $table->string("contenido");
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
             $table->foreign('rutNino')->references('rutNino')->on('ninos');
         });

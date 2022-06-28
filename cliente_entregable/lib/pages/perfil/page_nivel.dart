@@ -1,7 +1,6 @@
 import 'package:cliente_entregable/pages/editar/page_editnivel.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 // ignore: must_be_immutable
 class PerfilNivel extends StatefulWidget {
@@ -46,6 +45,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 buildTop(nivel),
+                SizedBox(height: 10),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -55,48 +55,11 @@ class _PerfilNivelState extends State<PerfilNivel> {
                     ],
                   ),
                 ),
+                buildButtons(nivel),
               ],
             );
           },
         ),
-      ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        buttonSize: Size(50, 50),
-        childrenButtonSize: Size(50, 50),
-        backgroundColor: Colors.black87,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.4,
-        children: [
-          SpeedDialChild(
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.blue,
-            label: 'Editar',
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageNivelEdit();
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-            ),
-            backgroundColor: Colors.red,
-            label: 'Borrar',
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageNivelEdit();
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
-        ],
       ),
     );
   }
@@ -117,6 +80,10 @@ class _PerfilNivelState extends State<PerfilNivel> {
             ],
           ),
         ),
+        Positioned(
+          top: 1.25 * (coverHeight - profileHeight / 2),
+          child: buildSubtitle(nivel),
+        ),
       ],
     );
   }
@@ -134,12 +101,12 @@ class _PerfilNivelState extends State<PerfilNivel> {
             ),
           ),
         ),
-        //   // child: Image.network(
-        //   //   'https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000',
-        //   //   width: double.infinity,
-        //   //   height: coverHeight,
-        //   //   fit: BoxFit.cover,
-        //   // ),
+        //   child: Image.network(
+        //     'https://img.freepik.com/free-vector/back-school-background-with-empty-space_23-2148609200.jpg?w=2000',
+        //     width: double.infinity,
+        //     height: coverHeight,
+        //     fit: BoxFit.cover,
+        //   ),
         // ),
       ),
     );
@@ -152,6 +119,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('assets/images/nivel.png'),
+          fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.all(
           Radius.circular(100),
@@ -194,6 +162,23 @@ class _PerfilNivelState extends State<PerfilNivel> {
     );
   }
 
+  Widget buildSubtitle(nivel) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+      decoration: BoxDecoration(
+        color: Colors.green.withOpacity(0.9),
+      ),
+      child: Text(
+        nivel['detalles'],
+        style: TextStyle(
+          fontSize: 18,
+          fontStyle: FontStyle.italic,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
   Widget buildNinos() {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -222,9 +207,10 @@ class _PerfilNivelState extends State<PerfilNivel> {
                 child: Text(
                   "Niños del Nivel",
                   style: TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
-                    fontSize: 20,
+                    decoration: TextDecoration.underline,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -269,9 +255,9 @@ class _PerfilNivelState extends State<PerfilNivel> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
-                    // 'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}',
-                    //'http://192.168.100.72:8000/api/niños/imagen/${ninos['rutNino']}',
+                    //'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
+                    //'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}', // EMULADOR
+                    'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -342,9 +328,10 @@ class _PerfilNivelState extends State<PerfilNivel> {
                 child: Text(
                   "Educadoras del Nivel",
                   style: TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     fontStyle: FontStyle.italic,
-                    fontSize: 20,
+                    decoration: TextDecoration.underline,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -399,6 +386,84 @@ class _PerfilNivelState extends State<PerfilNivel> {
           ),
         );
       },
+    );
+  }
+
+  Widget buildButtons(nivel) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(25, 0, 25, 20),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 255, 235, 70).withOpacity(0.65),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Color(0xB6BB3939),
+            width: 2.5,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.cyan,
+                side: BorderSide(
+                  color: Colors.white,
+                  width: 1.5,
+                ),
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit),
+                    Text(
+                      'Editar\nNivel',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageNivelEdit(widget.idNivel);
+                });
+                Navigator.push(context, route);
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                side: BorderSide(
+                  color: Colors.white,
+                  width: 1.5,
+                ),
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.delete),
+                    Text(
+                      'Borrar\nNivel',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {
+                print("You pressed Icon Elevated Button");
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

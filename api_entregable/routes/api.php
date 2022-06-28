@@ -26,7 +26,7 @@ Route::get('/niveles/{nivel}/niños',[NivelesController::class,'filterNinos']);
 Route::get('/niveles/{nivel}/profes',[NivelesController::class,'filterProfes']);
 Route::post('/niveles',[NivelesController::class,'store']);
 Route::delete('niveles/{nivel}',[NivelesController::class,'destroy']);
-Route::patch('/niveles/{nivel}',[NivelesController::class,'update']);
+Route::put('/niveles/{nivel}',[NivelesController::class,'update']);
 
 // NIÑOS
 Route::get('/niños',[NinosController::class,'index']);

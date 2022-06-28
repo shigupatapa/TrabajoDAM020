@@ -5,7 +5,6 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 // import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class PageListNinos extends StatefulWidget {
   PageListNinos({Key? key}) : super(key: key);
@@ -26,6 +25,7 @@ class _PageListNinosState extends State<PageListNinos> {
         leading: MenuWidget(),
         title: Text("Niños"),
         centerTitle: true,
+        backgroundColor: Colors.black87,
         actions: [
           IconButton(
             onPressed: () {
@@ -41,8 +41,16 @@ class _PageListNinosState extends State<PageListNinos> {
               color: Colors.white,
             ),
           ),
+          IconButton(
+            onPressed: () {
+              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                return PageAddNino();
+              });
+              Navigator.push(context, route).then((value) => setState(() {}));
+            },
+            icon: Icon(Icons.add),
+          ),
         ],
-        backgroundColor: Colors.black87,
       ),
       body: Container(
         height: double.infinity,
@@ -69,27 +77,6 @@ class _PageListNinosState extends State<PageListNinos> {
             );
           },
         ),
-      ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        buttonSize: Size(50, 50),
-        childrenButtonSize: Size(50, 50),
-        backgroundColor: Colors.black87,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.4,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.add),
-            backgroundColor: Colors.green,
-            label: 'Agregar',
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageAddNino();
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
-        ],
       ),
     );
   }
@@ -124,9 +111,9 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                          'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-                          //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-                          //'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
+                          //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+                          //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
+                          'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -169,7 +156,6 @@ class _PageListNinosState extends State<PageListNinos> {
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
         var nino = snap.data[index];
-
         return Card(
           shape: StadiumBorder(
             side: BorderSide(
@@ -201,9 +187,9 @@ class _PageListNinosState extends State<PageListNinos> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
-                        'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-                        // 'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-                        //'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
+                        //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+                        //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
+                        'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
                       ),
                       fit: BoxFit.cover,
                     ),

@@ -1,7 +1,9 @@
 import 'dart:ui';
+
 import 'package:cliente_entregable/provider/historial_provider.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class PageAddHistorial extends StatefulWidget {
   String rut;
   String nombre;
@@ -20,9 +22,11 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Historial de ${widget.nombre}'),
+        title: Text('Nuevo Historial de ${widget.nombre}'),
         centerTitle: true,
+        backgroundColor: Colors.black87,
       ),
       body: Container(
         height: double.infinity,
@@ -52,9 +56,11 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
                   var rutNino = widget.rut;
                   var titulo = tituloCtrl.text.trim();
                   var contenido = contenidoCtrl.text.trim();
-                  var respuesta = await HistorialesProvider()
-                      .AddHistorial(rutNino, titulo, contenido);
-
+                  var respuesta = await HistorialesProvider().AddHistorial(
+                    rutNino,
+                    titulo,
+                    contenido,
+                  );
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -68,7 +74,7 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
               controlsBuilder: (context, controls) {
                 final isLastStep = currentStep == getSteps().length - 1;
                 return Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: Row(
                     children: [
                       Expanded(
@@ -99,29 +105,11 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
   List<Step> getSteps() {
     return [
       Step(
-          state: currentStep > 0 ? StepState.complete : StepState.indexed,
-          isActive: currentStep >= 0,
-          title: Text('Agregar historial'),
-          content: Column(children: [
-            // RUT NIÑO
-            // TextFormField(
-            //   controller: rutNinoCtrl,
-            //   decoration: InputDecoration(
-            //     hintText: 'RUT del Niño',
-            //     fillColor: Colors.white.withOpacity(0.9),
-            //     filled: true,
-            //     contentPadding: EdgeInsets.all(15),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(30),
-            //     ),
-            //   ),
-            //   onChanged: (value) {
-            //     // do something
-            //   },
-            //   keyboardType: TextInputType.number,
-            // ),
-            Divider(),
-
+        state: currentStep > 0 ? StepState.complete : StepState.indexed,
+        isActive: currentStep >= 0,
+        title: Text('Descripción'),
+        content: Column(
+          children: [
             TextFormField(
               controller: tituloCtrl,
               decoration: InputDecoration(
@@ -139,21 +127,29 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
             ),
             Divider(),
             TextFormField(
-                maxLines: 6,
-                controller: contenidoCtrl,
-                decoration: InputDecoration(
-                  hintText: 'Alergias',
-                  fillColor: Colors.white.withOpacity(0.9),
-                  filled: true,
-                  contentPadding: EdgeInsets.all(15),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+              maxLines: 5,
+              controller: contenidoCtrl,
+              decoration: InputDecoration(
+                hintText: 'Descripción',
+                fillColor: Colors.white.withOpacity(0.9),
+                filled: true,
+                contentPadding: EdgeInsets.all(15),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                onChanged: (value) {
-                  // do something
-                })
-          ]))
+              ),
+              onChanged: (value) {
+                // do something
+              },
+            ),
+          ],
+        ),
+      ),
+      Step(
+        isActive: currentStep >= 1,
+        title: Text('Información'),
+        content: Container(),
+      ),
     ];
   }
 }

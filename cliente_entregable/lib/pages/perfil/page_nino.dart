@@ -1,4 +1,5 @@
 import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
+import 'package:cliente_entregable/pages/editar/page_editnino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,15 @@ class _PerfilNinoState extends State<PerfilNino> {
                 SizedBox(height: 10),
                 buildInfo(nino),
                 buildContacto(nino),
-                buildButtons(nino),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      buildButtonNino(nino),
+                      buildButtonHistorial(nino),
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -108,10 +117,11 @@ class _PerfilNinoState extends State<PerfilNino> {
         // shape: BoxShape.circle,
         image: DecorationImage(
           image: NetworkImage(
-            'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-            // 'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}',
-            //'http://192.168.100.72:8000/api/niños/imagen/${nino['rutNino']}',
+            //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+            //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
+            'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
           ),
+          fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.all(
           Radius.circular(100),
@@ -475,11 +485,10 @@ class _PerfilNinoState extends State<PerfilNino> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  //if (nino['telefono1'] != null)
                   Container(
                     padding: EdgeInsets.all(2.5),
                     child: Text(
-                      'Telefono: ${nino['telefono1']}',
+                      nino['telefono1'],
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -504,8 +513,9 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildButtons(nino) {
+  Widget buildButtonNino(nino) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: Container(
         alignment: Alignment.centerLeft,
@@ -534,9 +544,9 @@ class _PerfilNinoState extends State<PerfilNino> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.add),
+                    Icon(Icons.edit),
                     Text(
-                      'Agregar\nHistorial',
+                      'Editar\nNiño',
                       style: TextStyle(fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
@@ -545,36 +555,12 @@ class _PerfilNinoState extends State<PerfilNino> {
               ),
               onPressed: () {
                 MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                  return PageAddHistorial(
-                      nino['rutNino'], nino['nombreCompleto']);
+                  return PageEditNino(
+                    nino['rutNino'],
+                    nino['nombreCompleto'].toString().split(' ').first,
+                  );
                 });
                 Navigator.push(context, route);
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                side: BorderSide(
-                  color: Colors.white,
-                  width: 1.5,
-                ),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.list_alt),
-                    Text(
-                      'Ver\nHistorial',
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              onPressed: () {
-                print("You pressed Icon Elevated Button");
               },
             ),
             ElevatedButton(
@@ -593,6 +579,88 @@ class _PerfilNinoState extends State<PerfilNino> {
                     Icon(Icons.delete),
                     Text(
                       'Borrar\nNiño',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {
+                print("You pressed Icon Elevated Button");
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildButtonHistorial(nino) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 255, 235, 70).withOpacity(0.65),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Color(0xB6BB3939),
+            width: 2.5,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                side: BorderSide(
+                  color: Colors.white,
+                  width: 1.5,
+                ),
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.add),
+                    Text(
+                      'Agregar\nHistorial',
+                      style: TextStyle(fontSize: 10),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageAddHistorial(
+                    nino['rutNino'],
+                    nino['nombreCompleto'].toString().split(' ').first,
+                  );
+                });
+                Navigator.push(context, route);
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.purple,
+                side: BorderSide(
+                  color: Colors.white,
+                  width: 1.5,
+                ),
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.list_alt),
+                    Text(
+                      'Ver\nHistorial',
                       style: TextStyle(fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
