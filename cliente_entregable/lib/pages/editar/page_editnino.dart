@@ -32,6 +32,15 @@ class _PageEditNinoState extends State<PageEditNino> {
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
   bool editar = false;
+  String errRUT = '',
+      errNombre = '',
+      errSexo = '',
+      errNivel = '',
+      errFecha = '',
+      errTutor = '',
+      errTelUno = '',
+      errTelDos = '',
+      errAlergias = '';
 
   // String errCodigo = '';
   // String errNombre = '';
@@ -109,6 +118,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                       },
                       keyboardType: TextInputType.number,
                     ),
+                    if (errRUT != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errRUT,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Container(
                       child: Row(
                         children: [
@@ -141,6 +160,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         // do something
                       },
                     ),
+                    if (errNombre != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errNombre,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // SEXO NIÑO
                     Container(
@@ -185,6 +214,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         ],
                       ),
                     ),
+                    if (errSexo != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errSexo,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // TUTOR NIÑO
                     TextFormField(
@@ -202,6 +241,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         // do something
                       },
                     ),
+                    if (errTutor != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errTutor,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // FECHA DE NACIMIENTO NIÑO
                     Container(
@@ -254,6 +303,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         ],
                       ),
                     ),
+                    if (errFecha != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errFecha,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // NIVEL NIÑO
                     Container(
@@ -299,6 +358,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         },
                       ),
                     ),
+                    if (errNivel != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errNivel,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // TELEFONO Nº1 NIÑO
                     TextFormField(
@@ -317,6 +386,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                       },
                       keyboardType: TextInputType.number,
                     ),
+                    if (errTelUno != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        color: Colors.red,
+                        child: Text(
+                          errTelUno,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // TELEFONO Nº2 NIÑO
                     TextFormField(
@@ -335,6 +414,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                       },
                       keyboardType: TextInputType.number,
                     ),
+                    if (errTelDos != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errTelDos,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     // ALERGIAS NIÑO
                     TextFormField(
@@ -353,6 +442,16 @@ class _PageEditNinoState extends State<PageEditNino> {
                         // do something
                       },
                     ),
+                    if (errAlergias != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errAlergias,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+
                     Divider(),
                     Container(
                       child: ElevatedButton(
@@ -373,6 +472,53 @@ class _PageEditNinoState extends State<PageEditNino> {
                             telefono2Ctrl.text.trim(),
                             alergiasCtrl.text.trim(),
                           );
+                          if (respuesta['message'] != null) {
+                            // STEP
+
+                            // RUT
+                            if (respuesta['errors']['rutNino'] != null) {
+                              errRUT = respuesta['errors']['rutNino'][0];
+                            }
+                            // NOMBRE
+                            if (respuesta['errors']['nombreCompleto'] != null) {
+                              errNombre =
+                                  respuesta['errors']['nombreCompleto'][0];
+                            }
+                            // SEXO
+                            if (respuesta['errors']['sexo'] != null) {
+                              errSexo = respuesta['errors']['sexo'][0];
+                            }
+                            // NIVEL
+                            if (respuesta['errors']['nivel_id'] != null) {
+                              errNivel = respuesta['errors']['nivel_id'][0];
+                            }
+                            // FECHA NACIMIENTO
+                            if (respuesta['errors']['fechaNacimiento'] !=
+                                null) {
+                              errFecha =
+                                  respuesta['errors']['fechaNacimiento'][0];
+                            }
+                            // TUTOR
+                            if (respuesta['errors']['nombreApoderado'] !=
+                                null) {
+                              errTutor =
+                                  respuesta['errors']['nombreApoderado'][0];
+                            }
+                            // TELEFONO 1
+                            if (respuesta['errors']['telefono1'] != null) {
+                              errTelUno = respuesta['errors']['telefono1'][0];
+                            }
+                            // TELEFONO 2
+                            if (respuesta['errors']['telefono2'] != null) {
+                              errTelDos = respuesta['errors']['telefono2'][0];
+                            }
+                            // ALERGIAS
+                            if (respuesta['errors']['alergias'] != null) {
+                              errAlergias = respuesta['errors']['alergias'][0];
+                            }
+                            setState(() {});
+                            return;
+                          }
                           print(respuesta);
                           Navigator.pop(context);
                           setState(() {});

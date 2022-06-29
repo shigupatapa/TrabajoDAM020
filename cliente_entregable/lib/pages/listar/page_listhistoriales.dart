@@ -13,6 +13,7 @@ class PageListHistoriales extends StatefulWidget {
 
 class _PageListHistorialesState extends State<PageListHistoriales> {
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // drawer: DrawerPage(),
@@ -119,7 +120,7 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
             ),
             onTap: () {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageEditHistorial();
+                return PageEditHistorial(hist['nivel_id'], hist['rutNino']);
               });
               Navigator.push(context, route).then((value) => setState(() {}));
             },

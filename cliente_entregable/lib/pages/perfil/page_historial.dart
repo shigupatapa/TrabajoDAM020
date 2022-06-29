@@ -120,7 +120,7 @@ class _PageHistorialState extends State<PageHistorial> {
             ),
             onTap: () {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageEditHistorial();
+                return PageEditHistorial(hist['nivel_id'], hist['rutNino']);
               });
               Navigator.push(context, route).then((value) => setState(() {}));
             },

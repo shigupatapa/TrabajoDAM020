@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Historial;
+use Illuminate\Http\Request;
 use App\Http\Requests\HistorialRequest;
 
 class HistorialesController extends Controller
@@ -14,6 +15,7 @@ class HistorialesController extends Controller
      */
     public function index()
     {
+        
         return Historial::all();
     }
 

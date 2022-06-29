@@ -62,7 +62,7 @@ class HistorialesProvider {
     int nHistorial,
     String rutNino,
     String titulo,
-    DateTime fecha,
+    //DateTime fecha,
     String contenido,
   ) async {
     var uri = Uri.parse('$apiURL/historiales/$nHistorial');

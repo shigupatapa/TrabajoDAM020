@@ -145,11 +145,6 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
           ],
         ),
       ),
-      Step(
-        isActive: currentStep >= 1,
-        title: Text('Información'),
-        content: Container(),
-      ),
     ];
   }
 }
