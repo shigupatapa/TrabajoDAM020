@@ -43,6 +43,7 @@ Route::get('/profesores/{profesor}',[ProfesoresController::class,'show']);
 Route::post('/profesores',[ProfesoresController::class,'store']);
 Route::delete('profesores/{profesor}',[ProfesoresController::class,'destroy']);
 Route::put('/profesores/{profesor}',[ProfesoresController::class,'update']);
+Route::put('/profesores/rut/{profesor}',[ProfesoresController::class,'updateR']);
 
 // HISTORIAL
 Route::get('/historiales',[HistorialesController::class,'index']);

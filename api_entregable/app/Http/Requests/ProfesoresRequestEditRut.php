@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-// use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rule;
 
-class ProfesoresRequestEdit extends FormRequest
+class ProfesoresRequestEditRut extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class ProfesoresRequestEdit extends FormRequest
     public function rules()
     {
         return [
-            // 'rutProfesor'=>'required|unique:profesores,rutProfesor|max:12',
+            'rutProfesor'=>'required|unique:profesores,rutProfesor|max:12',
             'nombreCompleto' =>'required|max:60|min:3',
             'sexo' => 'required|max:1',
             'fechaNacimiento' =>'date|required',
@@ -35,10 +35,10 @@ class ProfesoresRequestEdit extends FormRequest
     public function messages()
     {
         return [
-            // 'rutProfesor' => [Rule::unique('Profesores')->ignore($this->profesor->rutProfesor,'rutProfesor'),],
-            // 'rutProfesor.required' => 'El rut es obligatorio.',
-            // 'rutProfesor.unique' => 'El rut :input ya existe.',
-            // 'rutProfesor.max' => 'El rut no debe tener más de 12 caracteres.',
+            'rutProfesor' => [Rule::unique('Profesores')->ignore($this->profesor->rutProfesor,'rutProfesor'),],
+            'rutProfesor.required' => 'El rut es obligatorio.',
+            'rutProfesor.unique' => 'El rut :input ya existe.',
+            'rutProfesor.max' => 'El rut no debe tener más de 12 caracteres.',
             'nombreCompleto.required' => 'El nombre completo es obligatorio.',
             'nombreCompleto.max' => 'El nombre completo no debe tener más de 60 caracteres.',
             'nombreCompleto.min' => 'El nombre completo debe tener al menos 3 caracteres.',
