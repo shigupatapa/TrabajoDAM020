@@ -4,7 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:dart_rut_validator/dart_rut_validator.dart';
+//import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -131,7 +131,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 ),
               ),
               onChanged: (String text) {
-                RUTValidator.formatFromTextController(rutProfeCtrl);
+                // RUTValidator.formatFromTextController(rutProfeCtrl);
               },
               keyboardType: TextInputType.number,
             ),

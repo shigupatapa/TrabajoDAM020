@@ -115,6 +115,7 @@ class NinosProvider {
         },
         body: jsonEncode(
           <String, dynamic>{
+            'rutNino': rutNino,
             'sexo': sexo,
             'nombreCompleto': nombreCompleto,
             'nombreApoderado': nombreApoderado,

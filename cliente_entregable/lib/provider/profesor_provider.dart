@@ -20,6 +20,7 @@ class ProfesoresProvider {
     }
   }
 
+//profesores
   // INFO DE UN PROFE
   Future<LinkedHashMap<String, dynamic>> getProfe(String rutProfesor) async {
     var uri = Uri.parse('$apiURL/profesores/$rutProfesor');
@@ -62,30 +63,52 @@ class ProfesoresProvider {
 
   // EDITAR PROFE
   Future<LinkedHashMap<String, dynamic>> UpdateProfe(
+      bool editar,
       String rut,
       String rutProfesor,
       String nombreCompleto,
       String sexo,
-      DateTime fechaNacimiento,
+      String fechaNacimiento,
       int nivel) async {
-    var uri = Uri.parse('$apiURL/profesores/$rut');
-    var respuesta = await http.put(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json'
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'rutProfesor': rutProfesor,
-          'nombreCompleto': nombreCompleto,
-          'fechaNacimiento': fechaNacimiento,
-          'sexo': sexo,
-          'nivel_id': nivel,
+    if (editar) {
+      var uri = Uri.parse('$apiURL/profesores/rut/$rut');
+      var respuesta = await http.put(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
         },
-      ),
-    );
-    return json.decode(respuesta.body);
+        body: jsonEncode(
+          <String, dynamic>{
+            'rutProfesor': rutProfesor,
+            'nombreCompleto': nombreCompleto,
+            'fechaNacimiento': fechaNacimiento,
+            'sexo': sexo,
+            'nivel_id': nivel,
+          },
+        ),
+      );
+      return json.decode(respuesta.body);
+    } else {
+      var uri = Uri.parse('$apiURL/profesores/$rut');
+      var respuesta = await http.put(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'rutProfesor': rutProfesor,
+            'nombreCompleto': nombreCompleto,
+            'fechaNacimiento': fechaNacimiento,
+            'sexo': sexo,
+            'nivel_id': nivel,
+          },
+        ),
+      );
+      return json.decode(respuesta.body);
+    }
   }
 
   // ELIMINAR PROFE

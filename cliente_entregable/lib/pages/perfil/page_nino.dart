@@ -121,9 +121,9 @@ class _PerfilNinoState extends State<PerfilNino> {
         // shape: BoxShape.circle,
         image: DecorationImage(
           image: NetworkImage(
-            //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+            'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
             //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-            'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
+            // 'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
           ),
           fit: BoxFit.cover,
         ),
@@ -151,7 +151,7 @@ class _PerfilNinoState extends State<PerfilNino> {
       child: Column(
         children: [
           Text(
-            nino["nombreCompleto"],
+            nino['nombreCompleto'],
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -565,7 +565,9 @@ class _PerfilNinoState extends State<PerfilNino> {
                     nombre,
                   );
                 });
-                Navigator.push(context, route);
+                Navigator.push(context, route).then((value) {
+                  setState(() {});
+                });
               },
             ),
             ElevatedButton(

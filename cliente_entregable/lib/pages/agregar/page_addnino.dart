@@ -4,7 +4,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:dart_rut_validator/dart_rut_validator.dart';
+//import 'package:dart_rut_validator/dart_rut_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -225,7 +225,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                 LengthLimitingTextInputFormatter(12),
               ],
               onChanged: (String text) {
-                RUTValidator.formatFromTextController(rutNinoCtrl);
+                //RUTValidator.formatFromTextController(rutNinoCtrl);
               },
               keyboardType: TextInputType.number,
             ),

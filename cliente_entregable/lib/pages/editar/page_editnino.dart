@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-// // ignore: must_be_immutable
+// ignore: must_be_immutable
 class PageEditNino extends StatefulWidget {
   String rut;
   String nombre;
@@ -20,7 +20,6 @@ class PageEditNino extends StatefulWidget {
 }
 
 class _PageEditNinoState extends State<PageEditNino> {
-  int currentStep = 0;
   // final formKey = GlobalKey<FormState>();
   TextEditingController rutNinoCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
@@ -33,6 +32,7 @@ class _PageEditNinoState extends State<PageEditNino> {
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
   bool editar = false;
+
   // String errCodigo = '';
   // String errNombre = '';
   @override
@@ -49,6 +49,10 @@ class _PageEditNinoState extends State<PageEditNino> {
       if (data['alergias'] != null) {
         alergiasCtrl.text = data['alergias'];
       }
+      sexo = data['sexo'];
+      hoy = DateTime.parse(data['fechaNacimiento']);
+      nivelSel = data['nivel_id'].toString();
+      setState(() {});
     });
   }
 
@@ -87,7 +91,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                       readOnly: !editar,
                       controller: rutNinoCtrl,
                       decoration: InputDecoration(
-                        hintText: 'RUT del Niño',
+                        labelText: 'RUT del Niño',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -104,6 +108,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                       },
                       keyboardType: TextInputType.number,
                     ),
+
                     Container(
                       child: Row(
                         children: [
@@ -124,7 +129,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                     TextFormField(
                       controller: nombreCtrl,
                       decoration: InputDecoration(
-                        hintText: 'Nombre Completo',
+                        labelText: 'Nombre Completo',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -161,9 +166,9 @@ class _PageEditNinoState extends State<PageEditNino> {
                             groupValue: sexo,
                             title: Text('Masculino'),
                             value: 'M',
-                            onChanged: (genero) {
+                            onChanged: (value) {
                               setState(() {
-                                sexo = genero!;
+                                sexo = value!;
                               });
                             },
                           ),
@@ -171,9 +176,9 @@ class _PageEditNinoState extends State<PageEditNino> {
                             groupValue: sexo,
                             title: Text('Femenino'),
                             value: 'F',
-                            onChanged: (genero) {
+                            onChanged: (value) {
                               setState(() {
-                                sexo = genero!;
+                                sexo = value!;
                               });
                             },
                           ),
@@ -185,7 +190,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                     TextFormField(
                       controller: apoderadoCtrl,
                       decoration: InputDecoration(
-                        hintText: 'Nombre del Apoderado',
+                        labelText: 'Nombre del Apoderado',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -259,6 +264,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                           if (!snap.hasData) {
                             return DropdownButtonFormField<String>(
                               hint: Text('Cargando niveles...'),
+                              value: nivelSel,
                               items: [],
                               onChanged: (valor) {},
                             );
@@ -298,7 +304,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                     TextFormField(
                       controller: telefono1Ctrl,
                       decoration: InputDecoration(
-                        hintText: 'Telefono Nº 1',
+                        labelText: 'Telefono Nº 1',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -316,7 +322,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                     TextFormField(
                       controller: telefono2Ctrl,
                       decoration: InputDecoration(
-                        hintText: 'Telefono Nº 2',
+                        labelText: 'Telefono Nº 2',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -335,7 +341,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                       maxLines: 5,
                       controller: alergiasCtrl,
                       decoration: InputDecoration(
-                        hintText: 'Alergias',
+                        labelText: 'Alergias',
                         fillColor: Colors.white.withOpacity(0.9),
                         filled: true,
                         contentPadding: EdgeInsets.all(15),
@@ -353,6 +359,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                         child: Text('Editar Niño'),
                         onPressed: () async {
                           int nivel = int.tryParse(nivelSel) ?? 0;
+
                           var respuesta = await NinosProvider().UpdateNino(
                             editar,
                             widget.rut,
