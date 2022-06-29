@@ -44,7 +44,6 @@ dependencies:
   flutter_zoom_drawer: ^3.0.2
   top_snackbar_flutter: ^2.0.0
   material_design_icons_flutter: ^5.0.6595
-
   flutter_localizations:
     sdk: flutter
 

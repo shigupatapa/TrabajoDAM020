@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NinosProvider {
-  //final String apiURL = 'http://192.168.138.130:8000/api';
+  final String apiURL = 'http://192.168.138.130:8000/api';
   //final String apiURL = 'http://10.0.2.2:8000/api'; // EMULADOR
-  final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
+  //final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
 
   // LISTAR TODOS LOS NIÑOS
   Future<List<dynamic>> getAllNinos() async {
@@ -70,38 +70,64 @@ class NinosProvider {
 
   // EDITAR NIÑO
   Future<LinkedHashMap<String, dynamic>> UpdateNino(
-    String url,
+    bool editar,
+    String rut,
     String rutNino,
     String nombreCompleto,
     String sexo,
-    DateTime fechaNacimiento,
+    String fechaNacimiento,
     String nombreApoderado,
     int nivel,
     String telefono1,
     String telefono2,
     String alergias,
   ) async {
-    var uri = Uri.parse('$apiURL/niños/$url');
-    var respuesta = await http.put(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json'
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'rutNino': rutNino,
-          'nombreCompleto': nombreCompleto,
-          'nombreApoderado': nombreApoderado,
-          'fechaNacimiento': fechaNacimiento,
-          'nivel': nivel,
-          'telefono1': telefono1,
-          'telefono2': telefono2,
-          'alergias': alergias,
+    if (editar) {
+      var uri = Uri.parse('$apiURL/niños/rut/$rut');
+      var respuesta = await http.put(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
         },
-      ),
-    );
-    return json.decode(respuesta.body);
+        body: jsonEncode(
+          <String, dynamic>{
+            'rutNino': rutNino,
+            'sexo': sexo,
+            'nombreCompleto': nombreCompleto,
+            'nombreApoderado': nombreApoderado,
+            'fechaNacimiento': fechaNacimiento,
+            'nivel_id': nivel,
+            'telefono1': telefono1,
+            'telefono2': telefono2,
+            'alergias': alergias,
+          },
+        ),
+      );
+      return json.decode(respuesta.body);
+    } else {
+      var uri = Uri.parse('$apiURL/niños/$rut');
+      var respuesta = await http.put(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json'
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            'sexo': sexo,
+            'nombreCompleto': nombreCompleto,
+            'nombreApoderado': nombreApoderado,
+            'fechaNacimiento': fechaNacimiento,
+            'nivel_id': nivel,
+            'telefono1': telefono1,
+            'telefono2': telefono2,
+            'alergias': alergias,
+          },
+        ),
+      );
+      return json.decode(respuesta.body);
+    }
   }
 
   // BORRAR NIÑO
