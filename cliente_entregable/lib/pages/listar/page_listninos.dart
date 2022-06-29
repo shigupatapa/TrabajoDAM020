@@ -174,9 +174,10 @@ class _PageListNinosState extends State<PageListNinos> {
                   height: 50,
                   child: Center(
                     child: SizedBox(
-                        width: 10,
-                        height: 10,
-                        child: CircularProgressIndicator()),
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 );
               }

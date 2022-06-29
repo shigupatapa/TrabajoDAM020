@@ -35,6 +35,7 @@ class _PageEditNinoState extends State<PageEditNino> {
 
   // String errCodigo = '';
   // String errNombre = '';
+
   @override
   void initState() {
     super.initState();
@@ -108,7 +109,6 @@ class _PageEditNinoState extends State<PageEditNino> {
                       },
                       keyboardType: TextInputType.number,
                     ),
-
                     Container(
                       child: Row(
                         children: [
@@ -273,7 +273,7 @@ class _PageEditNinoState extends State<PageEditNino> {
                           return DropdownButtonFormField<String>(
                             //hint: Text('Nivel'),
                             decoration: InputDecoration(
-                              hintText: 'Nivel',
+                              labelText: 'Nivel',
                               fillColor: Colors.white.withOpacity(0.9),
                               filled: true,
                               contentPadding: EdgeInsets.all(15),
@@ -479,7 +479,7 @@ class _PageEditNinoState extends State<PageEditNino> {
 //                   return DropdownButtonFormField<String>(
 //                     //hint: Text('Nivel'),
 //                     decoration: InputDecoration(
-//                       hintText: 'Nivel',
+//                       labelText: 'Nivel',
 //                       fillColor: Colors.white.withOpacity(0.9),
 //                       filled: true,
 //                       contentPadding: EdgeInsets.all(15),
@@ -509,7 +509,7 @@ class _PageEditNinoState extends State<PageEditNino> {
 //             TextFormField(
 //               controller: telefono1Ctrl,
 //               decoration: InputDecoration(
-//                 hintText: 'Telefono Nº 1',
+//                 labelText: 'Telefono Nº 1',
 //                 fillColor: Colors.white.withOpacity(0.9),
 //                 filled: true,
 //                 contentPadding: EdgeInsets.all(15),
@@ -527,7 +527,7 @@ class _PageEditNinoState extends State<PageEditNino> {
 //             TextFormField(
 //               controller: telefono2Ctrl,
 //               decoration: InputDecoration(
-//                 hintText: 'Telefono Nº 2',
+//                 labelText: 'Telefono Nº 2',
 //                 fillColor: Colors.white.withOpacity(0.9),
 //                 filled: true,
 //                 contentPadding: EdgeInsets.all(15),
@@ -546,7 +546,7 @@ class _PageEditNinoState extends State<PageEditNino> {
 //               maxLines: 5,
 //               controller: alergiasCtrl,
 //               decoration: InputDecoration(
-//                 hintText: 'Alergias',
+//                 labelText: 'Alergias',
 //                 fillColor: Colors.white.withOpacity(0.9),
 //                 filled: true,
 //                 contentPadding: EdgeInsets.all(15),

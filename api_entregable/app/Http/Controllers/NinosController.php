@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nino;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Historial;
 use App\Http\Requests\{NinosRequest,NinosRequestEdit,NinosRequestEditRut};
 
 
@@ -28,6 +27,11 @@ class NinosController extends Controller
     public function index()
     {
         return Nino::orderBy('nombreCompleto')->get();
+    }
+
+    public function historialbyNino(Nino $nino)
+    {
+        return Historial::where('rutNino', $nino->rutNino)->get();
     }
 
     /**

@@ -7,7 +7,6 @@
 
 import 'package:cliente_entregable/menu_page.dart';
 import 'package:cliente_entregable/models/menu_item.dart';
-import 'package:cliente_entregable/pages/listar/page_listhistoriales.dart';
 import 'package:cliente_entregable/pages/listar/page_listninos.dart';
 import 'package:cliente_entregable/pages/listar/page_listniveles.dart';
 import 'package:cliente_entregable/pages/listar/page_listprofes.dart';
@@ -72,7 +71,8 @@ class _HomePageState extends State<HomePage> {
       case MenuItems.niveles:
         return PageListNiveles();
       default:
-        return PageListHistoriales();
+        return PageListNinos();
+      //   return PageListHistoriales();
     }
   }
 }

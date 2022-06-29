@@ -11,7 +11,7 @@ class MenuItems {
     ninos,
     profes,
     niveles,
-    historiales,
+    // historiales,
   ];
 }
 

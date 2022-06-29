@@ -32,6 +32,18 @@ class NinosProvider {
     }
   }
 
+  // HISTORIAL DE UN NIÑO
+  Future<List<dynamic>> getHistorial(String rutNino) async {
+    var uri = Uri.parse('$apiURL/niños/$rutNino/historial');
+    var respuesta = await http.get(uri);
+
+    if (respuesta.statusCode == 200) {
+      return json.decode(respuesta.body);
+    } else {
+      return [];
+    }
+  }
+  
   // AGREGAR NIÑO
   Future<LinkedHashMap<String, dynamic>> AddNino(
     String rutNino,

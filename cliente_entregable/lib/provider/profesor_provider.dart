@@ -19,8 +19,7 @@ class ProfesoresProvider {
       return [];
     }
   }
-
-//profesores
+  
   // INFO DE UN PROFE
   Future<LinkedHashMap<String, dynamic>> getProfe(String rutProfesor) async {
     var uri = Uri.parse('$apiURL/profesores/$rutProfesor');

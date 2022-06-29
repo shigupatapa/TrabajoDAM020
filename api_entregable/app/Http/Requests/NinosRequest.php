@@ -26,31 +26,28 @@ class NinosRequest extends FormRequest
         return [
             'rutNino' => 'required|unique:ninos,rutNino|max:12',
             'nombreCompleto' => 'required|max:60|min:3',
-            'nivel_id' => 'required|numeric|exists:niveles,nivel_id',
-            'sexo' => 'required|max:1',
+            'nivel_id' => 'required|exists:niveles,nivel_id',
+            'sexo' => 'required',
             'fechaNacimiento'=> 'date|required',
             'nombreApoderado'=>'required|max:60|min:3',
             'telefono1'=>'required|max:12',
             'telefono2'=>'max:12',
             'alergias' => 'max:255',
             'imagen' => 'image'
-            
         ];
     }
     public function messages()
 {
     return [
-        'rutNino.required' => 'El rut es obligatorio.',
-        'rutNino.unique' => 'El rut :input ya existe.',
-        'rutNino.max' => 'El rut no debe tener más de 12 caracteres.',
+        'rutNino.required' => 'El RUT es obligatorio.',
+        'rutNino.unique' => 'El RUT :input ya existe.',
+        'rutNino.max' => 'El RUT no debe tener más de 12 caracteres.',
         'nombreCompleto.required' => 'El nombre completo es obligatorio.',
         'nombreCompleto.max' => 'El nombre completo no debe tener más de 60 caracteres.',
         'nombreCompleto.min' => 'El nombre completo debe tener al menos 3 caracteres.',
-        'nivel_id.numeric' => 'El id debe ser un número.',
-        'nivel_id.required' => 'El campo de identificación del nivel es obligatorio.',
-        'nivel_id.exists' => 'El id :input seleccionado no es válido.',
-        'sexo.required' => 'El sexo es obligatorio', //no sean mal pensados XD
-        'sexo.max' => 'El sexo no debe tener más de 1 carácter.',
+        'nivel_id.required' => 'El campo nivel es obligatorio.',
+        'nivel_id.exists' => 'El campo nivel es obligatorio.',
+        'sexo.required' => 'El campo sexo es obligatorio', //no sean mal pensados XD
         'fechaNacimiento.date'=>'La fecha de nacimiento no es una fecha válida.',
         'fechaNacimiento.required'=>'La fecha de nacimiento es obligatoria.',
         'nombreApoderado.required' => 'El nombre de apoderado es obligatorio.',
@@ -61,8 +58,6 @@ class NinosRequest extends FormRequest
         'telefono2.max' => 'El telefono no debe tener más de 12 caracteres.',
         'alergias.max' => 'Las alegias no debe tener más de 255 caracteres.',
         'imagen.image' => 'El campo imagen debe ser una imagen.',
-
-
     ];
 }
 }

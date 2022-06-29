@@ -16,8 +16,8 @@ class _PageAddNivelState extends State<PageAddNivel> {
   TextEditingController nombreNivelCtrl = TextEditingController();
   TextEditingController detallesCtrl = TextEditingController();
 
-  // String errCodigo = '';
-  // String errNombre = '';
+  String errNombre = '';
+  String errDetalles = '';
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +57,20 @@ class _PageAddNivelState extends State<PageAddNivel> {
                     nombreNivelCtrl.text.trim(),
                     detallesCtrl.text.trim(),
                   );
+                  if (respuesta['message'] != null) {
+                    // NOMBRE
+                    if (respuesta['errors']['nombreNivel'] != null) {
+                      errNombre = respuesta['errors']['nombreNivel'][0];
+                      currentStep = 0;
+                    }
+                    // DETALLES
+                    if (respuesta['errors']['detalles'] != null) {
+                      errDetalles = respuesta['errors']['detalles'][0];
+                      currentStep = 0;
+                    }
+                    setState(() {});
+                    return;
+                  }
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -106,44 +120,136 @@ class _PageAddNivelState extends State<PageAddNivel> {
         title: Text('Nombre'),
         content: Column(
           children: [
-            TextFormField(
-              controller: nombreNivelCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nombre del Nivel',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: nombreNivelCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Nombre del Nivel',
+                  fillColor: Colors.white70,
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errNombre != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errNombre,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
             Divider(),
-            TextFormField(
-              controller: detallesCtrl,
-              decoration: InputDecoration(
-                hintText: 'Detalles',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: detallesCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Detalle',
+                  fillColor: Colors.white70,
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errDetalles != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errDetalles,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
           ],
         ),
       ),
       Step(
         isActive: currentStep >= 1,
         title: Text('Información'),
-        content: Container(),
+        content: Container(
+          width: double.infinity,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Colors.transparent,
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // NOMBRE
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Nombre: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: nombreNivelCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // DETALLES
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Detalle: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: detallesCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       )
     ];
   }

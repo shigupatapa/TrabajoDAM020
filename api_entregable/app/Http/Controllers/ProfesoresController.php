@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profesor;
-use Illuminate\Http\Request;
 use App\Http\Requests\{ProfesoresRequestEdit,ProfesoresRequest,ProfesoresRequestEditRut};
 
 class ProfesoresController extends Controller

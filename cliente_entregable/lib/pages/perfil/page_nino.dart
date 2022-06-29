@@ -1,6 +1,7 @@
 import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
 import 'package:cliente_entregable/pages/editar/page_editnino.dart';
 import 'package:cliente_entregable/pages/listar/page_listninos.dart';
+import 'package:cliente_entregable/pages/perfil/page_historial.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -123,7 +124,7 @@ class _PerfilNinoState extends State<PerfilNino> {
           image: NetworkImage(
             'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
             //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-            // 'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
+            //'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
           ),
           fit: BoxFit.cover,
         ),
@@ -151,7 +152,7 @@ class _PerfilNinoState extends State<PerfilNino> {
       child: Column(
         children: [
           Text(
-            nino['nombreCompleto'],
+            nino["nombreCompleto"],
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -348,11 +349,9 @@ class _PerfilNinoState extends State<PerfilNino> {
                       ),
                     ),
                     TextSpan(
-                      text: ' ${DateFormat("dd-MM-yyyy").format(
-                        DateTime.parse(
-                          nino['fechaNacimiento'],
-                        ),
-                      )}',
+                      text: ' ${DateFormat("dd-MM-yyyy").format(DateTime.parse(
+                        nino['fechaNacimiento'],
+                      ))}',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -715,7 +714,13 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
               onPressed: () {
-                print("You pressed Icon Elevated Button");
+                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
+                  return PageHistorial(
+                    nino['rutNino'],
+                    nombre,
+                  );
+                });
+                Navigator.push(context, route).then((value) => setState(() {}));
               },
             ),
           ],

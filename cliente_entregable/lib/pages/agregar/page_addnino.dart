@@ -29,8 +29,16 @@ class _PageAddNinoState extends State<PageAddNino> {
   String nivelSel = '', sexo = '', imagenPath = '';
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
-  // String errCodigo = '';
-  // String errNombre = '';
+
+  String errRUT = '';
+  String errNombre = '';
+  String errSexo = '';
+  String errNivel = '';
+  String errFecha = '';
+  String errTutor = '';
+  String errTelUno = '';
+  String errTelDos = '';
+  String errAlergias = '';
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +86,56 @@ class _PageAddNinoState extends State<PageAddNino> {
                     telefono2Ctrl.text.trim(),
                     alergiasCtrl.text.trim(),
                   );
+                  if (respuesta['message'] != null) {
+                    // STEP
+                    if ((respuesta['errors']['rutNino'] != null) ||
+                        (respuesta['errors']['nombreCompleto'] != null) ||
+                        (respuesta['errors']['sexo'] != null) ||
+                        (respuesta['errors']['nivel_id'] != null) ||
+                        (respuesta['errors']['fechaNacimiento'] != null)) {
+                      currentStep = 0;
+                    } else {
+                      currentStep = 1;
+                    }
+                    // RUT
+                    if (respuesta['errors']['rutNino'] != null) {
+                      errRUT = respuesta['errors']['rutNino'][0];
+                    }
+                    // NOMBRE
+                    if (respuesta['errors']['nombreCompleto'] != null) {
+                      errNombre = respuesta['errors']['nombreCompleto'][0];
+                    }
+                    // SEXO
+                    if (respuesta['errors']['sexo'] != null) {
+                      errSexo = respuesta['errors']['sexo'][0];
+                    }
+                    // NIVEL
+                    if (respuesta['errors']['nivel_id'] != null) {
+                      errNivel = respuesta['errors']['nivel_id'][0];
+                    }
+                    // FECHA NACIMIENTO
+                    if (respuesta['errors']['fechaNacimiento'] != null) {
+                      errFecha = respuesta['errors']['fechaNacimiento'][0];
+                    }
+                    // TUTOR
+                    if (respuesta['errors']['nombreApoderado'] != null) {
+                      errTutor = respuesta['errors']['nombreApoderado'][0];
+                    }
+                    // TELEFONO 1
+                    if (respuesta['errors']['telefono1'] != null) {
+                      errTelUno = respuesta['errors']['telefono1'][0];
+                    }
+                    // TELEFONO 2
+                    if (respuesta['errors']['telefono2'] != null) {
+                      errTelDos = respuesta['errors']['telefono2'][0];
+                    }
+                    // ALERGIAS
+                    if (respuesta['errors']['alergias'] != null) {
+                      errAlergias = respuesta['errors']['alergias'][0];
+                    }
+                    setState(() {});
+                    return;
+                  }
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -117,87 +175,6 @@ class _PageAddNinoState extends State<PageAddNino> {
         ),
       ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('Productos'),
-    //   ),
-    //   body: Form(
-    //     key: formKey,
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: ListView(
-    //         children: [
-    //           TextFormField(
-    //             controller: codigoCtrl,
-    //             decoration: InputDecoration(labelText: 'Código'),
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: Text(
-    //               errCodigo,
-    //               style: TextStyle(color: Colors.red),
-    //             ),
-    //           ),
-    //           TextFormField(
-    //             controller: nombreCtrl,
-    //             decoration: InputDecoration(labelText: 'Nombre'),
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: Text(
-    //               errNombre,
-    //               style: TextStyle(color: Colors.red),
-    //             ),
-    //           ),
-    //           TextFormField(
-    //             controller: stockCtrl,
-    //             decoration: InputDecoration(labelText: 'Stock'),
-    //             keyboardType: TextInputType.number,
-    //           ),
-    //           TextFormField(
-    //             controller: precioCtrl,
-    //             decoration: InputDecoration(labelText: 'Precio'),
-    //             keyboardType: TextInputType.number,
-    //           ),
-    //           Container(
-    //             width: double.infinity,
-    //             child: ElevatedButton(
-    //               child: Text('Agregar Producto'),
-    //               onPressed: () async {
-    //                 // int stock = int.tryParse(stockCtrl.text) ?? 0;
-    //                 // int precio = int.tryParse(precioCtrl.text) ?? 0;
-
-    //                 // var respuesta = await NinosProvider().AddNino(
-    //                 //   codigoCtrl.text.trim(),
-    //                 //   nombreCtrl.text.trim(),
-    //                 //   stock,
-    //                 //   precio,
-    //                 // );
-
-    //                 // if (respuesta['message'] != null) {
-    //                 //   //cod_producto
-    //                 //   if (respuesta['errors']['cod_producto'] != null) {
-    //                 //     errCodigo = respuesta['errors']['cod_producto'][0];
-    //                 //   }
-
-    //                 //   //nombre
-    //                 //   if (respuesta['errors']['nombre'] != null) {
-    //                 //     errNombre = respuesta['errors']['nombre'][0];
-    //                 //   }
-
-    //                 //   setState(() {});
-    //                 //   return;
-    //                 // }
-
-    //                 Navigator.pop(context);
-    //               },
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   List<Step> getSteps() {
@@ -209,43 +186,67 @@ class _PageAddNinoState extends State<PageAddNino> {
         content: Column(
           children: [
             // RUT NIÑO
-            TextFormField(
-              controller: rutNinoCtrl,
-              decoration: InputDecoration(
-                hintText: 'RUT del Niño',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: rutNinoCtrl,
+                decoration: InputDecoration(
+                  labelText: 'RUT del Niño',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                //limita los carracteres
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(12),
+                ],
+                onChanged: (String text) {
+                  //RUTValidator.formatFromTextController(rutNinoCtrl);
+                },
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            if (errRUT != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errRUT,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              //limita los carracteres
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
-              ],
-              onChanged: (String text) {
-                //RUTValidator.formatFromTextController(rutNinoCtrl);
-              },
-              keyboardType: TextInputType.number,
-            ),
             Divider(),
             // NOMBRE NIÑO
-            TextFormField(
-              controller: nombreCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nombre Completo',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: nombreCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Nombre Completo',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errNombre != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errNombre,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
             Divider(),
             // SEXO NIÑO
             Container(
@@ -264,7 +265,12 @@ class _PageAddNinoState extends State<PageAddNino> {
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Sexo:',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   RadioListTile<String>(
@@ -290,6 +296,15 @@ class _PageAddNinoState extends State<PageAddNino> {
                 ],
               ),
             ),
+            if (errSexo != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errSexo,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             Divider(),
             // NIVEL NIÑO
             Container(
@@ -308,7 +323,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                   return DropdownButtonFormField<String>(
                     //hint: Text('Nivel'),
                     decoration: InputDecoration(
-                      hintText: 'Nivel',
+                      labelText: 'Nivel',
                       fillColor: Colors.white.withOpacity(0.9),
                       filled: true,
                       contentPadding: EdgeInsets.all(15),
@@ -333,6 +348,15 @@ class _PageAddNinoState extends State<PageAddNino> {
                 },
               ),
             ),
+            if (errNivel != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errNivel,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             Divider(),
             // FECHA DE NACIMIENTO NIÑO
             Container(
@@ -351,7 +375,12 @@ class _PageAddNinoState extends State<PageAddNino> {
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Fecha de Nacimiento:',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   Row(
@@ -361,7 +390,6 @@ class _PageAddNinoState extends State<PageAddNino> {
                         ffecha.format(hoy),
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextButton(
@@ -385,6 +413,15 @@ class _PageAddNinoState extends State<PageAddNino> {
                 ],
               ),
             ),
+            if (errFecha != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errFecha,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
           ],
         ),
       ),
@@ -395,75 +432,124 @@ class _PageAddNinoState extends State<PageAddNino> {
         content: Column(
           children: [
             // TUTOR NIÑO
-            TextFormField(
-              controller: apoderadoCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nombre del Apoderado',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: apoderadoCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Nombre del Apoderado',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errTutor != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errTutor,
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
             Divider(),
             // TELEFONO Nº1 NIÑO
-            TextFormField(
-              controller: telefono1Ctrl,
-              decoration: InputDecoration(
-                hintText: 'Telefono Nº 1',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: telefono1Ctrl,
+                decoration: InputDecoration(
+                  labelText: 'Telefono Nº 1',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            if (errTelUno != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errTelUno,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-              keyboardType: TextInputType.number,
-            ),
             Divider(),
             // TELEFONO Nº2 NIÑO
-            TextFormField(
-              controller: telefono2Ctrl,
-              decoration: InputDecoration(
-                hintText: 'Telefono Nº 2',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: telefono2Ctrl,
+                decoration: InputDecoration(
+                  labelText: 'Telefono Nº 2',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            if (errTelDos != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errTelDos,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-              keyboardType: TextInputType.number,
-            ),
             Divider(),
             // ALERGIAS NIÑO
-            TextFormField(
-              maxLines: 5,
-              controller: alergiasCtrl,
-              decoration: InputDecoration(
-                hintText: 'Alergias',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                maxLines: 5,
+                controller: alergiasCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Alergias',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errAlergias != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errAlergias,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
           ],
         ),
       ),
@@ -471,13 +557,270 @@ class _PageAddNinoState extends State<PageAddNino> {
         isActive: currentStep >= 2,
         title: Text('Información'),
         content: Container(
-          child: Column(
-            children: [
-              ElevatedButton.icon(
-                  icon: Icon(MdiIcons.camera),
-                  label: Text('subir imagen'),
-                  onPressed: () {})
-//               ESTA COSA NO FUNCIONA!!!!!
+          width: double.infinity,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Colors.transparent,
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // RUT
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'RUT: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: rutNinoCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // NOMBRE
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Nombre: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: nombreCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SEXO
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Sexo: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (sexo == "M")
+                          TextSpan(
+                            text: "Masculino",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        if (sexo == "F")
+                          TextSpan(
+                            text: "Femenino",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  // NIVEL
+                  FutureBuilder(
+                    future: NivelesProvider().getNivel(
+                      int.tryParse(nivelSel) ?? 0,
+                    ),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            height: 5,
+                            width: 5,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      var nivel = snapshot.data;
+                      return Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Nivel: ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: nivel["nombreNivel"],
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  // FECHA DE NACIMIENTO
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Cumpleaños: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: DateFormat("dd-MM-yyyy").format(
+                            DateTime.parse(hoy.toString()),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // TUTOR
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Tutor: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: apoderadoCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // TELEFONO 1
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Telefono Nº 1: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: telefono1Ctrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // TELEFONO 2
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Telefono Nº 2: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: telefono2Ctrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // ALERGIAS
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Alergias: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: alergiasCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      )
+    ];
+  }
+}
+
+// rutNinoCtrl.text.trim(),
+//                     nombreCtrl.text.trim(),
+//                     sexo,
+//                     hoy,
+//                     apoderadoCtrl.text.trim(),
+//                     nivel,
+//                     telefono1Ctrl.text.trim(),
+//                     telefono2Ctrl.text.trim(),
+//                     alergiasCtrl.text.trim(),
+
+//             children: [
+//               ElevatedButton.icon(
+//                   icon: Icon(MdiIcons.camera),
+//                   label: Text('subir imagen'),
+//                   onPressed: () {})
+//               // ESTA COSA NO FUNCIONA!!!!!
 //               (path == null ) ? Container() : Image.file(File(path),width: 200,),
 //               RaisedButton(
 //               child: Text("CARGAR IMAGEN"),
@@ -496,10 +839,4 @@ class _PageAddNinoState extends State<PageAddNino> {
 //                 onPressed: (){
 //               _enviarform();
 //             })
-            ],
-          ),
-        ),
-      )
-    ];
-  }
-}
+//             ],

@@ -25,8 +25,11 @@ class _PageAddProfeState extends State<PageAddProfe> {
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
 
-  // String errCodigo = '';
-  // String errNombre = '';
+  String errRUT = '';
+  String errNombre = '';
+  String errSexo = '';
+  String errFecha = '';
+  String errNivel = '';
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,38 @@ class _PageAddProfeState extends State<PageAddProfe> {
                     DateTime.now(),
                     nivel,
                   );
+                  if (respuesta['message'] != null) {
+                    if ((respuesta['errors']['rutNino'] != null) ||
+                        (respuesta['errors']['nombreCompleto'] != null) ||
+                        (respuesta['errors']['sexo'] != null) ||
+                        (respuesta['errors']['fechaNacimiento'] != null)) {
+                      currentStep = 0;
+                    } else {
+                      currentStep = 1;
+                    }
+                    // RUT
+                    if (respuesta['errors']['rutProfesor'] != null) {
+                      errRUT = respuesta['errors']['rutProfesor'][0];
+                    }
+                    // NOMBRE
+                    if (respuesta['errors']['nombreCompleto'] != null) {
+                      errNombre = respuesta['errors']['nombreCompleto'][0];
+                    }
+                    // SEXO
+                    if (respuesta['errors']['sexo'] != null) {
+                      errSexo = respuesta['errors']['sexo'][0];
+                    }
+                    // FECHA NACIMIENTO
+                    if (respuesta['errors']['fechaNacimiento'] != null) {
+                      errFecha = respuesta['errors']['fechaNacimiento'][0];
+                    }
+                    // NIVEL
+                    if (respuesta['errors']['nivel_id'] != null) {
+                      errNivel = respuesta['errors']['nivel_id'][0];
+                    }
+                    setState(() {});
+                    return;
+                  }
                   print(respuesta);
                   Navigator.pop(context);
                 } else {
@@ -119,39 +154,66 @@ class _PageAddProfeState extends State<PageAddProfe> {
         title: Text('Personal'),
         content: Column(
           children: [
-            TextFormField(
-              controller: rutProfeCtrl,
-              decoration: InputDecoration(
-                hintText: 'RUT del Docente',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            // RUT
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: rutProfeCtrl,
+                decoration: InputDecoration(
+                  labelText: 'RUT del Docente',
+                  fillColor: Colors.white70,
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (String text) {
+                  // RUTValidator.formatFromTextController(rutProfeCtrl);
+                },
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            if (errRUT != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errRUT,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (String text) {
-                // RUTValidator.formatFromTextController(rutProfeCtrl);
-              },
-              keyboardType: TextInputType.number,
-            ),
             Divider(),
-            TextFormField(
-              controller: nombreCtrl,
-              decoration: InputDecoration(
-                hintText: 'Nombre Completo',
-                fillColor: Colors.white70,
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            // NOMBRE
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: nombreCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Nombre Completo',
+                  fillColor: Colors.white70,
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errNombre != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errNombre,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
             Divider(),
+            // SEXO
             Container(
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
@@ -168,7 +230,12 @@ class _PageAddProfeState extends State<PageAddProfe> {
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Sexo:',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   RadioListTile<String>(
@@ -194,6 +261,15 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 ],
               ),
             ),
+            if (errSexo != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errSexo,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             Divider(),
             // FECHA DE NACIMIENTO NIÑO
             Container(
@@ -212,7 +288,12 @@ class _PageAddProfeState extends State<PageAddProfe> {
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
                       'Fecha de Nacimiento:',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                   Row(
@@ -246,6 +327,15 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 ],
               ),
             ),
+            if (errFecha != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errFecha,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
           ],
         ),
       ),
@@ -271,7 +361,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
                   return DropdownButtonFormField<String>(
                     //hint: Text('Nivel'),
                     decoration: InputDecoration(
-                      hintText: 'Nivel',
+                      labelText: 'Nivel',
                       fillColor: Colors.white70,
                       filled: true,
                       contentPadding: EdgeInsets.all(15),
@@ -296,13 +386,181 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 },
               ),
             ),
+            if (errNivel != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errNivel,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
           ],
         ),
       ),
       Step(
         isActive: currentStep >= 2,
         title: Text('Información'),
-        content: Container(),
+        content: Container(
+          width: double.infinity,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Colors.transparent,
+            child: Container(
+              padding: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.black,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // RUT
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'RUT: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: rutProfeCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // NOMBRE
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Nombre: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: nombreCtrl.text,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SEXO
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Sexo: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (sexo == "M")
+                          TextSpan(
+                            text: "Masculino",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        if (sexo == "F")
+                          TextSpan(
+                            text: "Femenino",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  // FECHA DE NACIMIENTO
+                  Text.rich(
+                    TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Cumpleaños: ',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: DateFormat("dd-MM-yyyy").format(
+                            DateTime.parse(hoy.toString()),
+                          ),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // NIVEL
+                  FutureBuilder(
+                    future: NivelesProvider().getNivel(
+                      int.tryParse(nivelSel) ?? 0,
+                    ),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            height: 5,
+                            width: 5,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      var nivel = snapshot.data;
+                      return Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Nivel: ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            TextSpan(
+                              text: nivel["nombreNivel"],
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       )
     ];
   }
