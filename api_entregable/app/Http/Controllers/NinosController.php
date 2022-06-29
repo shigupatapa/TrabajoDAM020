@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Nino;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\{NinosRequest,NinosRequestEdit};
+use App\Http\Requests\{NinosRequest,NinosRequestEdit,NinosRequestEditRut};
 
 
 class NinosController extends Controller
@@ -79,9 +79,33 @@ class NinosController extends Controller
      * @param  \App\Models\Nino  $nino
      * @return \Illuminate\Http\Response
      */
-    public function update(NinosRequestEdit $request, Nino $nino)
+    public function updateR(NinosRequestEditRut $request, Nino $nino)
     {
         $nino->rutNino = $request->rutNino;
+        $nino->nombreCompleto = $request->nombreCompleto;
+        $nino->nivel_id = $request->nivel_id;
+        $nino->sexo = $request->sexo;
+        $nino->fechaNacimiento = $request->fechaNacimiento;
+        $nino->nombreApoderado = $request->nombreApoderado;
+        $nino->telefono1 = $request->telefono1;
+        $nino->telefono2 = $request->telefono2;
+        $nino->alergias = $request->alergias;
+        if (file_exists($request->imagen)){ 
+            //public_path('imagen/'.$nino->imagen)->delete();
+            $imagen = $request->file('imagen');
+            $ruta = 'imagen/';
+            $nombreArchivo = date('YmdHis'). "." . $imagen->getClientOriginalExtension();
+            $imagen->move($ruta,$nombreArchivo);
+        }else{
+            $nombreArchivo = $nino->imagen;
+        }
+        $nino->imagen = $nombreArchivo;
+        $nino->save();
+        return $nino;
+        
+    }
+    public function update(NinosRequestEdit $request, Nino $nino)
+    {
         $nino->nombreCompleto = $request->nombreCompleto;
         $nino->nivel_id = $request->nivel_id;
         $nino->sexo = $request->sexo;

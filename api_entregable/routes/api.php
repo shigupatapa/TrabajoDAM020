@@ -34,18 +34,19 @@ Route::get('/niños/{nino}',[NinosController::class,'show']);
 Route::get('/niños/imagen/{nino}',[NinosController::class,'image']);
 Route::post('/niños',[NinosController::class,'store']);
 Route::delete('niños/{nino}',[NinosController::class,'destroy']);
-Route::patch('/niños/{nino}',[NinosController::class,'update']);
+Route::put('/niños/{nino}',[NinosController::class,'update']);
+Route::put('/niños/rut/{nino}',[NinosController::class,'updateR']);
 
 // PROFESORES
 Route::get('/profesores',[ProfesoresController::class,'index']);
 Route::get('/profesores/{profesor}',[ProfesoresController::class,'show']);
 Route::post('/profesores',[ProfesoresController::class,'store']);
 Route::delete('profesores/{profesor}',[ProfesoresController::class,'destroy']);
-Route::patch('/profesores/{profesor}',[ProfesoresController::class,'update']);
+Route::put('/profesores/{profesor}',[ProfesoresController::class,'update']);
 
 // HISTORIAL
 Route::get('/historiales',[HistorialesController::class,'index']);
 Route::get('/historiales/{historial}',[HistorialesController::class,'show']);
 Route::post('/historiales',[HistorialesController::class,'store']);
 Route::delete('historiales/{historial}',[HistorialesController::class,'destroy']);
-Route::patch('/historiales/{historial}',[HistorialesController::class,'update']);
+Route::put('/historiales/{historial}',[HistorialesController::class,'update']);

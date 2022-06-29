@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class NinosRequestEdit extends FormRequest
 {
@@ -25,8 +24,8 @@ class NinosRequestEdit extends FormRequest
     public function rules()
     {
         return [
-            'rutNino' => [Rule::unique('ninos')->ignore($this->nino->rutNino,'rutNino'),],
-            'rutNino' => 'required|unique:ninos,rutNino|max:12',
+            // 'rutNino' => [Rule::unique('ninos')->ignore($this->nino->rutNino,'rutNino'),],
+            // 'rutNino' => 'required|unique:ninos,rutNino|max:12',
             'nombreCompleto' => 'required|max:60|min:3',
             'nivel_id' => 'required|numeric|exists:niveles,nivel_id',
             'sexo' => 'required|max:1',
@@ -41,9 +40,9 @@ class NinosRequestEdit extends FormRequest
     public function messages()
 {
     return [
-        'rutNino.required' => 'El rut es obligatorio.',
-        'rutNino.unique' => 'El rut :input ya existe.',
-        'rutNino.max' => 'El rut no debe tener más de 12 caracteres.',
+        // 'rutNino.required' => 'El rut es obligatorio.',
+        // 'rutNino.unique' => 'El rut :input ya existe.',
+        // 'rutNino.max' => 'El rut no debe tener más de 12 caracteres.',
         'nombreCompleto.required' => 'El nombre completo es obligatorio.',
         'nombreCompleto.max' => 'El nombre completo no debe tener más de 60 caracteres.',
         'nombreCompleto.min' => 'El nombre completo debe tener al menos 3 caracteres.',
