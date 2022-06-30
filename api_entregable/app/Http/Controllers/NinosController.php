@@ -95,7 +95,7 @@ class NinosController extends Controller
         $nino->telefono2 = $request->telefono2;
         $nino->alergias = $request->alergias;
         if (file_exists($request->imagen)){ 
-            //public_path('imagen/'.$nino->imagen)->delete();
+            $nino->public_path('imagen/'.$nino->imagen);
             $imagen = $request->file('imagen');
             $ruta = 'imagen/';
             $nombreArchivo = date('YmdHis'). "." . $imagen->getClientOriginalExtension();
@@ -141,6 +141,7 @@ class NinosController extends Controller
      */
     public function destroy(Nino $nino)
     {   
+        // $nino->delete(public_path('imagen/'.$nino->imagen));
         $nino->delete();
     }
 }

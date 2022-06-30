@@ -8,9 +8,10 @@ class NinosProvider {
     'Content-Type': 'multipart/form-data',
     'Accept': 'application/json'
   };
-  final String apiURL = 'http://192.168.138.130:8000/api';
+
+  //final String apiURL = 'http://192.168.138.130:8000/api';
   //final String apiURL = 'http://10.0.2.2:8000/api'; // EMULADOR
-  //final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
+  final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
 
   // LISTAR TODOS LOS NIÑOS
   Future<List<dynamic>> getAllNinos() async {
@@ -48,43 +49,22 @@ class NinosProvider {
     }
   }
 
-  // AGREGAR NIÑO
-  Future<LinkedHashMap<String, dynamic>> AddNino(
-    String rutNino,
-    String nombreCompleto,
-    String sexo,
-    DateTime fechaNacimiento,
-    String nombreApoderado,
-    int nivel,
-    String telefono1,
-    String telefono2,
-    String alergias,
-  ) async {
+  // AGREGAR NIÑO SIN IMAGEN
+  Future<LinkedHashMap<String, dynamic>> agregarNino(
+      Map<String, String> data) async {
     var uri = Uri.parse('$apiURL/niños');
-    var respuesta = await http.post(
-      uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Accept': 'application/json'
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'rutNino': rutNino,
-          'sexo': sexo,
-          'nombreCompleto': nombreCompleto,
-          'nombreApoderado': nombreApoderado,
-          'fechaNacimiento': fechaNacimiento.toString(),
-          'nivel_id': nivel,
-          'telefono1': telefono1,
-          'telefono2': telefono2,
-          'alergias': alergias,
-        },
-      ),
-    );
-    return json.decode(respuesta.body);
+
+    var request = await http.MultipartRequest('POST', uri)
+      ..fields.addAll(data)
+      ..headers.addAll(headers);
+
+    var response = await http.Response.fromStream(await request.send());
+
+    return json.decode(response.body);
   }
 
-  Future<LinkedHashMap<String, dynamic>> postDataImagen(
+  // AGREGAR NIÑO CON IMAGEN
+  Future<LinkedHashMap<String, dynamic>> agregarNinoImagen(
       Map<String, String> data, String filePath) async {
     var uri = Uri.parse('$apiURL/niños');
 

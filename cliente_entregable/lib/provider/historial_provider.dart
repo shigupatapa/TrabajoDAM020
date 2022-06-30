@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HistorialesProvider {
-  final String apiURL = 'http://192.168.138.130:8000/api';
+  //final String apiURL = 'http://192.168.138.130:8000/api';
   //final String apiURL = 'http://10.0.2.2:8000/api'; // EMULADOR
-  //final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
+  final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
 
   // LISTAR HISTORIALES
   Future<List<dynamic>> getAllHistoriales() async {

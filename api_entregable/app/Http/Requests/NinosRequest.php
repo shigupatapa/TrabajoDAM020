@@ -33,7 +33,7 @@ class NinosRequest extends FormRequest
             'telefono1'=>'required|max:12',
             'telefono2'=>'max:12',
             'alergias' => 'max:255',
-            'imagen' => 'image'
+            'imagen' => 'required|image'
         ];
     }
     public function messages()
@@ -57,6 +57,7 @@ class NinosRequest extends FormRequest
         'telefono1.max' => 'El telefono no debe tener más de 12 caracteres.',
         'telefono2.max' => 'El telefono no debe tener más de 12 caracteres.',
         'alergias.max' => 'Las alegias no debe tener más de 255 caracteres.',
+        'imagen.required' => 'El campo imagen es requerido.',
         'imagen.image' => 'El campo imagen debe ser una imagen.',
     ];
 }

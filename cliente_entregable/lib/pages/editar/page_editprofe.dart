@@ -111,28 +111,28 @@ class _PageEditProfeState extends State<PageEditProfe> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Text(
-                            '¿Desea editar el RUT? ',
-                            style: TextStyle(
-                              backgroundColor: Colors.yellow,
-                            ),
-                          ),
-                          Checkbox(
-                            value: editar,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                rutProfeCtrl.text = widget.rut;
-                                editar = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         '¿Desea editar el RUT? ',
+                    //         style: TextStyle(
+                    //           backgroundColor: Colors.yellow,
+                    //         ),
+                    //       ),
+                    //       Checkbox(
+                    //         value: editar,
+                    //         onChanged: (bool? value) {
+                    //           setState(() {
+                    //             rutProfeCtrl.text = widget.rut;
+                    //             editar = value!;
+                    //           });
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Divider(),
                     // NOMBRE
                     Padding(

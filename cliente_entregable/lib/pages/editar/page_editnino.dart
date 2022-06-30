@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
@@ -34,6 +36,8 @@ class _PageEditNinoState extends State<PageEditNino> {
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
   bool editar = false;
+  bool subirImagen = false;
+
   String errRUT = '',
       errNombre = '',
       errSexo = '',
@@ -43,6 +47,9 @@ class _PageEditNinoState extends State<PageEditNino> {
       errTelUno = '',
       errTelDos = '',
       errAlergias = '';
+
+  File? imagen = null;
+  final picker = ImagePicker();
 
   @override
   void initState() {
@@ -77,8 +84,8 @@ class _PageEditNinoState extends State<PageEditNino> {
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: Container(
-          height: double.infinity,
-          width: double.infinity,
+          // height: double.infinity,
+          // width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
@@ -97,6 +104,9 @@ class _PageEditNinoState extends State<PageEditNino> {
                 padding: EdgeInsets.all(10),
                 child: ListView(
                   children: [
+                    // IMAGEN
+                    buildProfileImage(rutNinoCtrl.text),
+                    Divider(),
                     // RUT NIÑO
                     Padding(
                       padding: EdgeInsets.only(top: 5),
@@ -132,28 +142,28 @@ class _PageEditNinoState extends State<PageEditNino> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Text(
-                            '¿Desea editar el RUT? ',
-                            style: TextStyle(
-                              backgroundColor: Colors.yellow,
-                            ),
-                          ),
-                          Checkbox(
-                            value: editar,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                rutNinoCtrl.text = widget.rut;
-                                editar = value!;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(horizontal: 10),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         '¿Desea editar el RUT? ',
+                    //         style: TextStyle(
+                    //           backgroundColor: Colors.yellow,
+                    //         ),
+                    //       ),
+                    //       Checkbox(
+                    //         value: editar,
+                    //         onChanged: (bool? value) {
+                    //           setState(() {
+                    //             rutNinoCtrl.text = widget.rut;
+                    //             editar = value!;
+                    //           });
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Divider(),
                     // NOMBRE NIÑO
                     Padding(
@@ -603,6 +613,59 @@ class _PageEditNinoState extends State<PageEditNino> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildProfileImage(nino) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 150,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: NetworkImage(
+                //'http://192.168.138.130:8000/api/niños/imagen/${nino}',
+                //'http://10.0.2.2:8000/api/niños/imagen/${nino}', // EMULADOR
+                'http://192.168.1.160:8000/api/niños/imagen/${nino}', // ENZO
+              ),
+              fit: BoxFit.cover,
+            ),
+            border: Border.all(
+              color: Colors.black,
+              width: 1.5,
+            ),
+          ),
+        ),
+        // imagen == null
+        //     ? Center()
+        //     : Column(
+        //         children: [
+        //           Image.file(imagen!),
+        //           SizedBox(height: 10),
+        //         ],
+        //       ),
+        Center(
+          child: ElevatedButton.icon(
+            icon: Icon(MdiIcons.image),
+            label: Text('Cambiar Imagen'),
+            onPressed: () async {
+              var pickedFile =
+                  await picker.pickImage(source: ImageSource.gallery);
+              setState(
+                () {
+                  if (pickedFile != null) {
+                    imagen = File(pickedFile.path);
+                    imagenPath = pickedFile.path;
+                    subirImagen = true;
+                  }
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

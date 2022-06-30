@@ -259,9 +259,9 @@ class _PerfilNivelState extends State<PerfilNivel> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
+                    //'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
                     //'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}', // EMULADOR
-                    //'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
+                    'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
                   ),
                   fit: BoxFit.cover,
                 ),
