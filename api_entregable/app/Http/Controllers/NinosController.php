@@ -45,7 +45,7 @@ class NinosController extends Controller
         $nino = new Nino();
         $nino->rutNino = $request->rutNino;
         $nino->nombreCompleto = $request->nombreCompleto;
-        $nino->nivel_id = $request->nivel_id;
+        $nino->nivel_id = (int)$request->nivel_id;
         $nino->sexo = $request->sexo;
         $nino->fechaNacimiento = $request->fechaNacimiento;
         $nino->nombreApoderado = $request->nombreApoderado;

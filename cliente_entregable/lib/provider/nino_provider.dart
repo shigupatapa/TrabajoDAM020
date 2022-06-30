@@ -4,9 +4,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class NinosProvider {
-  //final String apiURL = 'http://192.168.138.130:8000/api';
+  Map<String, String> headers = {
+    'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
+  };
+  final String apiURL = 'http://192.168.138.130:8000/api';
   //final String apiURL = 'http://10.0.2.2:8000/api'; // EMULADOR
-  final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
+  //final String apiURL = 'http://192.168.1.160:8000/api'; // ENZO
 
   // LISTAR TODOS LOS NIÑOS
   Future<List<dynamic>> getAllNinos() async {
@@ -43,7 +47,7 @@ class NinosProvider {
       return [];
     }
   }
-  
+
   // AGREGAR NIÑO
   Future<LinkedHashMap<String, dynamic>> AddNino(
     String rutNino,
@@ -78,6 +82,20 @@ class NinosProvider {
       ),
     );
     return json.decode(respuesta.body);
+  }
+
+  Future<LinkedHashMap<String, dynamic>> postDataImagen(
+      Map<String, String> data, String filePath) async {
+    var uri = Uri.parse('$apiURL/niños');
+
+    var request = await http.MultipartRequest('POST', uri)
+      ..fields.addAll(data)
+      ..headers.addAll(headers)
+      ..files.add(await http.MultipartFile.fromPath('imagen', filePath));
+
+    var response = await http.Response.fromStream(await request.send());
+
+    return json.decode(response.body);
   }
 
   // EDITAR NIÑO

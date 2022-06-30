@@ -1,5 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
@@ -31,6 +34,7 @@ class _PageAddNinoState extends State<PageAddNino> {
   String nivelSel = '', sexo = '', imagenPath = '';
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
+  bool subirImagen = false;
 
   String errRUT = '';
   String errNombre = '';
@@ -41,6 +45,9 @@ class _PageAddNinoState extends State<PageAddNino> {
   String errTelUno = '';
   String errTelDos = '';
   String errAlergias = '';
+
+  File? imagen = null;
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -77,67 +84,70 @@ class _PageAddNinoState extends State<PageAddNino> {
                 if (isLastStep) {
                   // send data to server
                   int nivel = int.tryParse(nivelSel) ?? 0;
-                  var respuesta = await NinosProvider().AddNino(
-                    rutNinoCtrl.text.trim(),
-                    nombreCtrl.text.trim(),
-                    sexo,
-                    hoy,
-                    apoderadoCtrl.text.trim(),
-                    nivel,
-                    telefono1Ctrl.text.trim(),
-                    telefono2Ctrl.text.trim(),
-                    alergiasCtrl.text.trim(),
-                  );
-                  if (respuesta['message'] != null) {
-                    // STEP
-                    if ((respuesta['errors']['rutNino'] != null) ||
-                        (respuesta['errors']['nombreCompleto'] != null) ||
-                        (respuesta['errors']['sexo'] != null) ||
-                        (respuesta['errors']['nivel_id'] != null) ||
-                        (respuesta['errors']['fechaNacimiento'] != null)) {
-                      currentStep = 0;
-                    } else {
-                      currentStep = 1;
-                    }
-                    // RUT
-                    if (respuesta['errors']['rutNino'] != null) {
-                      errRUT = respuesta['errors']['rutNino'][0];
-                    }
-                    // NOMBRE
-                    if (respuesta['errors']['nombreCompleto'] != null) {
-                      errNombre = respuesta['errors']['nombreCompleto'][0];
-                    }
-                    // SEXO
-                    if (respuesta['errors']['sexo'] != null) {
-                      errSexo = respuesta['errors']['sexo'][0];
-                    }
-                    // NIVEL
-                    if (respuesta['errors']['nivel_id'] != null) {
-                      errNivel = respuesta['errors']['nivel_id'][0];
-                    }
-                    // FECHA NACIMIENTO
-                    if (respuesta['errors']['fechaNacimiento'] != null) {
-                      errFecha = respuesta['errors']['fechaNacimiento'][0];
-                    }
-                    // TUTOR
-                    if (respuesta['errors']['nombreApoderado'] != null) {
-                      errTutor = respuesta['errors']['nombreApoderado'][0];
-                    }
-                    // TELEFONO 1
-                    if (respuesta['errors']['telefono1'] != null) {
-                      errTelUno = respuesta['errors']['telefono1'][0];
-                    }
-                    // TELEFONO 2
-                    if (respuesta['errors']['telefono2'] != null) {
-                      errTelDos = respuesta['errors']['telefono2'][0];
-                    }
-                    // ALERGIAS
-                    if (respuesta['errors']['alergias'] != null) {
-                      errAlergias = respuesta['errors']['alergias'][0];
-                    }
-                    setState(() {});
-                    return;
-                  }
+                  var data = {
+                    'rutNino': rutNinoCtrl.text.trim(),
+                    'nombreCompleto': nombreCtrl.text.trim(),
+                    'sexo': sexo,
+                    'fechaNacimiento': hoy.toString(),
+                    'nombreApoderado': apoderadoCtrl.text.trim(),
+                    'nivel_id': nivel.toString(),
+                    'telefono1': telefono1Ctrl.text.trim(),
+                    'telefono2': telefono2Ctrl.text.trim(),
+                    'alergias': alergiasCtrl.text.trim(),
+                  };
+                  var respuesta =
+                      await NinosProvider().postDataImagen(data, imagenPath);
+                  // if (respuesta['message'] != null) {
+                  //   // STEP
+                  //   if ((respuesta['errors']['rutNino'] != null) ||
+                  //       (respuesta['errors']['nombreCompleto'] != null) ||
+                  //       (respuesta['errors']['sexo'] != null) ||
+                  //       (respuesta['errors']['nivel_id'] != null) ||
+                  //       (respuesta['errors']['fechaNacimiento'] != null)) {
+                  //     currentStep = 0;
+                  //   } else {
+                  //     currentStep = 1;
+                  //   }
+                  //   // RUT
+                  //   if (respuesta['errors']['rutNino'] != null) {
+                  //     errRUT = respuesta['errors']['rutNino'][0];
+                  //   }
+                  //   // NOMBRE
+                  //   if (respuesta['errors']['nombreCompleto'] != null) {
+                  //     errNombre = respuesta['errors']['nombreCompleto'][0];
+                  //   }
+                  //   // SEXO
+                  //   if (respuesta['errors']['sexo'] != null) {
+                  //     errSexo = respuesta['errors']['sexo'][0];
+                  //   }
+                  //   // NIVEL
+                  //   if (respuesta['errors']['nivel_id'] != null) {
+                  //     errNivel = respuesta['errors']['nivel_id'][0];
+                  //   }
+                  //   // FECHA NACIMIENTO
+                  //   if (respuesta['errors']['fechaNacimiento'] != null) {
+                  //     errFecha = respuesta['errors']['fechaNacimiento'][0];
+                  //   }
+                  //   // TUTOR
+                  //   if (respuesta['errors']['nombreApoderado'] != null) {
+                  //     errTutor = respuesta['errors']['nombreApoderado'][0];
+                  //   }
+                  //   // TELEFONO 1
+                  //   if (respuesta['errors']['telefono1'] != null) {
+                  //     errTelUno = respuesta['errors']['telefono1'][0];
+                  //   }
+                  //   // TELEFONO 2
+                  //   if (respuesta['errors']['telefono2'] != null) {
+                  //     errTelDos = respuesta['errors']['telefono2'][0];
+                  //   }
+                  //   // ALERGIAS
+                  //   if (respuesta['errors']['alergias'] != null) {
+                  //     errAlergias = respuesta['errors']['alergias'][0];
+                  //   }
+                  //   setState(() {});
+                  //   return;
+                  // }
+                  setState(() {});
                   print(respuesta);
                   Navigator.pop(context);
                   String nombre = nombreCtrl.text.trim().split(' ').first;
@@ -575,7 +585,51 @@ class _PageAddNinoState extends State<PageAddNino> {
         ),
       ),
       Step(
-        isActive: currentStep >= 2,
+          isActive: currentStep >= 2,
+          title: Text('Cargar Imagen'),
+          content: Container(
+              width: double.infinity,
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: Icon(MdiIcons.image),
+                            label: Text('Selecionar una Imagen'),
+                            onPressed: () async {
+                              var pickedFile = await picker.pickImage(
+                                  source: ImageSource.gallery);
+                              setState(() {
+                                if (pickedFile != null) {
+                                  imagen = File(pickedFile.path);
+                                  imagenPath = pickedFile.path;
+                                  subirImagen = true;
+                                }
+                              });
+                            },
+                          ),
+                          SizedBox(height: 30),
+                          imagen == null ? Center() : Image.file(imagen!),
+                        ]),
+                  )))),
+      Step(
+        isActive: currentStep >= 3,
         title: Text('Información'),
         content: Container(
           width: double.infinity,
