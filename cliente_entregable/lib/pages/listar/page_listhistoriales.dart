@@ -1,4 +1,3 @@
-import 'package:cliente_entregable/pages/editar/page_edithistorial.dart';
 import 'package:cliente_entregable/provider/historial_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
@@ -47,36 +46,6 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
               padding: EdgeInsets.all(5),
               child: buildListView(snap),
             );
-            // return ListView.separated(
-            //   separatorBuilder: (_, __) => Divider(),
-            //   itemCount: snap.data.length,
-            //   itemBuilder: (context, index) {
-            //     var hist = snap.data[index];
-            //     return Container(
-            //       color: Colors.purple,
-            //       child: Padding(
-            //         padding: EdgeInsets.all(8),
-            //         child: Container(
-            //           padding: EdgeInsets.only(right: 10),
-            //           alignment: Alignment.centerRight,
-            //           color: Colors.red,
-            //           child: ListTile(
-            //             title: Text(hist['titulo']),
-            //             subtitle: Text('${hist['rutNino']}'),
-            //             trailing: Text(hist['created_at']),
-            //             // onTap: () {
-            //             //   MaterialPageRoute route = MaterialPageRoute(
-            //             //     builder: (context) {
-            //             //       return PageHist(hist['nHistorial']);
-            //             //     },
-            //             //   );
-            //             // },
-            //           ),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // );
           },
         ),
       ),
@@ -118,12 +87,6 @@ class _PageListHistorialesState extends State<PageListHistoriales> {
               ),
               textAlign: TextAlign.center,
             ),
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageEditHistorial(hist['nivel_id'], hist['rutNino']);
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
           ),
         );
       },

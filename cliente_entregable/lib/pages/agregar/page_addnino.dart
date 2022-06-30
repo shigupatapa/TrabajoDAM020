@@ -5,6 +5,8 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 //import 'package:dart_rut_validator/dart_rut_validator.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -138,6 +140,25 @@ class _PageAddNinoState extends State<PageAddNino> {
                   }
                   print(respuesta);
                   Navigator.pop(context);
+                  String nombre = nombreCtrl.text.trim().split(' ').first;
+                  showTopSnackBar(
+                    context,
+                    CustomSnackBar.success(
+                      message: '$nombre fue agregado exitosamente.',
+                      backgroundColor: Colors.green,
+                      icon: Icon(
+                        Icons.sentiment_very_satisfied,
+                        color: Colors.black26,
+                        size: 120,
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 } else {
                   setState(() => currentStep += 1);
                 }
@@ -804,39 +825,3 @@ class _PageAddNinoState extends State<PageAddNino> {
     ];
   }
 }
-
-// rutNinoCtrl.text.trim(),
-//                     nombreCtrl.text.trim(),
-//                     sexo,
-//                     hoy,
-//                     apoderadoCtrl.text.trim(),
-//                     nivel,
-//                     telefono1Ctrl.text.trim(),
-//                     telefono2Ctrl.text.trim(),
-//                     alergiasCtrl.text.trim(),
-
-//             children: [
-//               ElevatedButton.icon(
-//                   icon: Icon(MdiIcons.camera),
-//                   label: Text('subir imagen'),
-//                   onPressed: () {})
-//               // ESTA COSA NO FUNCIONA!!!!!
-//               (path == null ) ? Container() : Image.file(File(path),width: 200,),
-//               RaisedButton(
-//               child: Text("CARGAR IMAGEN"),
-//                 onPressed: () async {
-//                 final ImagePicker _picker = ImagePicker();
-//                 PickedFile _archivo = await _picker.getImage(source: ImageSource.gallery);
-// ....
-
-//                 setState(() {
-//                   _ruta =_archivo.path;
-//                 });
-//             }),
-//             /// enviar al servidor web
-//             RaisedButton(
-//               child: Text("ENVIAR AL SERVIDOR"),
-//                 onPressed: (){
-//               _enviarform();
-//             })
-//             ],

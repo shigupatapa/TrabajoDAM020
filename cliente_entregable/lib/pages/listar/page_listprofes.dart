@@ -2,7 +2,6 @@ import 'package:cliente_entregable/pages/agregar/page_addprofe.dart';
 import 'package:cliente_entregable/pages/perfil/page_profesor.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
-// import 'package:cliente_entregable/widgets/drawer.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,6 @@ class _PageListProfesState extends State<PageListProfes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // drawer: DrawerPage(),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: MenuWidget(),
@@ -200,7 +198,7 @@ class _PageListProfesState extends State<PageListProfes> {
                 ),
                 subtitle: Text(
                   // profe['nivel_id'].toString(),
-                  nivel["nombreNivel"],
+                  nivel["nombreNivel"]??'Nivel Eliminado',
                   style: TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,
                 ),

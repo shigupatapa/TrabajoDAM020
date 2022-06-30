@@ -1,5 +1,4 @@
 import 'package:cliente_entregable/pages/editar/page_editprofe.dart';
-import 'package:cliente_entregable/pages/listar/page_listprofes.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -26,6 +25,7 @@ class _PerfilProfeState extends State<PerfilProfe> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -294,13 +294,22 @@ class _PerfilProfeState extends State<PerfilProfe> {
                             decorationThickness: 2,
                           ),
                         ),
-                        TextSpan(
-                          // text: ' ${profe['nivel_id']}',
-                          text: ' ${nivel["nombreNivel"]}',
-                          style: TextStyle(
-                            fontSize: 18,
+                        if (nivel["nombreNivel"] != null)
+                          TextSpan(
+                            // text: ' ${nino['nivel_id']}',
+                            text: ' ${nivel["nombreNivel"]}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
+                        if (nivel["nombreNivel"] == null)
+                          TextSpan(
+                            // text: ' ${nino['nivel_id']}',
+                            text: ' Nivel Eliminado',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
                       ],
                     ),
                   );
@@ -431,6 +440,7 @@ class _PerfilProfeState extends State<PerfilProfe> {
                     ProfesoresProvider().DeleteProfe(profe['rutProfesor']).then(
                       (borradoOk) {
                         if (borradoOk) {
+                          Navigator.pop(context);
                           showTopSnackBar(
                             context,
                             CustomSnackBar.info(
@@ -449,11 +459,6 @@ class _PerfilProfeState extends State<PerfilProfe> {
                               ),
                             ),
                           );
-                          MaterialPageRoute route =
-                              MaterialPageRoute(builder: (context) {
-                            return PageListProfes();
-                          });
-                          Navigator.pushReplacement(context, route);
                         } else {
                           showTopSnackBar(
                             context,

@@ -5,6 +5,8 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 //import 'package:dart_rut_validator/dart_rut_validator.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +22,6 @@ class _PageAddProfeState extends State<PageAddProfe> {
   // final formKey = GlobalKey<FormState>();
   TextEditingController rutProfeCtrl = TextEditingController();
   TextEditingController nombreCtrl = TextEditingController();
-  TextEditingController nivelCtrl = TextEditingController();
   String nivelSel = '', sexo = '';
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
@@ -65,12 +66,12 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 final isLastStep = currentStep == getSteps().length - 1;
                 if (isLastStep) {
                   // send data to server
-                  int nivel = int.tryParse(nivelCtrl.text) ?? 0;
+                  int nivel = int.tryParse(nivelSel) ?? 0;
                   var respuesta = await ProfesoresProvider().AddProfe(
                     rutProfeCtrl.text.trim(),
                     nombreCtrl.text.trim(),
                     sexo,
-                    DateTime.now(),
+                    hoy,
                     nivel,
                   );
                   if (respuesta['message'] != null) {
@@ -107,6 +108,25 @@ class _PageAddProfeState extends State<PageAddProfe> {
                   }
                   print(respuesta);
                   Navigator.pop(context);
+                  String nombre = nombreCtrl.text.trim().split(' ').first;
+                  showTopSnackBar(
+                    context,
+                    CustomSnackBar.success(
+                      message: '$nombre fue agregado exitosamente.',
+                      backgroundColor: Colors.green,
+                      icon: Icon(
+                        Icons.sentiment_very_satisfied,
+                        color: Colors.black26,
+                        size: 120,
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 } else {
                   setState(() => currentStep += 1);
                 }
@@ -161,7 +181,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 controller: rutProfeCtrl,
                 decoration: InputDecoration(
                   labelText: 'RUT del Docente',
-                  fillColor: Colors.white70,
+                  fillColor: Colors.white.withOpacity(0.9),
                   filled: true,
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(
@@ -191,7 +211,7 @@ class _PageAddProfeState extends State<PageAddProfe> {
                 controller: nombreCtrl,
                 decoration: InputDecoration(
                   labelText: 'Nombre Completo',
-                  fillColor: Colors.white70,
+                  fillColor: Colors.white.withOpacity(0.9),
                   filled: true,
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(
@@ -303,7 +323,6 @@ class _PageAddProfeState extends State<PageAddProfe> {
                         ffecha.format(hoy),
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextButton(
@@ -345,45 +364,48 @@ class _PageAddProfeState extends State<PageAddProfe> {
         title: Text('Nivel'),
         content: Column(
           children: [
-            Container(
-              width: double.infinity,
-              child: FutureBuilder(
-                future: NivelesProvider().getAllNiveles(),
-                builder: (context, AsyncSnapshot snap) {
-                  if (!snap.hasData) {
-                    return DropdownButtonFormField<String>(
-                      hint: Text('Cargando niveles...'),
-                      items: [],
-                      onChanged: (valor) {},
-                    );
-                  }
-                  var niveles = snap.data;
-                  return DropdownButtonFormField<String>(
-                    //hint: Text('Nivel'),
-                    decoration: InputDecoration(
-                      labelText: 'Nivel',
-                      fillColor: Colors.white70,
-                      filled: true,
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-
-                    items: niveles.map<DropdownMenuItem<String>>((nivel) {
-                      return DropdownMenuItem<String>(
-                        child: Text(nivel['nombreNivel']),
-                        value: nivel['nivel_id'].toString(),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Container(
+                width: double.infinity,
+                child: FutureBuilder(
+                  future: NivelesProvider().getAllNiveles(),
+                  builder: (context, AsyncSnapshot snap) {
+                    if (!snap.hasData) {
+                      return DropdownButtonFormField<String>(
+                        hint: Text('Cargando niveles...'),
+                        items: [],
+                        onChanged: (valor) {},
                       );
-                    }).toList(),
-                    value: nivelSel.isEmpty ? null : nivelSel,
-                    onChanged: (nuevoNivel) {
-                      setState(() {
-                        nivelSel = nuevoNivel.toString();
-                      });
-                    },
-                  );
-                },
+                    }
+                    var niveles = snap.data;
+                    return DropdownButtonFormField<String>(
+                      //hint: Text('Nivel'),
+                      decoration: InputDecoration(
+                        labelText: 'Nivel',
+                        fillColor: Colors.white.withOpacity(0.9),
+                        filled: true,
+                        contentPadding: EdgeInsets.all(15),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+
+                      items: niveles.map<DropdownMenuItem<String>>((nivel) {
+                        return DropdownMenuItem<String>(
+                          child: Text(nivel['nombreNivel']),
+                          value: nivel['nivel_id'].toString(),
+                        );
+                      }).toList(),
+                      value: nivelSel.isEmpty ? null : nivelSel,
+                      onChanged: (nuevoNivel) {
+                        setState(() {
+                          nivelSel = nuevoNivel.toString();
+                        });
+                      },
+                    );
+                  },
+                ),
               ),
             ),
             if (errNivel != "")

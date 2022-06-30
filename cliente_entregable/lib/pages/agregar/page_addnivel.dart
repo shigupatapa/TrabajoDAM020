@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:cliente_entregable/provider/niveles_provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class PageAddNivel extends StatefulWidget {
@@ -73,6 +75,25 @@ class _PageAddNivelState extends State<PageAddNivel> {
                   }
                   print(respuesta);
                   Navigator.pop(context);
+                  String nombre = nombreNivelCtrl.text.trim().split(' ').first;
+                  showTopSnackBar(
+                    context,
+                    CustomSnackBar.success(
+                      message: '$nombre fue agregado exitosamente.',
+                      backgroundColor: Colors.green,
+                      icon: Icon(
+                        Icons.info_outline,
+                        color: Colors.black26,
+                        size: 120,
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 } else {
                   setState(() => currentStep += 1);
                 }
@@ -126,7 +147,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
                 controller: nombreNivelCtrl,
                 decoration: InputDecoration(
                   labelText: 'Nombre del Nivel',
-                  fillColor: Colors.white70,
+                  fillColor: Colors.white.withOpacity(0.9),
                   filled: true,
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(
@@ -154,7 +175,7 @@ class _PageAddNivelState extends State<PageAddNivel> {
                 controller: detallesCtrl,
                 decoration: InputDecoration(
                   labelText: 'Detalle',
-                  fillColor: Colors.white70,
+                  fillColor: Colors.white.withOpacity(0.9),
                   filled: true,
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(

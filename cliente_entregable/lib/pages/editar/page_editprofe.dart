@@ -5,6 +5,8 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/profesor_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 // import 'package:dart_rut_validator/dart_rut_validator.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -27,9 +29,12 @@ class _PageEditProfeState extends State<PageEditProfe> {
   var ffecha = DateFormat('dd-MM-yyyy');
   DateTime hoy = DateTime.now();
   bool editar = false;
+  String errRUT = '',
+      errNombre = '',
+      errSexo = '',
+      errFecha = '',
+      errNivel = '';
 
-  // String errCodigo = '';
-  // String errNombre = '';
   @override
   void initState() {
     super.initState();
@@ -53,7 +58,7 @@ class _PageEditProfeState extends State<PageEditProfe> {
         backgroundColor: Colors.black87,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         child: Container(
           height: double.infinity,
           width: double.infinity,
@@ -68,60 +73,98 @@ class _PageEditProfeState extends State<PageEditProfe> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
             child: Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: ColorScheme.light(primary: Colors.black87),
-                ),
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(primary: Colors.black87),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(10),
                 child: ListView(
                   children: [
-                    TextFormField(
-                      readOnly: !editar,
-                      controller: rutProfeCtrl,
-                      decoration: InputDecoration(
-                        hintText: 'RUT del Docente',
-                        fillColor: Colors.white70,
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    // RUT
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        readOnly: !editar,
+                        controller: rutProfeCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'RUT del Docente',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onChanged: (String text) {
+                          //RUTValidator.formatFromTextController(rutProfeCtrl);
+                        },
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    if (errRUT != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errRUT,
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      onChanged: (String text) {
-                        //RUTValidator.formatFromTextController(rutProfeCtrl);
-                      },
-                      keyboardType: TextInputType.number,
-                    ),
                     Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         children: [
-                          Text('Editar Rut? '),
+                          Text(
+                            '¿Desea editar el RUT? ',
+                            style: TextStyle(
+                              backgroundColor: Colors.yellow,
+                            ),
+                          ),
                           Checkbox(
-                              value: editar,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  rutProfeCtrl.text = widget.rut;
-                                  editar = value!;
-                                });
-                              })
+                            value: editar,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                rutProfeCtrl.text = widget.rut;
+                                editar = value!;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
                     Divider(),
-                    TextFormField(
-                      controller: nombreCtrl,
-                      decoration: InputDecoration(
-                        hintText: 'Nombre Completo',
-                        fillColor: Colors.white70,
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    // NOMBRE
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        controller: nombreCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'Nombre Completo',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          // do something
+                        },
+                      ),
+                    ),
+                    if (errNombre != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errNombre,
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                      onChanged: (value) {
-                        // do something
-                      },
-                    ),
                     Divider(),
+                    // SEXO
                     Container(
                       padding: EdgeInsets.zero,
                       decoration: BoxDecoration(
@@ -138,7 +181,12 @@ class _PageEditProfeState extends State<PageEditProfe> {
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               'Sexo:',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                           RadioListTile<String>(
@@ -164,6 +212,15 @@ class _PageEditProfeState extends State<PageEditProfe> {
                         ],
                       ),
                     ),
+                    if (errSexo != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errSexo,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     Divider(),
                     // FECHA DE NACIMIENTO NIÑO
                     Container(
@@ -182,7 +239,12 @@ class _PageEditProfeState extends State<PageEditProfe> {
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               'Fecha de Nacimiento:',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                           Row(
@@ -192,7 +254,6 @@ class _PageEditProfeState extends State<PageEditProfe> {
                                 ffecha.format(hoy),
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextButton(
@@ -216,49 +277,92 @@ class _PageEditProfeState extends State<PageEditProfe> {
                         ],
                       ),
                     ),
+                    if (errFecha != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errFecha,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     Divider(),
-                    Container(
-                      width: double.infinity,
-                      child: FutureBuilder(
-                        future: NivelesProvider().getAllNiveles(),
-                        builder: (context, AsyncSnapshot snap) {
-                          if (!snap.hasData) {
-                            return DropdownButtonFormField<String>(
-                              hint: Text('Cargando niveles...'),
-                              items: [],
-                              onChanged: (valor) {},
-                            );
-                          }
-                          var niveles = snap.data;
-                          return DropdownButtonFormField<String>(
-                            //hint: Text('Nivel'),
-                            decoration: InputDecoration(
-                              hintText: 'Nivel',
-                              fillColor: Colors.white70,
-                              filled: true,
-                              contentPadding: EdgeInsets.all(15),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
+                    // NIVEL
+                    FutureBuilder(
+                      future: NivelesProvider()
+                          .getNivel(int.tryParse(nivelSel) ?? 0),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container(
+                            width: 50,
+                            height: 50,
+                            child: Center(
+                              child: SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: CircularProgressIndicator(),
                               ),
                             ),
-
-                            items:
-                                niveles.map<DropdownMenuItem<String>>((nivel) {
-                              return DropdownMenuItem<String>(
-                                child: Text(nivel['nombreNivel']),
-                                value: nivel['nivel_id'].toString(),
-                              );
-                            }).toList(),
-                            value: nivelSel.isEmpty ? null : nivelSel,
-                            onChanged: (nuevoNivel) {
-                              setState(() {
-                                nivelSel = nuevoNivel.toString();
-                              });
-                            },
                           );
-                        },
-                      ),
+                        }
+                        var data = snapshot.data.toString();
+                        if (data == '{}') {
+                          nivelSel = "";
+                        }
+                        return Container(
+                          width: double.infinity,
+                          child: FutureBuilder(
+                            future: NivelesProvider().getAllNiveles(),
+                            builder: (context, AsyncSnapshot snap) {
+                              if (!snap.hasData) {
+                                return DropdownButtonFormField<String>(
+                                  hint: Text('Cargando niveles...'),
+                                  items: [],
+                                  onChanged: (valor) {},
+                                );
+                              }
+                              var niveles = snap.data;
+                              return DropdownButtonFormField<String>(
+                                //hint: Text('Nivel'),
+                                decoration: InputDecoration(
+                                  labelText: 'Nivel',
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  filled: true,
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+
+                                items: niveles
+                                    .map<DropdownMenuItem<String>>((nivel) {
+                                  return DropdownMenuItem<String>(
+                                    child: Text(nivel['nombreNivel']),
+                                    value: nivel['nivel_id'].toString(),
+                                  );
+                                }).toList(),
+                                value: nivelSel.isEmpty ? null : nivelSel,
+                                onChanged: (nuevoNivel) {
+                                  setState(() {
+                                    nivelSel = nuevoNivel.toString();
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
+                    if (errNivel != "")
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        color: Colors.red,
+                        child: Text(
+                          errNivel,
+                          style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     Divider(),
                     Container(
                       child: ElevatedButton(
@@ -276,14 +380,62 @@ class _PageEditProfeState extends State<PageEditProfe> {
                             hoy.toString(),
                             nivel,
                           );
+                          if (respuesta['message'] != null) {
+                            // RUT
+                            if (respuesta['errors']['rutProfesor'] != null) {
+                              errRUT = respuesta['errors']['rutProfesor'][0];
+                            }
+                            // NOMBRE
+                            if (respuesta['errors']['nombreCompleto'] != null) {
+                              errNombre =
+                                  respuesta['errors']['nombreCompleto'][0];
+                            }
+                            // SEXO
+                            if (respuesta['errors']['sexo'] != null) {
+                              errSexo = respuesta['errors']['sexo'][0];
+                            }
+                            // FECHA NACIMIENTO
+                            if (respuesta['errors']['fechaNacimiento'] !=
+                                null) {
+                              errFecha =
+                                  respuesta['errors']['fechaNacimiento'][0];
+                            }
+                            // NIVEL
+                            if (respuesta['errors']['nivel_id'] != null) {
+                              errNivel = respuesta['errors']['nivel_id'][0];
+                            }
+                            setState(() {});
+                            return;
+                          }
                           print(respuesta);
                           Navigator.pop(context);
-                          setState(() {});
+                          String nombre =
+                              nombreCtrl.text.trim().split(' ').first;
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.success(
+                              message: '$nombre fue editado exitosamente.',
+                              backgroundColor: Colors.green,
+                              icon: Icon(
+                                Icons.sentiment_very_satisfied,
+                                color: Colors.black26,
+                                size: 120,
+                              ),
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
                         },
                       ),
-                    )
+                    ),
                   ],
-                )),
+                ),
+              ),
+            ),
           ),
         ),
       ),

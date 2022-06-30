@@ -1,5 +1,9 @@
 import 'package:cliente_entregable/pages/editar/page_edithistorial.dart';
+import 'package:cliente_entregable/provider/historial_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,12 +18,14 @@ class PageHistorial extends StatefulWidget {
 }
 
 class _PageHistorialState extends State<PageHistorial> {
+  bool showContent = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Historiales'),
+        title: Text('Historial de ${widget.nombre}'),
         centerTitle: true,
         backgroundColor: Colors.black87,
       ),
@@ -42,41 +48,10 @@ class _PageHistorialState extends State<PageHistorial> {
                 child: CircularProgressIndicator(),
               );
             }
-            print(snap.data);
             return Padding(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(10),
               child: buildListView(snap),
             );
-            // return ListView.separated(
-            //   separatorBuilder: (_, __) => Divider(),
-            //   itemCount: snap.data.length,
-            //   itemBuilder: (context, index) {
-            //     var hist = snap.data[index];
-            //     return Container(
-            //       color: Colors.purple,
-            //       child: Padding(
-            //         padding: EdgeInsets.all(8),
-            //         child: Container(
-            //           padding: EdgeInsets.only(right: 10),
-            //           alignment: Alignment.centerRight,
-            //           color: Colors.red,
-            //           child: ListTile(
-            //             title: Text(hist['titulo']),
-            //             subtitle: Text('${hist['rutNino']}'),
-            //             trailing: Text(hist['created_at']),
-            //             // onTap: () {
-            //             //   MaterialPageRoute route = MaterialPageRoute(
-            //             //     builder: (context) {
-            //             //       return PageHist(hist['nHistorial']);
-            //             //     },
-            //             //   );
-            //             // },
-            //           ),
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // );
           },
         ),
       ),
@@ -88,45 +63,172 @@ class _PageHistorialState extends State<PageHistorial> {
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
         var hist = snap.data[index];
-        return Card(
-          shape: StadiumBorder(
-            side: BorderSide(
-              color: Colors.black,
-              width: 2,
-            ),
-          ),
-          color: Colors.white.withOpacity(0.85),
-          child: ListTile(
-            title: Text(
-              hist['titulo'],
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            subtitle: Text(
-              '${DateFormat("dd-MM-yyyy - hh:mm").format(
-                DateTime.parse(
-                  hist['created_at'],
+        var fecha = DateFormat("dd-MM-yyyy HH:mm").format(
+            DateTime.parse(hist['created_at']).subtract(Duration(hours: 4)));
+        return Column(
+          children: [
+            Container(
+              margin: EdgeInsets.zero,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
                 ),
-              )}',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black,
               ),
-              textAlign: TextAlign.center,
+              child: Card(
+                color: Colors.transparent,
+                shadowColor: Colors.transparent,
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(
+                        hist['titulo'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      subtitle: Text(
+                        fecha,
+                        textAlign: TextAlign.center,
+                      ),
+                      trailing: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: Icon(showContent
+                            ? Icons.keyboard_double_arrow_up
+                            : Icons.keyboard_double_arrow_down),
+                        onPressed: () {
+                          setState(() {
+                            showContent = !showContent;
+                          });
+                        },
+                      ),
+                      onTap: () {
+                        MaterialPageRoute route =
+                            MaterialPageRoute(builder: (context) {
+                          return PageEditHistorial(
+                            hist['nHistorial'],
+                            widget.rut,
+                            hist['titulo'],
+                          );
+                        });
+                        Navigator.push(context, route)
+                            .then((value) => setState(() {}));
+                      },
+                    ),
+                    showContent
+                        ? Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 5),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Divider(
+                                    color: Colors.black,
+                                    height: 5,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    hist['contenido'],
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      confirmDialog(context, hist['titulo'])
+                                          .then(
+                                        (confirm) {
+                                          if (confirm) {
+                                            HistorialesProvider()
+                                                .DeleteHistorial(
+                                                    hist['nHistorial'])
+                                                .then(
+                                              (borradoOk) {
+                                                if (borradoOk) {
+                                                  snap.data.removeAt(index);
+                                                  setState(() {});
+                                                  showTopSnackBar(
+                                                    context,
+                                                    CustomSnackBar.info(
+                                                      message:
+                                                          '${hist['titulo']} fue eliminado del sistema.',
+                                                      backgroundColor:
+                                                          Colors.cyan,
+                                                      icon: Icon(
+                                                        Icons.info_outline,
+                                                        color: Colors.black26,
+                                                        size: 120,
+                                                      ),
+                                                      textStyle: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  showTopSnackBar(
+                                                    context,
+                                                    CustomSnackBar.error(
+                                                      message:
+                                                          '${hist['titulo']} no pudo ser eliminado.',
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
             ),
-            onTap: () {
-              MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageEditHistorial(hist['nivel_id'], hist['rutNino']);
-              });
-              Navigator.push(context, route).then((value) => setState(() {}));
-            },
-          ),
+            SizedBox(height: 10),
+          ],
         );
       },
+    );
+  }
+
+  confirmDialog(BuildContext context, String nombre) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      title: 'Confirmar Borrado',
+      text: '¿Borrar a $nombre?',
+      confirmBtnText: 'Aceptar',
+      confirmBtnColor: Colors.green,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      ),
+      onConfirmBtnTap: () => Navigator.pop(context, true),
+      cancelBtnText: 'Cancelar',
+      showCancelBtn: true,
+      cancelBtnTextStyle: TextStyle(
+        fontSize: 15,
+      ),
+      onCancelBtnTap: () => Navigator.pop(context, false),
     );
   }
 }

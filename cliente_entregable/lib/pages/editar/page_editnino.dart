@@ -5,6 +5,8 @@ import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 //import 'package:dart_rut_validator/dart_rut_validator.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -41,9 +43,6 @@ class _PageEditNinoState extends State<PageEditNino> {
       errTelUno = '',
       errTelDos = '',
       errAlergias = '';
-
-  // String errCodigo = '';
-  // String errNombre = '';
 
   @override
   void initState() {
@@ -91,32 +90,37 @@ class _PageEditNinoState extends State<PageEditNino> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
             child: Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: ColorScheme.light(primary: Colors.black87),
-                ),
+              data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.light(primary: Colors.black87),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(10),
                 child: ListView(
                   children: [
                     // RUT NIÑO
-                    TextFormField(
-                      readOnly: !editar,
-                      controller: rutNinoCtrl,
-                      decoration: InputDecoration(
-                        labelText: 'RUT del Niño',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        readOnly: !editar,
+                        controller: rutNinoCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'RUT del Niño',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        //limita los carracteres
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(12),
+                        ],
+                        onChanged: (String text) {
+                          //RUTValidator.formatFromTextController(rutNinoCtrl);
+                        },
+                        keyboardType: TextInputType.number,
                       ),
-                      //limita los carracteres
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(12),
-                      ],
-                      onChanged: (String text) {
-                        //RUTValidator.formatFromTextController(rutNinoCtrl);
-                      },
-                      keyboardType: TextInputType.number,
                     ),
                     if (errRUT != "")
                       Container(
@@ -125,40 +129,50 @@ class _PageEditNinoState extends State<PageEditNino> {
                         child: Text(
                           errRUT,
                           style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-
                     Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
                         children: [
-                          Text('Editar Rut? '),
+                          Text(
+                            '¿Desea editar el RUT? ',
+                            style: TextStyle(
+                              backgroundColor: Colors.yellow,
+                            ),
+                          ),
                           Checkbox(
-                              value: editar,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  rutNinoCtrl.text = widget.rut;
-                                  editar = value!;
-                                });
-                              })
+                            value: editar,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                rutNinoCtrl.text = widget.rut;
+                                editar = value!;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
                     Divider(),
                     // NOMBRE NIÑO
-                    TextFormField(
-                      controller: nombreCtrl,
-                      decoration: InputDecoration(
-                        labelText: 'Nombre Completo',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        controller: nombreCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'Nombre Completo',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        onChanged: (value) {
+                          // do something
+                        },
                       ),
-                      onChanged: (value) {
-                        // do something
-                      },
                     ),
                     if (errNombre != "")
                       Container(
@@ -167,9 +181,9 @@ class _PageEditNinoState extends State<PageEditNino> {
                         child: Text(
                           errNombre,
                           style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-
                     Divider(),
                     // SEXO NIÑO
                     Container(
@@ -188,7 +202,12 @@ class _PageEditNinoState extends State<PageEditNino> {
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               'Sexo:',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                           RadioListTile<String>(
@@ -223,34 +242,84 @@ class _PageEditNinoState extends State<PageEditNino> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                     Divider(),
-                    // TUTOR NIÑO
-                    TextFormField(
-                      controller: apoderadoCtrl,
-                      decoration: InputDecoration(
-                        labelText: 'Nombre del Apoderado',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onChanged: (value) {
-                        // do something
+                    // NIVEL NIÑO
+                    FutureBuilder(
+                      future: NivelesProvider()
+                          .getNivel(int.tryParse(nivelSel) ?? 0),
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (!snapshot.hasData) {
+                          return Container(
+                            width: 50,
+                            height: 50,
+                            child: Center(
+                              child: SizedBox(
+                                width: 10,
+                                height: 10,
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          );
+                        }
+                        var data = snapshot.data.toString();
+                        if (data == '{}') {
+                          nivelSel = "";
+                        }
+                        return Container(
+                          width: double.infinity,
+                          child: FutureBuilder(
+                            future: NivelesProvider().getAllNiveles(),
+                            builder: (context, AsyncSnapshot snap) {
+                              if (!snap.hasData) {
+                                return DropdownButtonFormField<String>(
+                                  hint: Text('Cargando niveles...'),
+                                  value: nivelSel,
+                                  items: [],
+                                  onChanged: (valor) {},
+                                );
+                              }
+                              var niveles = snap.data;
+                              return DropdownButtonFormField<String>(
+                                //hint: Text('Nivel'),
+                                decoration: InputDecoration(
+                                  labelText: 'Nivel',
+                                  fillColor: Colors.white.withOpacity(0.9),
+                                  filled: true,
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                ),
+
+                                items: niveles
+                                    .map<DropdownMenuItem<String>>((nivel) {
+                                  return DropdownMenuItem<String>(
+                                    child: Text(nivel['nombreNivel']),
+                                    value: nivel['nivel_id'].toString(),
+                                  );
+                                }).toList(),
+                                value: nivelSel.isEmpty ? null : nivelSel,
+                                onChanged: (nuevoNivel) {
+                                  setState(() {
+                                    nivelSel = nuevoNivel.toString();
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        );
                       },
                     ),
-                    if (errTutor != "")
+                    if (errNivel != "")
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         color: Colors.red,
                         child: Text(
-                          errTutor,
+                          errNivel,
                           style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-
                     Divider(),
                     // FECHA DE NACIMIENTO NIÑO
                     Container(
@@ -269,7 +338,12 @@ class _PageEditNinoState extends State<PageEditNino> {
                             padding: EdgeInsets.only(top: 10),
                             child: Text(
                               'Fecha de Nacimiento:',
-                              style: TextStyle(fontSize: 16),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                           Row(
@@ -279,7 +353,6 @@ class _PageEditNinoState extends State<PageEditNino> {
                                 ffecha.format(hoy),
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                               TextButton(
@@ -312,79 +385,56 @@ class _PageEditNinoState extends State<PageEditNino> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                     Divider(),
-                    // NIVEL NIÑO
-                    Container(
-                      width: double.infinity,
-                      child: FutureBuilder(
-                        future: NivelesProvider().getAllNiveles(),
-                        builder: (context, AsyncSnapshot snap) {
-                          if (!snap.hasData) {
-                            return DropdownButtonFormField<String>(
-                              hint: Text('Cargando niveles...'),
-                              value: nivelSel,
-                              items: [],
-                              onChanged: (valor) {},
-                            );
-                          }
-                          var niveles = snap.data;
-                          return DropdownButtonFormField<String>(
-                            //hint: Text('Nivel'),
-                            decoration: InputDecoration(
-                              labelText: 'Nivel',
-                              fillColor: Colors.white.withOpacity(0.9),
-                              filled: true,
-                              contentPadding: EdgeInsets.all(15),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-
-                            items:
-                                niveles.map<DropdownMenuItem<String>>((nivel) {
-                              return DropdownMenuItem<String>(
-                                child: Text(nivel['nombreNivel']),
-                                value: nivel['nivel_id'].toString(),
-                              );
-                            }).toList(),
-                            value: nivelSel.isEmpty ? null : nivelSel,
-                            onChanged: (nuevoNivel) {
-                              setState(() {
-                                nivelSel = nuevoNivel.toString();
-                              });
-                            },
-                          );
+                    // TUTOR NIÑO
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        controller: apoderadoCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'Nombre del Apoderado',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          // do something
                         },
                       ),
                     ),
-                    if (errNivel != "")
+                    if (errTutor != "")
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         color: Colors.red,
                         child: Text(
-                          errNivel,
+                          errTutor,
                           style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-
                     Divider(),
                     // TELEFONO Nº1 NIÑO
-                    TextFormField(
-                      controller: telefono1Ctrl,
-                      decoration: InputDecoration(
-                        labelText: 'Telefono Nº 1',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        controller: telefono1Ctrl,
+                        decoration: InputDecoration(
+                          labelText: 'Telefono Nº 1',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        onChanged: (value) {
+                          // do something
+                        },
+                        keyboardType: TextInputType.number,
                       ),
-                      onChanged: (value) {
-                        // do something
-                      },
-                      keyboardType: TextInputType.number,
                     ),
                     if (errTelUno != "")
                       Container(
@@ -393,26 +443,29 @@ class _PageEditNinoState extends State<PageEditNino> {
                         child: Text(
                           errTelUno,
                           style: TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
                         ),
                       ),
-
                     Divider(),
                     // TELEFONO Nº2 NIÑO
-                    TextFormField(
-                      controller: telefono2Ctrl,
-                      decoration: InputDecoration(
-                        labelText: 'Telefono Nº 2',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        controller: telefono2Ctrl,
+                        decoration: InputDecoration(
+                          labelText: 'Telefono Nº 2',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        onChanged: (value) {
+                          // do something
+                        },
+                        keyboardType: TextInputType.number,
                       ),
-                      onChanged: (value) {
-                        // do something
-                      },
-                      keyboardType: TextInputType.number,
                     ),
                     if (errTelDos != "")
                       Container(
@@ -423,24 +476,26 @@ class _PageEditNinoState extends State<PageEditNino> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                     Divider(),
                     // ALERGIAS NIÑO
-                    TextFormField(
-                      maxLines: 5,
-                      controller: alergiasCtrl,
-                      decoration: InputDecoration(
-                        labelText: 'Alergias',
-                        fillColor: Colors.white.withOpacity(0.9),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(15),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: TextFormField(
+                        maxLines: 5,
+                        controller: alergiasCtrl,
+                        decoration: InputDecoration(
+                          labelText: 'Alergias',
+                          fillColor: Colors.white.withOpacity(0.9),
+                          filled: true,
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        onChanged: (value) {
+                          // do something
+                        },
                       ),
-                      onChanged: (value) {
-                        // do something
-                      },
                     ),
                     if (errAlergias != "")
                       Container(
@@ -451,7 +506,6 @@ class _PageEditNinoState extends State<PageEditNino> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-
                     Divider(),
                     Container(
                       child: ElevatedButton(
@@ -473,8 +527,6 @@ class _PageEditNinoState extends State<PageEditNino> {
                             alergiasCtrl.text.trim(),
                           );
                           if (respuesta['message'] != null) {
-                            // STEP
-
                             // RUT
                             if (respuesta['errors']['rutNino'] != null) {
                               errRUT = respuesta['errors']['rutNino'][0];
@@ -521,225 +573,36 @@ class _PageEditNinoState extends State<PageEditNino> {
                           }
                           print(respuesta);
                           Navigator.pop(context);
-                          setState(() {});
+                          String nombre =
+                              nombreCtrl.text.trim().split(' ').first;
+                          showTopSnackBar(
+                            context,
+                            CustomSnackBar.success(
+                              message: '$nombre fue editado exitosamente.',
+                              backgroundColor: Colors.green,
+                              icon: Icon(
+                                Icons.sentiment_very_satisfied,
+                                color: Colors.black26,
+                                size: 120,
+                              ),
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
                         },
                       ),
                     )
                   ],
-                )
-
-                // Stepper(
-                //   type: StepperType.vertical,
-                //   steps: getSteps(),
-                //   currentStep: currentStep,
-                //   onStepContinue: () async {
-                //     final isLastStep = currentStep == getSteps().length - 1;
-                //     if (isLastStep) {
-                //       // send data to server
-                //       int nivel = int.tryParse(nivelSel) ?? 0;
-                //       var respuesta = await NinosProvider().UpdateNino(
-                //         widget.rut,
-                //         rutNinoCtrl.text.trim(),
-                //         nombreCtrl.text.trim(),
-                //         sexo,
-                //         hoy,
-                //         apoderadoCtrl.text.trim(),
-                //         nivel,
-                //         telefono1Ctrl.text.trim(),
-                //         telefono2Ctrl.text.trim(),
-                //         alergiasCtrl.text.trim(),
-                //       );
-                //       print(respuesta);
-                //       Navigator.pop(context);
-                //     } else {
-                //       setState(() => currentStep += 1);
-                //     }
-                //   },
-                //   onStepTapped: (step) => setState(() => currentStep = step),
-                //   onStepCancel: currentStep == 0
-                //       ? null
-                //       : () => setState(() => currentStep -= 1),
-                //   controlsBuilder: (context, controls) {
-                //     final isLastStep = currentStep == getSteps().length - 1;
-                //     return Container(
-                //       margin: EdgeInsets.only(top: 10),
-                //       child: Row(
-                //         children: [
-                //           Expanded(
-                //             child: ElevatedButton(
-                //               child: Text(isLastStep ? 'CONFIRMAR' : 'SIGUIENTE'),
-                //               onPressed: controls.onStepContinue,
-                //             ),
-                //           ),
-                //           SizedBox(width: 12),
-                //           if (currentStep != 0)
-                //             Expanded(
-                //               child: ElevatedButton(
-                //                 child: Text('REGRESAR'),
-                //                 onPressed: controls.onStepCancel,
-                //               ),
-                //             ),
-                //         ],
-                //       ),
-                //     );
-                //   },
-                // ),
-
                 ),
+              ),
+            ),
           ),
         ),
       ),
     );
   }
-
-//   List<Step> getSteps() {
-//     return [
-//       Step(
-//         state: currentStep > 0 ? StepState.complete : StepState.indexed,
-//         isActive: currentStep >= 0,
-//         title: Text('data'),
-//         content: Column(
-//           children: [],
-//         ),
-//       ),
-//       Step(
-//         state: currentStep > 1 ? StepState.complete : StepState.indexed,
-//         isActive: currentStep >= 1,
-//         title: Text('data2'),
-//         content: Column(
-//           children: [
-//             // NIVEL NIÑO
-//             Container(
-//               width: double.infinity,
-//               child: FutureBuilder(
-//                 future: NivelesProvider().getAllNiveles(),
-//                 builder: (context, AsyncSnapshot snap) {
-//                   if (!snap.hasData) {
-//                     return DropdownButtonFormField<String>(
-//                       hint: Text('Cargando niveles...'),
-//                       items: [],
-//                       onChanged: (valor) {},
-//                     );
-//                   }
-//                   var niveles = snap.data;
-//                   return DropdownButtonFormField<String>(
-//                     //hint: Text('Nivel'),
-//                     decoration: InputDecoration(
-//                       labelText: 'Nivel',
-//                       fillColor: Colors.white.withOpacity(0.9),
-//                       filled: true,
-//                       contentPadding: EdgeInsets.all(15),
-//                       border: OutlineInputBorder(
-//                         borderRadius: BorderRadius.circular(30),
-//                       ),
-//                     ),
-
-//                     items: niveles.map<DropdownMenuItem<String>>((nivel) {
-//                       return DropdownMenuItem<String>(
-//                         child: Text(nivel['nombreNivel']),
-//                         value: nivel['nivel_id'].toString(),
-//                       );
-//                     }).toList(),
-//                     value: nivelSel.isEmpty ? null : nivelSel,
-//                     onChanged: (nuevoNivel) {
-//                       setState(() {
-//                         nivelSel = nuevoNivel.toString();
-//                       });
-//                     },
-//                   );
-//                 },
-//               ),
-//             ),
-//             Divider(),
-//             // TELEFONO Nº1 NIÑO
-//             TextFormField(
-//               controller: telefono1Ctrl,
-//               decoration: InputDecoration(
-//                 labelText: 'Telefono Nº 1',
-//                 fillColor: Colors.white.withOpacity(0.9),
-//                 filled: true,
-//                 contentPadding: EdgeInsets.all(15),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(30),
-//                 ),
-//               ),
-//               onChanged: (value) {
-//                 // do something
-//               },
-//               keyboardType: TextInputType.number,
-//             ),
-//             Divider(),
-//             // TELEFONO Nº2 NIÑO
-//             TextFormField(
-//               controller: telefono2Ctrl,
-//               decoration: InputDecoration(
-//                 labelText: 'Telefono Nº 2',
-//                 fillColor: Colors.white.withOpacity(0.9),
-//                 filled: true,
-//                 contentPadding: EdgeInsets.all(15),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(30),
-//                 ),
-//               ),
-//               onChanged: (value) {
-//                 // do something
-//               },
-//               keyboardType: TextInputType.number,
-//             ),
-//             Divider(),
-//             // ALERGIAS NIÑO
-//             TextFormField(
-//               maxLines: 5,
-//               controller: alergiasCtrl,
-//               decoration: InputDecoration(
-//                 labelText: 'Alergias',
-//                 fillColor: Colors.white.withOpacity(0.9),
-//                 filled: true,
-//                 contentPadding: EdgeInsets.all(15),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(30),
-//                 ),
-//               ),
-//               onChanged: (value) {
-//                 // do something
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//       Step(
-//         isActive: currentStep >= 2,
-//         title: Text('Información'),
-//         content: Container(
-//           child: Column(
-//             children: [
-//               ElevatedButton.icon(
-//                   icon: Icon(MdiIcons.camera),
-//                   label: Text('subir imagen'),
-//                   onPressed: () {})
-// //               ESTA COSA NO FUNCIONA!!!!!
-// //               (path == null ) ? Container() : Image.file(File(path),width: 200,),
-// //               RaisedButton(
-// //               child: Text("CARGAR IMAGEN"),
-// //                 onPressed: () async {
-// //                 final ImagePicker _picker = ImagePicker();
-// //                 PickedFile _archivo = await _picker.getImage(source: ImageSource.gallery);
-// // ....
-
-// //                 setState(() {
-// //                   _ruta =_archivo.path;
-// //                 });
-// //             }),
-// //             /// enviar al servidor web
-// //             RaisedButton(
-// //               child: Text("ENVIAR AL SERVIDOR"),
-// //                 onPressed: (){
-// //               _enviarform();
-// //             })
-//             ],
-//           ),
-//         ),
-//       )
-//     ];
-//   }
 }

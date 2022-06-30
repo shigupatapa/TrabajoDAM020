@@ -1,5 +1,4 @@
 import 'package:cliente_entregable/pages/editar/page_editnivel.dart';
-import 'package:cliente_entregable/pages/listar/page_listniveles.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -24,6 +23,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -259,9 +259,9 @@ class _PerfilNivelState extends State<PerfilNivel> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
+                    //'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
                     //'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}', // EMULADOR
-                    //'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
+                    'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -471,6 +471,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
                     NivelesProvider().DeleteNivel(nivel['nivel_id']).then(
                       (borradoOk) {
                         if (borradoOk) {
+                          Navigator.pop(context);
                           showTopSnackBar(
                             context,
                             CustomSnackBar.info(
@@ -478,7 +479,7 @@ class _PerfilNivelState extends State<PerfilNivel> {
                                   '$nombre fue eliminado del sistema.',
                               backgroundColor: Colors.cyan,
                               icon: Icon(
-                                Icons.sentiment_very_dissatisfied,
+                                Icons.info_outline,
                                 color: Colors.black26,
                                 size: 120,
                               ),
@@ -490,11 +491,6 @@ class _PerfilNivelState extends State<PerfilNivel> {
                               ),
                             ),
                           );
-                          MaterialPageRoute route =
-                              MaterialPageRoute(builder: (context) {
-                            return PageListNiveles();
-                          });
-                          Navigator.pushReplacement(context, route);
                         } else {
                           showTopSnackBar(
                             context,

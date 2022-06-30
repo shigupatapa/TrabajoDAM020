@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:cliente_entregable/provider/historial_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 // ignore: must_be_immutable
 class PageAddHistorial extends StatefulWidget {
@@ -15,10 +17,15 @@ class PageAddHistorial extends StatefulWidget {
 
 class _PageAddHistorialState extends State<PageAddHistorial> {
   int currentStep = 0;
+
   DateTime date = DateTime.now();
   TextEditingController rutNinoCtrl = TextEditingController();
   TextEditingController tituloCtrl = TextEditingController();
   TextEditingController contenidoCtrl = TextEditingController();
+
+  String errTitulo = '';
+  String errContenido = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,8 +68,40 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
                     titulo,
                     contenido,
                   );
+                  if (respuesta['message'] != null) {
+                    // TITULO
+                    if (respuesta['errors']['titulo'] != null) {
+                      errTitulo = respuesta['errors']['titulo'][0];
+                      currentStep = 0;
+                    }
+                    // CONTENIDO
+                    if (respuesta['errors']['contenido'] != null) {
+                      errContenido = respuesta['errors']['contenido'][0];
+                      currentStep = 0;
+                    }
+                    setState(() {});
+                    return;
+                  }
                   print(respuesta);
                   Navigator.pop(context);
+                  showTopSnackBar(
+                    context,
+                    CustomSnackBar.info(
+                      message: '$titulo fue agregado exitosamente.',
+                      backgroundColor: Colors.green,
+                      icon: Icon(
+                        Icons.info_outline,
+                        color: Colors.black26,
+                        size: 120,
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
                 } else {
                   setState(() => currentStep += 1);
                 }
@@ -107,41 +146,65 @@ class _PageAddHistorialState extends State<PageAddHistorial> {
       Step(
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
         isActive: currentStep >= 0,
-        title: Text('Descripción'),
+        title: Text('Información Básica'),
         content: Column(
           children: [
-            TextFormField(
-              controller: tituloCtrl,
-              decoration: InputDecoration(
-                hintText: 'Titulo',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                controller: tituloCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Titulo',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errTitulo != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errTitulo,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
             Divider(),
-            TextFormField(
-              maxLines: 5,
-              controller: contenidoCtrl,
-              decoration: InputDecoration(
-                hintText: 'Descripción',
-                fillColor: Colors.white.withOpacity(0.9),
-                filled: true,
-                contentPadding: EdgeInsets.all(15),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: TextFormField(
+                maxLines: 5,
+                controller: contenidoCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Contenido',
+                  fillColor: Colors.white.withOpacity(0.9),
+                  filled: true,
+                  contentPadding: EdgeInsets.all(15),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onChanged: (value) {
+                  // do something
+                },
+              ),
+            ),
+            if (errContenido != "")
+              Container(
+                margin: EdgeInsets.only(top: 5),
+                color: Colors.red,
+                child: Text(
+                  errContenido,
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              onChanged: (value) {
-                // do something
-              },
-            ),
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
 import 'package:cliente_entregable/pages/editar/page_editnino.dart';
-import 'package:cliente_entregable/pages/listar/page_listninos.dart';
 import 'package:cliente_entregable/pages/perfil/page_historial.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
@@ -28,6 +27,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -122,9 +122,9 @@ class _PerfilNinoState extends State<PerfilNino> {
         // shape: BoxShape.circle,
         image: DecorationImage(
           image: NetworkImage(
-            'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
+            //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
             //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-            //'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
+            'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
           ),
           fit: BoxFit.cover,
         ),
@@ -309,13 +309,22 @@ class _PerfilNinoState extends State<PerfilNino> {
                             decorationThickness: 2,
                           ),
                         ),
-                        TextSpan(
-                          // text: ' ${nino['nivel_id']}',
-                          text: ' ${nivel["nombreNivel"]}',
-                          style: TextStyle(
-                            fontSize: 18,
+                        if (nivel["nombreNivel"] != null)
+                          TextSpan(
+                            // text: ' ${nino['nivel_id']}',
+                            text: ' ${nivel["nombreNivel"]}',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
+                        if (nivel["nombreNivel"] == null)
+                          TextSpan(
+                            // text: ' ${nino['nivel_id']}',
+                            text: ' Nivel Eliminado',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
                       ],
                     ),
                   );
@@ -564,9 +573,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                     nombre,
                   );
                 });
-                Navigator.push(context, route).then((value) {
-                  setState(() {});
-                });
+                Navigator.push(context, route).then((value) => setState(() {}));
               },
             ),
             ElevatedButton(
@@ -597,6 +604,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                     NinosProvider().DeleteNino(nino['rutNino']).then(
                       (borradoOk) {
                         if (borradoOk) {
+                          Navigator.pop(context);
                           showTopSnackBar(
                             context,
                             CustomSnackBar.info(
@@ -615,11 +623,6 @@ class _PerfilNinoState extends State<PerfilNino> {
                               ),
                             ),
                           );
-                          MaterialPageRoute route =
-                              MaterialPageRoute(builder: (context) {
-                            return PageListNinos();
-                          });
-                          Navigator.pushReplacement(context, route);
                         } else {
                           showTopSnackBar(
                             context,
