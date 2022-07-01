@@ -105,8 +105,8 @@ class _PageEditNinoState extends State<PageEditNino> {
                 child: ListView(
                   children: [
                     // IMAGEN
-                    buildProfileImage(rutNinoCtrl.text),
-                    Divider(),
+                    // buildProfileImage(rutNinoCtrl.text),
+                    // Divider(),
                     // RUT NIÑO
                     Padding(
                       padding: EdgeInsets.only(top: 5),
