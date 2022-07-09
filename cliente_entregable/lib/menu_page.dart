@@ -1,6 +1,9 @@
 import 'package:cliente_entregable/models/menu_item.dart';
+import 'package:cliente_entregable/pages/noticias/page_listnoticias.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuItems {
   static const noticias = MyMenuItem('Noticias', Ionicons.newspaper);
@@ -47,7 +50,7 @@ class MenuPage extends StatelessWidget {
               //Spacer(),
               ...MenuItems.all.map(buildMenuItem).toList(),
               Spacer(flex: 2),
-              Text('Salir'),
+              buildSalir(context),
               Spacer(),
             ],
           ),
@@ -106,6 +109,47 @@ class MenuPage extends StatelessWidget {
         leading: Icon(item.icon),
         title: Text(item.title),
         onTap: () => onSelectedItem(item),
+      ),
+    );
+  }
+
+  Widget buildSalir(context) {
+    return Container(
+      width: 180,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: Colors.black,
+            width: 0.5,
+          ),
+        ),
+        color: Colors.red.shade300.withOpacity(0.85),
+        child: ListTile(
+          minLeadingWidth: 20,
+          leading: Icon(
+            Icons.logout,
+            color: Colors.white,
+          ),
+          title: Text(
+            "Cerrar Sesión",
+            style: TextStyle(
+              color: Colors.white,
+              // fontWeight: FontWeight.bold,
+            ),
+          ),
+          onTap: () async {
+            await FirebaseAuth.instance.signOut();
+
+            SharedPreferences sp = await SharedPreferences.getInstance();
+            sp.remove('userEmail');
+
+            MaterialPageRoute route = MaterialPageRoute(
+              builder: (context) => PageListNoticias(),
+            );
+
+            Navigator.pushReplacement(context, route);
+          },
+        ),
       ),
     );
   }

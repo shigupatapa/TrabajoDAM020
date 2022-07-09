@@ -37,10 +37,14 @@ dependencies:
   intl: ^0.17.0
   ionicons: ^0.1.2
   cool_alert: ^1.1.0
+  firebase_core: ^1.17.1
+  firebase_auth: ^3.3.19
   image_picker: ^0.8.5+3
   cupertino_icons: ^1.0.2
+  cloud_firestore: ^3.1.17
   dart_rut_validator: ^1.1.0
   flutter_zoom_drawer: ^3.0.2
+  shared_preferences: ^2.0.15
   top_snackbar_flutter: ^2.0.0
   material_design_icons_flutter: ^5.0.6595
   

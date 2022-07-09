@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "193099230036",
+    "project_id": "jardincarrusel22",
+    "storage_bucket": "jardincarrusel22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193099230036:android:1bac08b2c8989a26d676c1",
+        "android_client_info": {
+          "package_name": "junji.jardinCarrusel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193099230036-hn9hemv32ebo2s6nalbgn6mcsj64qo7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRGfHq5j8FbrxXsJk2ISF_4rg-Sg_yOQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193099230036-hn9hemv32ebo2s6nalbgn6mcsj64qo7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
