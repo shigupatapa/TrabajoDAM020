@@ -105,8 +105,8 @@ class _PageEditNinoState extends State<PageEditNino> {
                 child: ListView(
                   children: [
                     // IMAGEN
-                    // buildProfileImage(rutNinoCtrl.text),
-                    // Divider(),
+                    buildProfileImage(widget.rut),
+                    Divider(),
                     // RUT NIÑO
                     Padding(
                       padding: EdgeInsets.only(top: 5),
@@ -616,25 +616,41 @@ class _PageEditNinoState extends State<PageEditNino> {
     );
   }
 
-  Widget buildProfileImage(nino) {
+  Widget buildProfileImage(rut) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          height: 150,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: NetworkImage(
-                //'http://192.168.138.130:8000/api/niños/imagen/${nino}',
-                //'http://10.0.2.2:8000/api/niños/imagen/${nino}', // EMULADOR
-                'http://192.168.1.160:8000/api/niños/imagen/${nino}', // ENZO
+        Center(
+          child: CircleAvatar(
+            radius: 75,
+            backgroundColor: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(75),
+                ),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.5,
+                ),
               ),
-              fit: BoxFit.cover,
-            ),
-            border: Border.all(
-              color: Colors.black,
-              width: 1.5,
+              child: ClipOval(
+                child: SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: (imagen != null)
+                      ? Image.file(
+                          imagen!,
+                          fit: BoxFit.fill,
+                        )
+                      : Image.network(
+                          //'http://192.168.138.130:8000/api/imagen/$rut',
+                          //'http://10.0.2.2:8000/api/imagen/$rut', // EMULADOR
+                          'http://192.168.1.160:8000/api/imagen/$rut', // ENZO
+                          fit: BoxFit.fill,
+                        ),
+                ),
+              ),
             ),
           ),
         ),
@@ -646,6 +662,7 @@ class _PageEditNinoState extends State<PageEditNino> {
         //           SizedBox(height: 10),
         //         ],
         //       ),
+        SizedBox(height: 10),
         Center(
           child: ElevatedButton.icon(
             icon: Icon(MdiIcons.image),

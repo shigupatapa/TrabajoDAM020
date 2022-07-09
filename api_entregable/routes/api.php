@@ -31,7 +31,7 @@ Route::put('/niveles/{nivel}',[NivelesController::class,'update']);
 // NIÑOS
 Route::get('/niños',[NinosController::class,'index']);
 Route::get('/niños/{nino}',[NinosController::class,'show']);
-Route::get('/niños/imagen/{nino}',[NinosController::class,'image']);
+Route::get('/imagen/{nino}',[NinosController::class,'image']);
 Route::get('/niños/{nino}/historial',[NinosController::class,'historialbyNino']);
 Route::post('/niños',[NinosController::class,'store']);
 Route::delete('niños/{nino}',[NinosController::class,'destroy']);

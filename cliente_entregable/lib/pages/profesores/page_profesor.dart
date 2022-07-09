@@ -1,8 +1,6 @@
-import 'package:cliente_entregable/pages/agregar/page_addhistorial.dart';
-import 'package:cliente_entregable/pages/editar/page_editnino.dart';
-import 'package:cliente_entregable/pages/perfil/page_historial.dart';
-import 'package:cliente_entregable/provider/nino_provider.dart';
+import 'package:cliente_entregable/pages/profesores/page_editprofe.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
+import 'package:cliente_entregable/provider/profesor_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -10,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class PerfilNino extends StatefulWidget {
+class PerfilProfe extends StatefulWidget {
   String rut;
-  PerfilNino(this.rut, {Key? key}) : super(key: key);
+  PerfilProfe(this.rut, {Key? key}) : super(key: key);
 
   @override
-  State<PerfilNino> createState() => _PerfilNinoState();
+  State<PerfilProfe> createState() => _PerfilProfeState();
 }
 
-class _PerfilNinoState extends State<PerfilNino> {
+class _PerfilProfeState extends State<PerfilProfe> {
   final double coverHeight = 300;
   final double profileHeight = 150;
 
@@ -41,30 +39,21 @@ class _PerfilNinoState extends State<PerfilNino> {
           ),
         ),
         child: FutureBuilder(
-          future: NinosProvider().getNino(widget.rut),
+          future: ProfesoresProvider().getProfe(widget.rut),
           builder: (context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
               );
             }
-            var nino = snapshot.data;
+            var profe = snapshot.data;
             return ListView(
               padding: EdgeInsets.zero,
               children: <Widget>[
-                buildTop(nino),
+                buildTop(profe),
                 SizedBox(height: 10),
-                buildInfo(nino),
-                buildContacto(nino),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      buildButtonNino(nino),
-                      buildButtonHistorial(nino),
-                    ],
-                  ),
-                ),
+                buildInfo(profe),
+                buildButtons(profe),
               ],
             );
           },
@@ -73,7 +62,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildTop(nino) {
+  Widget buildTop(profe) {
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
@@ -83,15 +72,15 @@ class _PerfilNinoState extends State<PerfilNino> {
           top: profileHeight / 2,
           child: Column(
             children: [
-              buildProfileImage(nino),
+              buildProfileImage(),
               SizedBox(height: 10),
-              buildName(nino),
+              buildName(profe),
             ],
           ),
         ),
         Positioned(
           top: 1.25 * (coverHeight - profileHeight / 2),
-          child: buildSubtitle(nino),
+          child: buildSubtitle(profe),
         ),
       ],
     );
@@ -114,18 +103,14 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildProfileImage(nino) {
+  Widget buildProfileImage() {
     return Container(
       width: profileHeight,
       height: profileHeight,
       decoration: BoxDecoration(
         // shape: BoxShape.circle,
         image: DecorationImage(
-          image: NetworkImage(
-            //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-            //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-            'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
-          ),
+          image: AssetImage('assets/images/profe.png'),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.all(
@@ -139,7 +124,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildName(nino) {
+  Widget buildName(profe) {
     return Container(
       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
@@ -152,7 +137,7 @@ class _PerfilNinoState extends State<PerfilNino> {
       child: Column(
         children: [
           Text(
-            nino["nombreCompleto"],
+            profe["nombreCompleto"],
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -164,7 +149,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildSubtitle(nino) {
+  Widget buildSubtitle(profe) {
     return Container(
       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
@@ -172,7 +157,7 @@ class _PerfilNinoState extends State<PerfilNino> {
       ),
       child: Column(
         children: [
-          if (nino["sexo"] == "M")
+          if (profe["sexo"] == "M")
             Text(
               "Masculino",
               style: TextStyle(
@@ -181,7 +166,7 @@ class _PerfilNinoState extends State<PerfilNino> {
               ),
               textAlign: TextAlign.center,
             ),
-          if (nino["sexo"] == "F")
+          if (profe["sexo"] == "F")
             Text(
               "Femenino",
               style: TextStyle(
@@ -195,7 +180,7 @@ class _PerfilNinoState extends State<PerfilNino> {
     );
   }
 
-  Widget buildInfo(nino) {
+  Widget buildInfo(profe) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 20, 20, 15),
       child: Container(
@@ -235,7 +220,7 @@ class _PerfilNinoState extends State<PerfilNino> {
               ),
             ),
             Divider(color: Colors.black, height: 20),
-            // RUT DEL NIÑO
+            // RUT DEL PROFE
             Container(
               padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
@@ -261,7 +246,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                       ),
                     ),
                     TextSpan(
-                      text: ' ${nino['rutNino']}',
+                      text: ' ${profe['rutProfesor']}',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -284,7 +269,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
               child: FutureBuilder(
-                future: NivelesProvider().getNivel(nino["nivel_id"]),
+                future: NivelesProvider().getNivel(profe["nivel_id"]),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -358,9 +343,11 @@ class _PerfilNinoState extends State<PerfilNino> {
                       ),
                     ),
                     TextSpan(
-                      text: ' ${DateFormat("dd-MM-yyyy").format(DateTime.parse(
-                        nino['fechaNacimiento'],
-                      ))}',
+                      text: ' ${DateFormat("dd-MM-yyyy").format(
+                        DateTime.parse(
+                          profe['fechaNacimiento'],
+                        ),
+                      )}',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -369,166 +356,15 @@ class _PerfilNinoState extends State<PerfilNino> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
-            // APODERADO O TUTOR
-            Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                // color: Color(0xB6BB3939),
-                color: Colors.white.withOpacity(0.85),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                  color: Color(0xB6BB3939),
-                  width: 2.5,
-                ),
-              ),
-              child: Text.rich(
-                TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Tutor:',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' ${nino['nombreApoderado']}',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 5),
-            // ALERGIAS
-            if (nino['alergias'] != null)
-              Container(
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  // color: Color(0xB6BB3939),
-                  color: Colors.white.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    color: Color(0xB6BB3939),
-                    width: 2.5,
-                  ),
-                ),
-                child: Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Alergias:',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' ${nino['alergias']}',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildContacto(nino) {
+  Widget buildButtons(profe) {
+    String nombre = profe['nombreCompleto'].toString().split(' ').first;
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 70, 135, 255).withOpacity(0.65),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Color(0xB6BB3939),
-            width: 2.5,
-          ),
-        ),
-        child: Container(
-          padding: EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            // color: Color(0xB6BB3939),
-            color: Colors.white.withOpacity(0.85),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Color(0xB6BB3939),
-              width: 2.5,
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(2.5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.phone_android_sharp),
-                    Text(
-                      'Contacto',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.black, height: 5),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(2.5),
-                    child: Text(
-                      nino['telefono1'],
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  if (nino['telefono2'] != null)
-                    Container(
-                      padding: EdgeInsets.all(2.5),
-                      child: Text(
-                        nino['telefono2'],
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildButtonNino(nino) {
-    String nombre = nino['nombreCompleto'].toString().split(' ').first;
-    return Container(
-      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
       child: Container(
         alignment: Alignment.centerLeft,
@@ -559,7 +395,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                   children: [
                     Icon(Icons.edit),
                     Text(
-                      'Editar\nNiño',
+                      'Editar\nDocente',
                       style: TextStyle(fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
@@ -568,8 +404,8 @@ class _PerfilNinoState extends State<PerfilNino> {
               ),
               onPressed: () {
                 MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                  return PageEditNino(
-                    nino['rutNino'],
+                  return PageEditProfe(
+                    profe['rutProfesor'],
                     nombre,
                   );
                 });
@@ -591,7 +427,7 @@ class _PerfilNinoState extends State<PerfilNino> {
                   children: [
                     Icon(Icons.delete),
                     Text(
-                      'Borrar\nNiño',
+                      'Borrar\nDocente',
                       style: TextStyle(fontSize: 10),
                       textAlign: TextAlign.center,
                     ),
@@ -601,7 +437,7 @@ class _PerfilNinoState extends State<PerfilNino> {
               onPressed: () {
                 confirmDialog(context, nombre).then((confirm) {
                   if (confirm) {
-                    NinosProvider().DeleteNino(nino['rutNino']).then(
+                    ProfesoresProvider().DeleteProfe(profe['rutProfesor']).then(
                       (borradoOk) {
                         if (borradoOk) {
                           Navigator.pop(context);
@@ -635,95 +471,6 @@ class _PerfilNinoState extends State<PerfilNino> {
                     );
                   }
                 });
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildButtonHistorial(nino) {
-    String nombre = nino['nombreCompleto'].toString().split(' ').first;
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 235, 70).withOpacity(0.65),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Color(0xB6BB3939),
-            width: 2.5,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-                side: BorderSide(
-                  color: Colors.white,
-                  width: 1.5,
-                ),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.add),
-                    Text(
-                      'Agregar\nHistorial',
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              onPressed: () {
-                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                  return PageAddHistorial(
-                    nino['rutNino'],
-                    nombre,
-                  );
-                });
-                Navigator.push(context, route).then((value) => setState(() {}));
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.purple,
-                side: BorderSide(
-                  color: Colors.white,
-                  width: 1.5,
-                ),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.list_alt),
-                    Text(
-                      'Ver\nHistorial',
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              onPressed: () {
-                MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                  return PageHistorial(
-                    nino['rutNino'],
-                    nombre,
-                  );
-                });
-                Navigator.push(context, route).then((value) => setState(() {}));
               },
             ),
           ],

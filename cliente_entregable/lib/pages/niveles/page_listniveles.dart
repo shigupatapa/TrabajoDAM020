@@ -1,18 +1,17 @@
-import 'package:cliente_entregable/pages/agregar/page_addprofe.dart';
-import 'package:cliente_entregable/pages/perfil/page_profesor.dart';
+import 'package:cliente_entregable/pages/niveles/page_addnivel.dart';
+import 'package:cliente_entregable/pages/niveles/page_nivel.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
-import 'package:cliente_entregable/provider/profesor_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:flutter/material.dart';
 
-class PageListProfes extends StatefulWidget {
-  PageListProfes({Key? key}) : super(key: key);
+class PageListNiveles extends StatefulWidget {
+  PageListNiveles({Key? key}) : super(key: key);
 
   @override
-  State<PageListProfes> createState() => _PageListProfesState();
+  State<PageListNiveles> createState() => _PageListNivelesState();
 }
 
-class _PageListProfesState extends State<PageListProfes> {
+class _PageListNivelesState extends State<PageListNiveles> {
   bool isGrid = true;
 
   @override
@@ -21,7 +20,7 @@ class _PageListProfesState extends State<PageListProfes> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: MenuWidget(),
-        title: Text("Educadoras"),
+        title: Text("Niveles"),
         centerTitle: true,
         backgroundColor: Colors.black87,
         actions: [
@@ -42,7 +41,7 @@ class _PageListProfesState extends State<PageListProfes> {
           IconButton(
             onPressed: () {
               MaterialPageRoute route = MaterialPageRoute(builder: (context) {
-                return PageAddProfe();
+                return PageAddNivel();
               });
               Navigator.push(context, route).then((value) => setState(() {}));
             },
@@ -62,7 +61,7 @@ class _PageListProfesState extends State<PageListProfes> {
           ),
         ),
         child: FutureBuilder(
-          future: ProfesoresProvider().getAllProfes(),
+          future: NivelesProvider().getAllNiveles(),
           builder: (context, AsyncSnapshot snap) {
             if (!snap.hasData) {
               return Center(
@@ -92,7 +91,7 @@ class _PageListProfesState extends State<PageListProfes> {
       ),
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
-        var profe = snap.data[index];
+        var nivel = snap.data[index];
         return Column(
           children: [
             GridTile(
@@ -108,7 +107,7 @@ class _PageListProfesState extends State<PageListProfes> {
                     height: 100,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/profe.png'),
+                        image: AssetImage('assets/images/nivel.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -116,10 +115,11 @@ class _PageListProfesState extends State<PageListProfes> {
                   onTap: () {
                     MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) {
-                        return PerfilProfe(profe["rutProfesor"]);
+                        return PerfilNivel(nivel['nivel_id']);
                       },
                     );
-                    Navigator.push(context, route).then((value) => setState(() {}));
+                    Navigator.push(context, route)
+                        .then((value) => setState(() {}));
                   },
                 ),
               ),
@@ -132,7 +132,7 @@ class _PageListProfesState extends State<PageListProfes> {
                   padding: EdgeInsets.all(5),
                   alignment: Alignment.center,
                   child: Text(
-                    profe['nombreCompleto'],
+                    nivel['nombreNivel'],
                     style: TextStyle(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
@@ -149,7 +149,7 @@ class _PageListProfesState extends State<PageListProfes> {
     return ListView.builder(
       itemCount: snap.data.length,
       itemBuilder: (context, index) {
-        var profe = snap.data[index];
+        var nivel = snap.data[index];
         return Card(
           shape: StadiumBorder(
             side: BorderSide(
@@ -158,59 +158,39 @@ class _PageListProfesState extends State<PageListProfes> {
             ),
           ),
           color: Colors.white.withOpacity(0.85),
-          child: FutureBuilder(
-            future: NivelesProvider().getNivel(profe["nivel_id"]),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (!snapshot.hasData) {
-                return Container(
-                  width: 50,
-                  height: 50,
-                  child: Center(
-                    child: SizedBox(
-                      width: 10,
-                      height: 10,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                );
-              }
-              var nivel = snapshot.data;
-              return ListTile(
-                leading: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/profe.png'),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                  ),
+          child: ListTile(
+            leading: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/nivel.png'),
+                  fit: BoxFit.cover,
                 ),
-                title: Text(
-                  profe['nombreCompleto'],
-                  style: TextStyle(color: Colors.black, fontSize: 14),
-                  textAlign: TextAlign.center,
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
                 ),
-                subtitle: Text(
-                  // profe['nivel_id'].toString(),
-                  nivel["nombreNivel"]??'Nivel Eliminado',
-                  style: TextStyle(color: Colors.black, fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
-                onTap: () {
-                  MaterialPageRoute route = MaterialPageRoute(
-                    builder: (context) {
-                      return PerfilProfe(profe["rutProfesor"]);
-                    },
-                  );
-                  Navigator.push(context, route).then((value) => setState(() {}));
+              ),
+            ),
+            title: Text(
+              nivel['nombreNivel'],
+              style: TextStyle(color: Colors.black, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+            subtitle: Text(
+              nivel['detalles'].toString(),
+              style: TextStyle(color: Colors.black, fontSize: 12),
+              textAlign: TextAlign.center,
+            ),
+            onTap: () {
+              MaterialPageRoute route = MaterialPageRoute(
+                builder: (context) {
+                  return PerfilNivel(nivel['nivel_id']);
                 },
               );
+              Navigator.push(context, route).then((value) => setState(() {}));
             },
           ),
         );

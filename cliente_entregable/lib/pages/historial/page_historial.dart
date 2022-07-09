@@ -1,4 +1,4 @@
-import 'package:cliente_entregable/pages/editar/page_edithistorial.dart';
+import 'package:cliente_entregable/pages/historial/page_edithistorial.dart';
 import 'package:cliente_entregable/provider/historial_provider.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -78,6 +78,7 @@ class _PageHistorialState extends State<PageHistorial> {
                 ),
               ),
               child: Card(
+                elevation: 0,
                 color: Colors.transparent,
                 shadowColor: Colors.transparent,
                 child: Column(

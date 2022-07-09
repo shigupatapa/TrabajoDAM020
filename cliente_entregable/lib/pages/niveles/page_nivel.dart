@@ -1,4 +1,4 @@
-import 'package:cliente_entregable/pages/editar/page_editnivel.dart';
+import 'package:cliente_entregable/pages/niveles/page_editnivel.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -259,9 +259,9 @@ class _PerfilNivelState extends State<PerfilNivel> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    //'http://192.168.138.130:8000/api/niños/imagen/${ninos['rutNino']}',
-                    //'http://10.0.2.2:8000/api/niños/imagen/${ninos['rutNino']}', // EMULADOR
-                    'http://192.168.1.160:8000/api/niños/imagen/${ninos['rutNino']}', // ENZO
+                    //'http://192.168.138.130:8000/api/imagen/${ninos['rutNino']}',
+                    //'http://10.0.2.2:8000/api/imagen/${ninos['rutNino']}', // EMULADOR
+                    'http://192.168.1.160:8000/api/imagen/${ninos['rutNino']}', // ENZO
                   ),
                   fit: BoxFit.cover,
                 ),

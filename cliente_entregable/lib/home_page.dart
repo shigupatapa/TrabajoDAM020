@@ -1,18 +1,12 @@
-// ASSETS //
-/* flutter pub add ionicons */
-
-/* https://as2.ftcdn.net/v2/jpg/03/04/35/15/1000_F_304351519_t2XoCRj1J4yYQ3DlhyJTjzBsJQQpZ6mI.jpg */
-
-////////////
-
 import 'package:cliente_entregable/menu_page.dart';
 import 'package:cliente_entregable/models/menu_item.dart';
-import 'package:cliente_entregable/pages/listar/page_listninos.dart';
-import 'package:cliente_entregable/pages/listar/page_listniveles.dart';
-import 'package:cliente_entregable/pages/listar/page_listprofes.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/config.dart';
+import 'package:cliente_entregable/pages/ninos/page_listninos.dart';
+import 'package:cliente_entregable/pages/niveles/page_listniveles.dart';
+import 'package:cliente_entregable/pages/noticias/page_listnoticias.dart';
+import 'package:cliente_entregable/pages/profesores/page_listprofes.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:flutter_zoom_drawer/config.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -22,7 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MyMenuItem currentItem = MenuItems.ninos;
+  MyMenuItem currentItem = MenuItems.noticias;
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +65,7 @@ class _HomePageState extends State<HomePage> {
       case MenuItems.niveles:
         return PageListNiveles();
       default:
-        return PageListNinos();
-      //   return PageListHistoriales();
+        return PageListNoticias();
     }
   }
 }

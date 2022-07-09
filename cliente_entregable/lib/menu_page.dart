@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class MenuItems {
+  static const noticias = MyMenuItem('Noticias', Ionicons.newspaper);
   static const ninos = MyMenuItem('Niños', Icons.face);
   static const profes = MyMenuItem('Educadoras', Ionicons.school);
   static const niveles = MyMenuItem('Niveles', Ionicons.albums);
-  static const historiales = MyMenuItem('Historiales', Ionicons.book);
   static const all = <MyMenuItem>[
+    noticias,
     ninos,
     profes,
     niveles,
-    // historiales,
   ];
 }
 
@@ -43,14 +43,48 @@ class MenuPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Spacer(),
+              buildHead(),
+              //Spacer(),
               ...MenuItems.all.map(buildMenuItem).toList(),
-              Spacer(
-                flex: 2,
-              ),
+              Spacer(flex: 2),
+              Text('Salir'),
+              Spacer(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildHead() {
+    return DrawerHeader(
+      padding: EdgeInsets.all(15),
+      child: Column(
+        children: [
+          Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage('assets/images/user.png'),
+              ),
+              border: Border.all(
+                color: Colors.black,
+                width: 2.0,
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            'Celeste Alten',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,5 +1,5 @@
-import 'package:cliente_entregable/pages/agregar/page_addnino.dart';
-import 'package:cliente_entregable/pages/perfil/page_nino.dart';
+import 'package:cliente_entregable/pages/ninos/page_addnino.dart';
+import 'package:cliente_entregable/pages/ninos/page_nino.dart';
 import 'package:cliente_entregable/provider/nino_provider.dart';
 import 'package:cliente_entregable/provider/niveles_provider.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
@@ -109,9 +109,9 @@ class _PageListNinosState extends State<PageListNinos> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                          //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-                          //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-                          'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
+                          //'http://192.168.138.130:8000/api/imagen/${nino['rutNino']}',
+                          //'http://10.0.2.2:8000/api/imagen/${nino['rutNino']}', // EMULADOR
+                          'http://192.168.1.160:8000/api/imagen/${nino['rutNino']}', // ENZO
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -187,9 +187,9 @@ class _PageListNinosState extends State<PageListNinos> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
-                        //'http://192.168.138.130:8000/api/niños/imagen/${nino['rutNino']}',
-                        //'http://10.0.2.2:8000/api/niños/imagen/${nino['rutNino']}', // EMULADOR
-                        'http://192.168.1.160:8000/api/niños/imagen/${nino['rutNino']}', // ENZO
+                        //'http://192.168.138.130:8000/api/imagen/${nino['rutNino']}',
+                        //'http://10.0.2.2:8000/api/imagen/${nino['rutNino']}', // EMULADOR
+                        'http://192.168.1.160:8000/api/imagen/${nino['rutNino']}', // ENZO
                       ),
                       fit: BoxFit.cover,
                     ),

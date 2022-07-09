@@ -622,7 +622,7 @@ class _PageAddNinoState extends State<PageAddNino> {
                     ),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       imagen == null
                           ? Center()
