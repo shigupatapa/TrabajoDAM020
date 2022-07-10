@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:cliente_entregable/home_page.dart';
+import 'package:cliente_entregable/provider/google_signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -168,9 +169,6 @@ class _LoginPageState extends State<LoginPage> {
               password: passwordCtrl.text.trim(),
             );
 
-            SharedPreferences sp = await SharedPreferences.getInstance();
-            sp.setString('userEmail', emailCtrl.text.trim());
-
             MaterialPageRoute route = MaterialPageRoute(
               builder: (context) => HomePage(),
             );
@@ -248,7 +246,18 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.black,
           ),
         ),
-        onPressed: () {},
+        onPressed: () async {
+          final provider = Provider.of<GoogleSignInProvider>(
+            context,
+            listen: false,
+          );
+          provider.googleLogIn();
+
+          MaterialPageRoute route = MaterialPageRoute(
+            builder: (context) => HomePage(),
+          );
+          Navigator.pushReplacement(context, route);
+        },
       ),
     );
   }

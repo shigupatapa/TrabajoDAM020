@@ -1,9 +1,10 @@
 import 'package:cliente_entregable/models/menu_item.dart';
 import 'package:cliente_entregable/pages/noticias/page_listnoticias.dart';
+import 'package:cliente_entregable/provider/google_signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class MenuItems {
   static const noticias = MyMenuItem('Noticias', Ionicons.newspaper);
@@ -60,6 +61,7 @@ class MenuPage extends StatelessWidget {
   }
 
   Widget buildHead() {
+    final user = FirebaseAuth.instance.currentUser!;
     return DrawerHeader(
       padding: EdgeInsets.all(15),
       child: Column(
@@ -70,9 +72,13 @@ class MenuPage extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage('assets/images/user.png'),
-              ),
+              image: user.photoURL != null
+                  ? DecorationImage(
+                      image: NetworkImage(user.photoURL!),
+                    )
+                  : DecorationImage(
+                      image: AssetImage('assets/images/user.png'),
+                    ),
               border: Border.all(
                 color: Colors.black,
                 width: 2.0,
@@ -81,7 +87,7 @@ class MenuPage extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            'Celeste Alten',
+            user.displayName != null ? user.displayName! : "Usuario de Correo",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               backgroundColor: Colors.white,
@@ -114,6 +120,7 @@ class MenuPage extends StatelessWidget {
   }
 
   Widget buildSalir(context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return Container(
       width: 180,
       child: Card(
@@ -138,10 +145,15 @@ class MenuPage extends StatelessWidget {
             ),
           ),
           onTap: () async {
-            await FirebaseAuth.instance.signOut();
-
-            SharedPreferences sp = await SharedPreferences.getInstance();
-            sp.remove('userEmail');
+            if (user.displayName != null) {
+              final provider = Provider.of<GoogleSignInProvider>(
+                context,
+                listen: false,
+              );
+              provider.logOut();
+            } else {
+              await FirebaseAuth.instance.signOut();
+            }
 
             MaterialPageRoute route = MaterialPageRoute(
               builder: (context) => PageListNoticias(),
