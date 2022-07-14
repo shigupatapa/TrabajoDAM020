@@ -122,9 +122,9 @@ class _PerfilNinoState extends State<PerfilNino> {
         // shape: BoxShape.circle,
         image: DecorationImage(
           image: NetworkImage(
-            //'http://192.168.138.130:8000/api/imagen/$rut',
+            'http://192.168.87.130:8000/api/imagen/$rut',
             //'http://10.0.2.2:8000/api/imagen/$rut', // EMULADOR
-            'http://192.168.1.160:8000/api/imagen/$rut', // ENZO
+            //'http://192.168.1.160:8000/api/imagen/$rut', // ENZO
           ),
           fit: BoxFit.cover,
         ),

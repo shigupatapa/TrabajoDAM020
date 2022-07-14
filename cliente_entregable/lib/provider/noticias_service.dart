@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // LISTAR TODAS LAS NOTICIAS
 class FirestoreService {
   Stream<QuerySnapshot> noticias() {
-    return FirebaseFirestore.instance.collection('noticias').snapshots();
+    return FirebaseFirestore.instance
+        .collection('noticias')
+        .orderBy('fecha')
+        .snapshots();
     // int limite = 5;
     // return FirebaseFirestore.instance.collection('productos').where('stock', isLessThan: limite).snapshots();
   }
@@ -18,31 +21,27 @@ class FirestoreService {
   }
 
   //borrar producto
-  Future productosBorrar(String productoId) {
+  Future noticiaBorrar(String idNoticia) {
     return FirebaseFirestore.instance
-        .collection('productos')
-        .doc(productoId)
+        .collection('noticias')
+        .doc(idNoticia)
         .delete();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getProducto(
-      String productoId) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getNoticia(
+      String idNoticia) async {
     return await FirebaseFirestore.instance
-        .collection('productos')
-        .doc(productoId)
+        .collection('noticias')
+        .doc(idNoticia)
         .get();
     // print(prod['nombre']);
   }
 
-  Future productosEditar(
-      String productoId, String nombre, int stock, int precio) {
+  Future noticiaEditar(
+      String idNoticia, String titulo, String contenido, Timestamp fecha) {
     return FirebaseFirestore.instance
         .collection('productos')
-        .doc(productoId)
-        .update({
-      'nombre': nombre,
-      'stock': stock,
-      'precio': precio,
-    });
+        .doc(idNoticia)
+        .update({});
   }
 }
