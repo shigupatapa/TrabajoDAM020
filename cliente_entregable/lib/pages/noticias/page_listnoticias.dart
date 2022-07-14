@@ -1,9 +1,13 @@
 import 'dart:math';
 
 import 'package:cliente_entregable/login_page.dart';
+import 'package:cliente_entregable/pages/noticias/page_addnoticias.dart';
+import 'package:cliente_entregable/provider/noticias_service.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
 class PageListNoticias extends StatefulWidget {
@@ -56,7 +60,7 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                     onPressed: () {
                       MaterialPageRoute route =
                           MaterialPageRoute(builder: (context) {
-                        return LoginPage();
+                        return PageAddNoticia();
                       });
                       Navigator.push(context, route)
                           .then((value) => setState(() {}));
@@ -76,7 +80,21 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: buildList(userAuth),
+              child: StreamBuilder(
+                stream: FirestoreService().noticias(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Padding(
+                    padding: EdgeInsets.all(5),
+                    child: buildList(snapshot, userAuth),
+                  );
+                },
+              ),
             ),
           );
         }
@@ -84,10 +102,15 @@ class _PageListNoticiasState extends State<PageListNoticias> {
     );
   }
 
-  Widget buildList(userAuth) {
-    return ListView(
-      children: [
-        Container(
+  Widget buildList(snapshot, userAuth) {
+    return ListView.builder(
+      itemCount: snapshot.data!.docs.length,
+      itemBuilder: (context, index) {
+        var noticia = snapshot.data!.docs[index];
+        DateTime dt = (noticia['fecha'] as Timestamp).toDate();
+        var fecha = DateFormat("dd-MM-yyyy HH:mm")
+            .format(DateTime.parse(dt.toString()));
+        return Container(
           height: 250,
           padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Card(
@@ -99,23 +122,17 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                   backgroundImage: AssetImage('assets/images/profe.png'),
                 ),
                 title: Text(
-                  'Titulo',
+                  '${noticia['titulo']}',
                   style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
                 subtitle: Text(
-                  'Fecha - Hora',
+                  '${fecha}',
                   style: TextStyle(
                     color: Colors.grey,
                   ),
                 ),
-                trailing: userAuth != null
-                    ? IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {},
-                      )
-                    : null,
               ),
               child: Stack(
                 children: [
@@ -133,11 +150,12 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                       padding: EdgeInsets.all(10),
                       child: Center(
                         child: Text(
-                          'Contenido',
+                          '${noticia['contenido']}',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
@@ -174,16 +192,30 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                   ],
                 ),
                 trailing: userAuth != null
-                    ? Icon(
-                        Icons.edit,
-                        color: Colors.purple,
+                    ? Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.purple,
+                            ),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {},
+                          )
+                        ],
                       )
                     : null,
               ),
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
