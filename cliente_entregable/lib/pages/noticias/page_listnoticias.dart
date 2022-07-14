@@ -6,10 +6,13 @@ import 'package:cliente_entregable/pages/noticias/page_editnoticias.dart';
 import 'package:cliente_entregable/provider/noticias_service.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class PageListNoticias extends StatefulWidget {
   PageListNoticias({Key? key}) : super(key: key);
@@ -214,7 +217,47 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                               color: Colors.red,
                             ),
                             onPressed: () {
-                              FirestoreService().noticiaBorrar(noticia.id);
+                              confirmDialog(context, noticia['titulo'])
+                                  .then((confirm) {
+                                if (confirm) {
+                                  FirestoreService()
+                                      .noticiaBorrar(noticia.id)
+                                      .then(
+                                    (borradoOk) {
+                                      if (borradoOk) {
+                                        Navigator.pop(context);
+                                        showTopSnackBar(
+                                          context,
+                                          CustomSnackBar.info(
+                                            message:
+                                                '${noticia['titulo']} fue eliminado del sistema.',
+                                            backgroundColor: Colors.cyan,
+                                            icon: Icon(
+                                              Icons.sentiment_very_dissatisfied,
+                                              color: Colors.black26,
+                                              size: 120,
+                                            ),
+                                            textStyle: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontStyle: FontStyle.italic,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        showTopSnackBar(
+                                          context,
+                                          CustomSnackBar.error(
+                                            message:
+                                                '${noticia['titulo']} no pudo ser eliminado.',
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                }
+                              });
                             },
                           )
                         ],
@@ -225,6 +268,28 @@ class _PageListNoticiasState extends State<PageListNoticias> {
           ),
         );
       },
+    );
+  }
+
+  confirmDialog(BuildContext context, String titulo) {
+    return CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      title: 'Confirmar Borrado',
+      text: '¿Borrar a $titulo?',
+      confirmBtnText: 'Aceptar',
+      confirmBtnColor: Colors.green,
+      confirmBtnTextStyle: TextStyle(
+        fontSize: 15,
+        color: Colors.white,
+      ),
+      onConfirmBtnTap: () => Navigator.pop(context, true),
+      cancelBtnText: 'Cancelar',
+      showCancelBtn: true,
+      cancelBtnTextStyle: TextStyle(
+        fontSize: 15,
+      ),
+      onCancelBtnTap: () => Navigator.pop(context, false),
     );
   }
 }
