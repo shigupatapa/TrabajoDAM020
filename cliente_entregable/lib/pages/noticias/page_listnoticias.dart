@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cliente_entregable/login_page.dart';
 import 'package:cliente_entregable/pages/noticias/page_addnoticias.dart';
+import 'package:cliente_entregable/pages/noticias/page_editnoticias.dart';
 import 'package:cliente_entregable/provider/noticias_service.dart';
 import 'package:cliente_entregable/widgets/menu_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -199,14 +200,22 @@ class _PageListNoticiasState extends State<PageListNoticias> {
                               Icons.edit,
                               color: Colors.purple,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              MaterialPageRoute route =
+                                  MaterialPageRoute(builder: (context) {
+                                return PageEditNoticia(noticia.id);
+                              });
+                              Navigator.push(context, route);
+                            },
                           ),
                           IconButton(
                             icon: Icon(
                               Icons.delete,
                               color: Colors.red,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              FirestoreService().noticiaBorrar(noticia.id);
+                            },
                           )
                         ],
                       )

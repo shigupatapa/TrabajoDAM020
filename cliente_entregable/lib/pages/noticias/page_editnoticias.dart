@@ -36,6 +36,8 @@ class _PageEditNoticiaState extends State<PageEditNoticia> {
                     );
                   }
                   var data = snapshot.data;
+                  tituloCtrl.text = data['titulo'];
+                  contenidoCtrl.text = data['contenido'];
 
                   return ListView(children: [
                     TextFormField(
@@ -46,6 +48,7 @@ class _PageEditNoticiaState extends State<PageEditNoticia> {
                     TextFormField(
                       controller: contenidoCtrl,
                       decoration: InputDecoration(labelText: 'Contenido'),
+                      maxLines: 3,
                     ),
                     Divider(),
 

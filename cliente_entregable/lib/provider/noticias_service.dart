@@ -12,11 +12,11 @@ class FirestoreService {
   }
 
   //agregar productos
-  Future productosAgregar(String nombre, int stock, int precio) {
-    return FirebaseFirestore.instance.collection('productos').doc().set({
-      'nombre': nombre,
-      'stock': stock,
-      'precio': precio,
+  Future noticiaAgregar(String titulo, String contenido, Timestamp fecha) {
+    return FirebaseFirestore.instance.collection('noticias').doc().set({
+      'titulo': titulo,
+      'contenido': contenido,
+      'fecha': fecha,
     });
   }
 
@@ -40,8 +40,12 @@ class FirestoreService {
   Future noticiaEditar(
       String idNoticia, String titulo, String contenido, Timestamp fecha) {
     return FirebaseFirestore.instance
-        .collection('productos')
+        .collection('noticias')
         .doc(idNoticia)
-        .update({});
+        .update({
+      'titulo': titulo,
+      'contenido': contenido,
+      'fecha': fecha,
+    });
   }
 }
